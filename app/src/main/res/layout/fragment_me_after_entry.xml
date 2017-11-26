@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/afterentry_LL"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_islogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme">
+
+        <ImageButton
+            android:id="@+id/ib_settings"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="right"
+            android:background="@android:drawable/ic_menu_manage"
+            tools:ignore="ContentDescription" />
+    </android.support.v7.widget.Toolbar>
+
+    <LinearLayout
+        android:id="@+id/persioninfo_LL"
+        android:layout_width="match_parent"
+        android:layout_height="86dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="94dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/simpleDraweeView_user_avatar"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                fresco:placeholderImage="@drawable/ic_launcher_24dp"
+                fresco:placeholderImageScaleType="fitCenter" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:weightSum="1">
+
+            <RelativeLayout
+                android:layout_width="178dp"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_name1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="14dp"
+                    android:text="姓名" />
+
+                <TextView
+                    android:id="@+id/tv_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/tv_name1"
+                    android:text="员工号" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/moreinfo_RL"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/ib_logininfo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    app:srcCompat="@android:drawable/ic_media_play"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
+                    tools:ignore="ContentDescription" />
+            </RelativeLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

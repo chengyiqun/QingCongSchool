@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CourseView">
+        <attr name="courseId" format="integer"/>
+        <attr name="startSection" format="integer"/>
+        <attr name="endSection" format="integer"/>
+        <attr name="weekDay" format="integer"/>
+    </declare-styleable>
+
+</resources>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:id="@+id/root_linearlayout"
+    tools:context=".LoginActivity"
+    android:theme="@style/AppTheme"
+    >
+<!-- android:focusable="true"
+    android:focusableInTouchMode="true"
+    两句的目的是防止EditText自动获得焦点
+    -->
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_loggin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:title="登陆" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="80dp"
+        >
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/username_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="输入用户名"
+                android:inputType="phone"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <EditText
+                android:id="@+id/password_editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="输入密码"
+                android:inputType="textPassword" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/login" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/register_button"
+            android:layout_width="147dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:text="@string/register"
+            style="?android:attr/buttonBarButtonStyle"/>
+
+        <Button
+            android:id="@+id/reset_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/forget_password"
+            style="?android:attr/buttonBarButtonStyle"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/other_login_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/other_login"
+        android:textSize="24sp" />
+
+
+</LinearLayout>

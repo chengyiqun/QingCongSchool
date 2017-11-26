@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/tools">
+
+    <color name="text_grey">#E8E8E8</color>
+    <color name="text_bar_selected">#FF4081</color>
+    <color name="text_bar_unselected">#CDC5BF</color>
+    <color name="text_green">#FF0000</color>
+    <color name="transparent">#E8E8E8</color>
+    <color name="text_white_background">#FFFFFF</color>
+    <color name="untext_white_background">#E8E8E8</color>
+    <color name="div_white">#E8E8E8</color>
+
+
+    <color name="colorAccent">#FF4081</color>
+    <color name="primaryColor">#00c853</color>
+    <color name="primaryLightColor">#5efc82</color>
+    <color name="primaryDarkColor">#009624</color>
+    <color name="secondaryColor">#64dd17</color>
+    <color name="secondaryLightColor">#9cff57</color>
+    <color name="secondaryDarkColor">#1faa00</color>
+    <color name="primaryTextColor">#000000</color>
+    <color name="secondaryTextColor">#dd2c00</color>
+
+    <color name="colorPrimaryLight">#84FF19</color>
+    <color name="colorWhite">#ffffff</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorDivider">#2fe897</color>
+    <color name="colorBorder">#a7a4a4</color>
+    <color name="colorExtra">#fffac1</color>
+
+    <!--文件类型颜色-->
+    <color name="fileVideo">#ffd43a</color>
+    <color name="fileAudio">#0dc5d2</color>
+    <color name="filePDF">#ff6762</color>
+    <color name="fileDOC">#4141b4</color>
+    <color name="filePPT">#a61a1e</color>
+    <color name="fileXLS">#14b43c</color>
+    <color name="fileOthers">#000</color>
+
+</resources>

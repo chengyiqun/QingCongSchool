@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="resourceDescribe">
+        <item>考试试卷</item>
+        <item>课后答案 </item>
+        <item>学习视频</item>
+        <item>电子教材</item>
+        <item>其他资源</item>
+    </string-array>
+</resources>

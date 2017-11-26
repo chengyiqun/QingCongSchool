@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.xpb.qingcongschool.course.resource.upload.UploadCourseResourceActivity">
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_upload_resource"
+        android:elevation="4dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:title="上传课程资源" />
+
+    <Spinner
+        android:id="@+id/spinner_resourceDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar_upload_resource"
+        android:layout_marginLeft="18dp"
+        android:layout_marginStart="18dp"
+        android:layout_marginTop="32dp"
+        android:layout_toEndOf="@+id/textView4"
+        android:layout_toRightOf="@+id/textView4"
+        android:entries="@array/resourceDescribe" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/spinner_resourceDescription"
+        android:text="资源描述"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="56dp"
+        android:text="课程名"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/editText_courseName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView5"
+        android:layout_alignBottom="@+id/textView5"
+        android:layout_alignLeft="@+id/spinner_resourceDescription"
+        android:layout_alignStart="@+id/spinner_resourceDescription"
+        android:ems="10"
+        android:inputType="textPersonName"
+        />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editText_courseName"
+        android:layout_marginTop="68dp"
+        android:text="资源类型"
+        android:textSize="18sp" />
+
+    <EditText
+        android:id="@+id/editText_ResourceType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView6"
+        android:layout_alignBottom="@+id/textView6"
+        android:layout_alignLeft="@+id/editText_courseName"
+        android:layout_alignStart="@+id/editText_courseName"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="缺省" />
+
+    <Button
+        android:id="@+id/button_filePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editText_ResourceType"
+        android:layout_marginTop="89dp"
+        android:layout_toEndOf="@+id/textView6"
+        android:layout_toRightOf="@+id/textView6"
+        android:text="选择文件" />
+
+    <Button
+        android:id="@+id/button_uploadFile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/button_filePicker"
+        android:layout_marginLeft="44dp"
+        android:layout_marginStart="44dp"
+        android:layout_toEndOf="@+id/spinner_resourceDescription"
+        android:layout_toRightOf="@+id/spinner_resourceDescription"
+        android:text="上传资源" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/editText_ResourceType"
+        android:layout_marginTop="25dp"
+        android:text="文件路径" />
+
+    <TextView
+        android:id="@+id/textView_uploadFilePath"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/editText_ResourceType"
+        android:layout_alignStart="@+id/editText_ResourceType"
+        android:layout_alignTop="@+id/textView7"
+        android:text="path" />
+</RelativeLayout>

@@ -1,0 +1,92 @@
+<LinearLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".course.GetCourseActivity"
+     >
+
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/andalogo"
+        android:layout_marginTop="30dp"
+        android:contentDescription="TODO"
+        tools:ignore="ContentDescription" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/studentname_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+            android:hint="教务处账号"
+            android:text="" />
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/password_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_weight="1"
+            android:hint="教务处密码"
+            android:inputType="textPassword"
+            android:text="" />
+    </android.support.design.widget.TextInputLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/identifyCode_editText"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="验证码" />
+        </android.support.design.widget.TextInputLayout>
+
+        <ImageView
+            android:id="@+id/codeImage"
+            android:layout_width="72dp"
+            android:layout_height="36dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp" android:contentDescription="TODO"
+            tools:ignore="ContentDescription" />
+
+        <Button
+            android:id="@+id/getCode_button"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:text="刷新验证码"
+            android:textColor="#fff" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="180dp"
+        android:layout_height="45dp"
+
+        android:layout_marginBottom="100dp"
+        android:text="登录"
+        android:textColor="#fff" />
+
+</LinearLayout>

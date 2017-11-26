@@ -1,0 +1,43 @@
+<resources xmlns:android="urn:oasis:names:tc:xliff:document:1.2">
+
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorAccent">@color/primaryColor</item>
+        <item name="colorButtonNormal">@color/primaryColor</item>
+        <item name="colorControlHighlight">@color/primaryDarkColor</item>
+    </style>
+
+    <style name="PrimaryButton" parent="AppTheme">
+        <item name="colorButtonNormal">@color/primaryLightColor</item>
+        <item name="colorControlHighlight">@color/primaryDarkColor</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+
+    <style name="MyDialogStyle" parent="Theme.AppCompat.Light.NoActionBar">
+        <!--窗口背景，使用系统定义的透明-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--设置windowFrame为空-->
+        <item name="android:windowFrame">@null</item>
+        <!--设置无标题-->
+        <item name="android:windowNoTitle">true</item>
+        <!--设置是否悬浮在其他avtivity上方-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否半透明-->
+        <item name="android:windowIsTranslucent">true</item>
+        <!--是否内容覆盖-->
+        <item name="android:windowContentOverlay">@null</item>
+        <!--弹出动画-->
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <!--背景是否模糊化-->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+</resources>

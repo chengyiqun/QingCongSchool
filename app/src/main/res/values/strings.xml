@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">青校</string>
+    <string name="username_hint">输入用户名</string>
+    <string name="password_hint">输入密码</string>
+    <string name="login">登录</string>
+    <string name="register">注册新用户</string>
+    <string name="forget_password">忘记密码？</string>
+    <string name="other_login">其他登录方式</string>
+
+    <string name="get_identifyCode">获取验证码</string>
+    <string name="identify">验证</string>
+
+    <string name="square">广场</string>
+    <string name="course">课程表</string>
+    <string name="user">用户</string>
+    <string name="add">+</string>
+
+    <item name="visible" type="id" />
+    <item name="masked" type="id" />
+    <string name="title_activity_new_sub_comment">NewSubCommentActivity</string>
+
+    <string name="permission_write_external_storage">需要读写存储权限以上传下载文件</string>
+</resources>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_height="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:elevation="4dp"
+        android:background="@color/colorPrimary">
+        <android.support.v7.widget.AppCompatSpinner
+            android:id="@+id/week_spinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            />
+
+
+    </android.support.v7.widget.Toolbar>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="TODO"
+        tools:ignore="ContentDescription" />
+
+    <LinearLayout
+        android:id="@+id/weekend"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/month_Button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:background="@drawable/kb0"
+            android:text="3月"
+            android:textColor="#2e94da"
+            android:textSize="10sp"
+            tools:ignore="SmallSp" />
+
+        <Button
+            android:id="@+id/monday_Button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/kb0"
+            android:text="周一"
+            android:textColor="#2e94da"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/tuesday_Button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/kb0"
+            android:text="周二"
+            android:textColor="#2e94da"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/wednesday_Button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/kb0"
+            android:text="周三"
+            android:textColor="#2e94da"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/thursday_Button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/kb0"
+            android:text="周四"
+            android:textColor="#2e94da"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/friday_Button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/kb0"
+            android:text="周五"
+            android:textColor="#2e94da"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/saturday_Button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/kb0"
+            android:text="周六"
+            android:textColor="#2e94da"
+            android:textSize="12sp" />
+
+        <Button
+            android:id="@+id/sunday_Button"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/kb0"
+            android:text="周日"
+            android:textColor="#2e94da"
+            android:textSize="12sp" />
+    </LinearLayout>
+
+
+    <ScrollView
+        android:id="@+id/scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/course_ll"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/section_ll"
+                android:orientation="vertical">
+
+            </LinearLayout>
+
+        <com.example.xpb.qingcongschool.course.CourseLayout
+            android:id="@+id/courses"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="0dp"
+            android:background="#FFFFFF"
+            >
+        </com.example.xpb.qingcongschool.course.CourseLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
