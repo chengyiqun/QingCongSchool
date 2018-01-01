@@ -3,6 +3,7 @@ import com.blankj.utilcode.util.Utils
 
 
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.stetho.Stetho
 import org.litepal.LitePalApplication
 
 
@@ -15,7 +16,12 @@ class MyApplication : LitePalApplication() {//继承了那个数据库的 applic
         super.onCreate()
         //初始化Fresco
         Fresco.initialize(this)
+        //初始化工具类
         Utils.init(this)
+
+        //初始化com.facebook.stetho:stetho
+        Stetho.initializeWithDefaults(this);
+
         scale=getScale()
         screenwidth=getWidth()
         //statusBarHeight=getstatusBarHeight1()

@@ -1,6 +1,8 @@
 package com.example.xpb.qingcongschool;
 
 
+import android.support.annotation.NonNull;
+
 import com.example.xpb.qingcongschool.course.resource.download.FileResponseBody;
 import com.example.xpb.qingcongschool.course.resource.upload.RetrofitCallback;
 import com.example.xpb.qingcongschool.main.MainActivity;
@@ -23,40 +25,33 @@ import retrofit2.http.Multipart;
  * Created by xpb on 2017/3/3.
  */
 public class RetrofitFactory {
-    private static   String baseUrl = "http://60.205.218.103:80";
-    private RetrofitFactory(String baseUrl){
-
-    }
+    //private static   String baseUrl = BuildConfig.DEBUG? "http://172.21.1.36:8080":"http://60.205.218.103:80";
+    private static String baseUrl ="http://60.205.218.103:80";
+    private RetrofitFactory(String BaseUrl){};
 
     private static OkHttpClient  httpClientlogin = new OkHttpClient.Builder().
-            addInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request.Builder  builder = chain.request().newBuilder();
-                    //新增的响应拦截by程义群
-                    Response response=chain.proceed(builder.build());
-                    MainActivity.Companion.setAccessToken(response.header("accessToken", "NoaccessToken"));
-                    return response;
-                }
-            }).connectTimeout(60, TimeUnit.SECONDS).
-            readTimeout(60,TimeUnit.SECONDS)
+            addInterceptor(chain -> {
+                Request.Builder  builder = chain.request().newBuilder();
+                //新增的响应拦截by程义群
+                Response response=chain.proceed(builder.build());
+                MainActivity.Companion.setAccessToken(response.header("accessToken", "NoaccessToken"));
+                return response;
+            }).connectTimeout(30, TimeUnit.SECONDS)/*本来是60*/
+            .readTimeout(30,TimeUnit.SECONDS)
             .build();
 
     private static OkHttpClient  httpClient = new OkHttpClient.Builder().
-            addInterceptor(new Interceptor() {
-        @Override
-        public Response intercept(Chain chain) throws IOException {
-            Request.Builder  builder = chain.request().newBuilder();
-            builder.addHeader("accessToken", MainActivity.Companion.getAccessToken());
-            String encodedUserName= URLEncoder.encode(MainActivity.Companion.getUserName(),"UTF-8");
-            builder.addHeader("userName",encodedUserName);
-            /*Request request= builder.build();
-            System.out.println(request);*/
-            //新增的响应拦截by程义群
-            return chain.proceed(builder.build());
-        }
-    }).connectTimeout(60, TimeUnit.SECONDS).
-            readTimeout(60,TimeUnit.SECONDS)
+            addInterceptor(chain -> {
+                Request.Builder  builder = chain.request().newBuilder();
+                builder.addHeader("accessToken", MainActivity.Companion.getAccessToken());
+                String encodedUserName= URLEncoder.encode(MainActivity.Companion.getUserName(),"UTF-8");
+                builder.addHeader("userName",encodedUserName);
+                /*Request request= builder.build();
+                System.out.println(request);*/
+                //新增的响应拦截by程义群
+                return chain.proceed(builder.build());
+            }).connectTimeout(30, TimeUnit.SECONDS).
+            readTimeout(30,TimeUnit.SECONDS)
             .build();
 
 
@@ -88,18 +83,15 @@ public class RetrofitFactory {
 
     public static <T> RetrofitService getRetrofitService(final RetrofitCallback<T> callback) {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
-        clientBuilder.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Request.Builder  builder = chain.request().newBuilder();
-                builder.addHeader("accessToken", MainActivity.Companion.getAccessToken());
-                String encodedUserName= URLEncoder.encode(MainActivity.Companion.getUserName(),"UTF-8");
-                builder.addHeader("userName",encodedUserName);
+        clientBuilder.addInterceptor(chain -> {
+            Request.Builder  builder = chain.request().newBuilder();
+            builder.addHeader("accessToken", MainActivity.Companion.getAccessToken());
+            String encodedUserName= URLEncoder.encode(MainActivity.Companion.getUserName(),"UTF-8");
+            builder.addHeader("userName",encodedUserName);
 
-                Response response = chain.proceed(builder.build());
-                //将ResponseBody转换成我们需要的FileResponseBody
-                return response.newBuilder().body(new FileResponseBody<T>(response.body(), callback)).build();
-            }
+            Response response = chain.proceed(builder.build());
+            //将ResponseBody转换成我们需要的FileResponseBody
+            return response.newBuilder().body(new FileResponseBody<T>(response.body(), callback)).build();
         });
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)

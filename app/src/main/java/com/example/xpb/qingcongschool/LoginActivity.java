@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DebugUtils;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,10 +18,12 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.xpb.qingcongschool.main.BaseActivity;
 import com.example.xpb.qingcongschool.main.MainActivity;
 import com.example.xpb.qingcongschool.util.FileUtil;
 import com.example.xpb.qingcongschool.util.NetworkUtil;
+import com.example.xpb.qingcongschool.util.Utils;
 import com.google.gson.Gson;
 import com.mob.MobSDK;
 
@@ -119,7 +122,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 userInfo.put("password", password);
                 Gson gson = new Gson();
                 String userJson = gson.toJson(userInfo);
-                System.out.println("开始登录！");
+                Utils.println("开始登陆");
                 if (checkEdit()) {//检查注册信息
                     //检查网络
                     if (NetworkUtil.isNetworkAvailable(getApplicationContext()))
