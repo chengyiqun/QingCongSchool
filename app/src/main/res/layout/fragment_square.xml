@@ -32,4 +32,13 @@
         android:layout_centerVertical="true"
         android:text="评论页面" />
 
+    <Button
+        android:id="@+id/gotoRC"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/bt_ActivityComment"
+        android:layout_below="@+id/textView_uploadTime"
+        android:layout_marginTop="47dp"
+        android:text="课程评论" />
+
 </RelativeLayout>

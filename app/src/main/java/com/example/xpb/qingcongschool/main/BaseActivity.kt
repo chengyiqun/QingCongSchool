@@ -2,11 +2,13 @@ package com.example.xpb.qingcongschool.main
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
 import android.support.v7.app.AppCompatActivity
 import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
+import com.example.xpb.qingcongschool.util.Utils
 
 /**
  * Created by 程义群（空灵入耳） on 2017/11/13 0013.

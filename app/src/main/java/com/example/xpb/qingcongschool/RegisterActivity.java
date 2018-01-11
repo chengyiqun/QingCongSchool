@@ -195,18 +195,15 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonStr);
         Observable<ResponseBody> observable = RetrofitFactory.getInstance().registerUser(body);
         observable.subscribeOn(Schedulers.io())
-                .doOnSubscribe(new Consumer<Disposable>() {
-                    @Override
-                    public void accept(Disposable disposable) throws Exception {
-                        if (NetworkUtil.isNetworkAvailable(RegisterActivity.this)) {
-                            if (showLoading) {
-                                if (progressDialog != null && !progressDialog.isShowing()) {
-                                    progressDialog.show();
-                                }
+                .doOnSubscribe(disposable -> {
+                    if (NetworkUtil.isNetworkAvailable(RegisterActivity.this)) {
+                        if (showLoading) {
+                            if (progressDialog != null && !progressDialog.isShowing()) {
+                                progressDialog.show();
                             }
-                        } else {
-                            Toast.makeText(RegisterActivity.this, "网络连接异常，请检查网络", Toast.LENGTH_LONG).show();
                         }
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "网络连接异常，请检查网络", Toast.LENGTH_LONG).show();
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())

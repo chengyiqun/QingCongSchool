@@ -2,21 +2,22 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.xpb.qingcongschool">
 
-    <uses-permission android:name="android.permission.READ_CONTACTS" /><!--需动态，联系人读取-->
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" /><!--需动态，电话信息读取比如IMEI-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /><!--需动态，存储空间读写-->
+    <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 需动态，联系人读取 -->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" /> <!-- 需动态，电话信息读取比如IMEI -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- 需动态，存储空间读写 -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" /><!--需动态，接收短信-->
-    <uses-permission android:name="android.permission.READ_SMS" /><!--需动态，读取短信-->
-    <uses-permission android:name="android.permission.GET_TASKS" /><!--获取安卓最近任务列表，不知道干啥滴-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /><!--需动态，获取地理位置-->
-    <!--以上是用于SMSSKD的，呵呵破权限这么多，乱要一气，讨厌这种东西-->
+    <uses-permission android:name="android.permission.RECEIVE_SMS" /> <!-- 需动态，接收短信 -->
+    <uses-permission android:name="android.permission.READ_SMS" /> <!-- 需动态，读取短信 -->
+    <uses-permission android:name="android.permission.GET_TASKS" /> <!-- 获取安卓最近任务列表，不知道干啥滴 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" /> <!-- 需动态，获取地理位置 -->
+    <!-- 以上是用于SMSSKD的，呵呵破权限这么多，乱要一气，讨厌这种东西 -->
 
-    <uses-permission android:name="android.permission.CAMERA" /><!--拍照头像-->
-    <uses-permission android:name="android.permission.VIBRATE" /><!--通知震动-->
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- 拍照头像 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!-- 通知震动 -->
     <application
         android:name=".app.MyApplication"
         android:allowBackup="true"
@@ -64,8 +65,9 @@
         <activity android:name=".course.resource.download.GetResourceListActivity" />
         <activity
             android:name=".comment.ReplyDialogActivity"
-            android:theme="@style/MyDialogStyle"
-            />
+            android:theme="@style/MyDialogStyle" />
+        <activity android:name=".course.resource.comment.ResourceCommentActivity" />
+        <activity android:name=".course.resource.comment.CommentDetaillActivity"></activity>
     </application>
 
 </manifest>

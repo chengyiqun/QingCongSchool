@@ -22,24 +22,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Multipart;
 
 /**
- * Created by xpb on 2017/3/3.
+ * Created by 程义群（空灵入耳） on 2017/3/3.
  */
 public class RetrofitFactory {
-    //private static   String baseUrl = BuildConfig.DEBUG? "http://172.21.1.36:8080":"http://60.205.218.103:80";
-    private static String baseUrl ="http://60.205.218.103:80";
+    private static   String baseUrl = BuildConfig.DEBUG? "http://192.168.253.1:8080":"http://60.205.218.103:80";
+    //private static String baseUrl ="http://60.205.218.103:80";
     private RetrofitFactory(String BaseUrl){};
 
-    private static OkHttpClient  httpClientlogin = new OkHttpClient.Builder().
-            addInterceptor(chain -> {
-                Request.Builder  builder = chain.request().newBuilder();
-                //新增的响应拦截by程义群
-                Response response=chain.proceed(builder.build());
-                MainActivity.Companion.setAccessToken(response.header("accessToken", "NoaccessToken"));
-                return response;
-            }).connectTimeout(30, TimeUnit.SECONDS)/*本来是60*/
-            .readTimeout(30,TimeUnit.SECONDS)
-            .build();
 
+
+    //登陆以后所有的要验证token的操作
     private static OkHttpClient  httpClient = new OkHttpClient.Builder().
             addInterceptor(chain -> {
                 Request.Builder  builder = chain.request().newBuilder();
@@ -53,17 +45,6 @@ public class RetrofitFactory {
             }).connectTimeout(30, TimeUnit.SECONDS).
             readTimeout(30,TimeUnit.SECONDS)
             .build();
-
-
-    private static RetrofitService retrofitServicelogin =  new Retrofit.Builder()
-            .baseUrl(baseUrl)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(httpClientlogin)
-            .build()
-            .create(RetrofitService.class);
-
-
     private static RetrofitService retrofitService =  new Retrofit.Builder()
             .baseUrl(baseUrl)
             .addConverterFactory(GsonConverterFactory.create())
@@ -73,14 +54,36 @@ public class RetrofitFactory {
             .create(RetrofitService.class);
 
 
+    //登陆以后，带token的
     public static RetrofitService getInstance() {
         return retrofitService;
     }
 
-    public static RetrofitService getInstanceLogin() {
+    //登陆
+    private static OkHttpClient  httpClientlogin = new OkHttpClient.Builder().
+            addInterceptor(chain -> {
+                Request.Builder  builder = chain.request().newBuilder();
+                //新增的响应拦截by程义群
+                Response response=chain.proceed(builder.build());
+                MainActivity.Companion.setAccessToken(response.header("accessToken", "NoaccessToken"));
+                return response;
+            }).connectTimeout(30, TimeUnit.SECONDS)/*本来是60*/
+            .readTimeout(30,TimeUnit.SECONDS)
+            .build();
+
+    private static RetrofitService retrofitServicelogin =  new Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(httpClientlogin)
+            .build()
+            .create(RetrofitService.class);
+    static RetrofitService getInstanceLogin() {
         return retrofitServicelogin;
     }
 
+
+    //下载资源
     public static <T> RetrofitService getRetrofitService(final RetrofitCallback<T> callback) {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
         clientBuilder.addInterceptor(chain -> {
@@ -98,7 +101,6 @@ public class RetrofitFactory {
                 .client(clientBuilder.build())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        RetrofitService service = retrofit.create(RetrofitService.class);
-        return service ;
+        return retrofit.create(RetrofitService.class);
     }//通过上面的设置后，我们需要在回调RetrofitCallback中实现onLoading方法来进行进度的更新操作，与上传文件的方法相同
 }

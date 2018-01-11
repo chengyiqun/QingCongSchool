@@ -37,4 +37,13 @@
     <color name="fileXLS">#14b43c</color>
     <color name="fileOthers">#000</color>
 
+    <!--textView 背景颜色，文字颜色-->
+    <color name="textView_gray">#efefef</color>
+    <color name="textview_String">#888888</color>
+    <color name="textView_gray_selected">#f4f7f4</color>
+    <color name="textView_String_selected">#cdd0cd</color>
+
+    <color name="user_id">#365c90</color>
+
+    <color name="textview_time">#7e7e7e</color>
 </resources>

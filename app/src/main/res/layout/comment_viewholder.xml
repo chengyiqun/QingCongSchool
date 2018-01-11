@@ -69,6 +69,14 @@
                     android:textSize="16sp"
                     android:focusable="true" />
 
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="26dp"
+                    android:layout_height="26dp"
+                    android:layout_alignBottom="@+id/tv_user_name"
+                    android:layout_toEndOf="@+id/tv_user_name"
+                    app:srcCompat="@mipmap/vip_level" />
+
                 <TextView
                     android:id="@+id/tv_timedata"
                     android:layout_width="wrap_content"

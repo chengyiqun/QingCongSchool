@@ -11,9 +11,10 @@ import android.util.Log
 import android.view.View
 
 import com.example.xpb.qingcongschool.R
+import com.example.xpb.qingcongschool.main.BaseActivity
 import kotlinx.android.synthetic.main.activity_comment.*
 
-class CommentActivity : AppCompatActivity() {
+class CommentActivity : BaseActivity() {
     private var myDataset:Array<String>?=null
     private var mAdapter: MyAdapter? = null
     private var mLayoutManager: RecyclerView.LayoutManager? = null

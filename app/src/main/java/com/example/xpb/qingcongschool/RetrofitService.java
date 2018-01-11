@@ -50,6 +50,9 @@ public interface RetrofitService {
     @POST("/QingXiao/CourseResource/GetList")//获取课程资源列表
     Observable<String>getFileList(@Body RequestBody courseName);
 
-    @GET("/QingXiao/CourseResource/Download")
+    @GET("/QingXiao/CourseResource/Download")//下载课程资源
     Call<ResponseBody> download(@Query("resourceStoreName") String resourceStoreName);
+
+    @POST("/QingXiao/ResourceComment/Insert")
+    Observable<String>insertResourceComment(@Body RequestBody jsonStringInsertResourceComment);
 }

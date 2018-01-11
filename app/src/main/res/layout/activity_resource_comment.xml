@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/recource_comment_rootview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.xpb.qingcongschool.course.resource.comment.ResourceCommentActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar_resource_comment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="?attr/actionBarTheme"
+            app:title="资源评论" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/resource_comment_recycylerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/include_reply"
+            android:layout_below="@+id/toolbar_resource_comment" />
+
+
+        <!--
+        在include里，layout_width和layout_height必须加上
+        否则其他属性不起作用，来自 stackoverflow.com
+        -->
+        <include
+            android:id="@+id/include_reply"
+            layout="@layout/dialog_reply"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
+
+    </RelativeLayout>
+
+
+</android.support.constraint.ConstraintLayout>

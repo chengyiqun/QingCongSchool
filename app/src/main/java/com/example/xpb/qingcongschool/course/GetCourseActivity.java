@@ -88,18 +88,20 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     private Bitmap codeBitmap;
 
     // Host地址
-    public static final String HOST = "xk2.ahu.cn";
+    public static final String HOST = "xk1.ahu.cn";
+    // 登录成功的首页
+    //public static String URL_MAIN = "http://xk1.ahu.cn/";
+    public static String URL_MAIN = "http://xk1.ahu.cn";
     // 基础地址
     public static final String URL_BASE = "http://***.***.***.***/";
     //登录首页面地址，
-    public static final String URL_BEFORE_LOGIN = "http://xk2.ahu.cn/";
+    public static final String URL_BEFORE_LOGIN = "http://xk1.ahu.cn/";
     // 验证码地址
-    public static final String URL_CODE = "http://xk2.ahu.cn/";
+    public static final String URL_CODE = "http://xk1.ahu.cn/";
     // 登陆进系统地址
-    public static final String URL_LOGIN = "http://xk2.ahu.cn/default2.aspx/";
+    public static final String URL_LOGIN = "http://xk1.ahu.cn/default2.aspx/";
 
-    // 登录成功的首页
-    public static String URL_MAIN = "http://xk2.ahu.cn/";
+    
     // 请求地址
     public static String URL_QUERY = "http://***.***.***.***/QUERY";
 
@@ -124,7 +126,7 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     private static String xh = "E11414081";
     private String xm = "%D0%EC%C5%F4%B0%EF";
     private String gnmkdm = "N121603";
-    //http://xk2.ahu.cn/xskbcx.aspx?xh=E11414083&xm=%D6%EC%D6%BE%CE%C4&gnmkdm=N121603
+    //http://xk1.ahu.cn/xskbcx.aspx?xh=E11414083&xm=%D6%EC%D6%BE%CE%C4&gnmkdm=N121603
     public static SharedPreferences sharedPreferences;
     //SharedPreferences  pref = GetCourseActivity.this.getSharedPreferences("xxcookie",MODE_PRIVATE);
 
@@ -140,8 +142,8 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     public interface RetrofitServiceSchool {
 
         @Headers({
-                "Host: xk2.ahu.cn",
-                "Referer: http://xk2.ahu.cn/default2.aspx",
+                "Host: xk1.ahu.cn",
+                "Referer: http://xk1.ahu.cn/default2.aspx",
                 "User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
         })
         @POST("default2.aspx")
@@ -150,10 +152,10 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     }
 
     public interface RetrofitServiceSchool2 {
-        //http://xk2.ahu.cn/xskbcx.aspx?xh=E11414081&xm=%D0%EC%C5%F4%B0%EF&gnmkdm=N121603
-        //http://xk2.ahu.cn/xskbcx.aspx?xh=E11414083&xm=%D6%EC%D6%BE%CE%C4&gnmkdm=N121603
+        //http://xk1.ahu.cn/xskbcx.aspx?xh=E11414081&xm=%D0%EC%C5%F4%B0%EF&gnmkdm=N121603
+        //http://xk1.ahu.cn/xskbcx.aspx?xh=E11414083&xm=%D6%EC%D6%BE%CE%C4&gnmkdm=N121603
         @Headers({
-                "Host: xk2.ahu.cn",
+                "Host: xk1.ahu.cn",
                 "User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"})
         @GET("xskbcx.aspx")
         Observable<ResponseBody> loginSchool2(@Query("xh") String xh, @Query("xm") String xm, @Query("gnmkdm") String gnmkdm);
@@ -180,7 +182,7 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                 public Response intercept(Chain chain) throws IOException {
                     Request.Builder builder = chain.request().newBuilder();
                     builder.addHeader("cookie", cookiesone);
-                    builder.addHeader("Referer","http://xk2.ahu.cn/xs_main.aspx?xh="+xh);
+                    builder.addHeader("Referer","http://xk1.ahu.cn/xs_main.aspx?xh="+xh);
                     return chain.proceed(builder.build());
                 }
             }).connectTimeout(120,TimeUnit.SECONDS)
@@ -230,7 +232,7 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
 
 
     RetrofitServiceBeforeSchool retrofitServiceBeforeSchool = new Retrofit.Builder()
-            .baseUrl(URL_CODE)
+            .baseUrl(URL_MAIN)
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(getNewClient2())
             .build()
@@ -421,7 +423,7 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
 
                     reviewMap.put("__VIEWSTATE", __VIEWSTATE);
                     reviewMap.put("txtUserName", txtUserName);
-                    reviewMap.put("TextBox2", TextBox2);
+                    reviewMap.put("TextBox2", TextBox2);//密码。。。
                     reviewMap.put("txtSecretCode", txtSecretCode);
                     reviewMap.put("RadioButtonList1", RadioButtonList1);
                     reviewMap.put("Button1", Button1);
@@ -437,8 +439,9 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                 @Override
                                 public Observable<ResponseBody> apply(ResponseBody responseBody) throws Exception {
                                     //判断登录是否错误，如密码错，用户名错，提取系统反馈的信息
-                                    String responsebody = responseBody2String(responseBody);
-                                    if(responsebody.contains("敏感字符"))
+                                    String str = responseBody2String(responseBody);
+                                    System.out.println(str);
+                                    if(str.contains("敏感字符"))
                                     {
                                         runOnUiThread(new Runnable() {
                                             @Override
@@ -447,12 +450,12 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                             }
                                         });
                                     }
-                                    String studentName = isLogin(responsebody);
+                                    String studentName = isLogin(str);
                                     if (studentName!=null&&!studentName.equals("")) {
                                         //  Toast.makeText(getApplicationContext(), stringtext,Toast.LENGTH_SHORT).show();
                                         xm = studentName.substring(0, studentName.length() - 2);
                                     }
-                                    final String errorType = errorType(responsebody);
+                                    final String errorType = errorType(str);
                                     runOnUiThread(new Runnable() {
                                         @Override
                                         public void run() {
@@ -471,6 +474,7 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                 @Override
                                 public String apply(ResponseBody responseBody) throws Exception {
                                     String string = responseBody2String(responseBody);
+                                    System.out.println(string);
                                     if(string.contains("敏感字符"))
                                     {
                                         runOnUiThread(new Runnable() {

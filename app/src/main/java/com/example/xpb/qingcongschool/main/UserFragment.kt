@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.blankj.utilcode.util.ToastUtils
 
 import com.example.xpb.qingcongschool.LoginActivity
 import com.example.xpb.qingcongschool.R
@@ -222,6 +223,7 @@ class UserFragment : Fragment(), View.OnClickListener {
 
                     override fun onError(throwable: Throwable) {
                         println("上传出错")
+                        ToastUtils.showShort("上传失败")
                         throwable.printStackTrace()
                     }
 

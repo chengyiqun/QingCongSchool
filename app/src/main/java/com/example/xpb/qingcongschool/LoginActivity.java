@@ -1,5 +1,6 @@
 package com.example.xpb.qingcongschool;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -139,7 +140,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     .doOnSubscribe(new Consumer<Disposable>() {
                                         @Override
                                         public void accept(Disposable disposable) throws Exception {
-                                            System.out.println("doOnScribe,showDiaglog");
+                                            Utils.println("doOnScribe,showDiaglog");
                                             if(dialog!=null&&!dialog.isShowing())
                                             {
                                                 dialog.show();
@@ -149,8 +150,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                     .map(new Function<ResponseBody, String>() {
                                         @Override
                                         public String apply(ResponseBody responseBody) {
-                                            System.out.println("正在登录！");
-                                            System.out.println("请求返回数据为：" + responseBody);
+                                            Utils.println("正在登录！");
+                                            Utils.println("请求返回数据为：" + responseBody);
                                             InputStream inputStream = null;
                                             inputStream = responseBody.byteStream();
                                             BufferedReader br = null;
@@ -174,7 +175,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                 }
                                             }
                                             string = sb.toString();
-                                            System.out.println("请求返回数据为：" + string);
+                                            Utils.println("请求返回数据为：" + string);
                                             return string;
                                         }
 
@@ -187,8 +188,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                                         }
 
+                                        @SuppressLint("ApplySharedPref")
                                         @Override
                                         public void onNext(String s) {
+
                                             //dialog.cancel();
                                             JSONObject jsonObj = null;
                                             try {
@@ -202,7 +205,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                             } catch (JSONException e) {
                                                 e.printStackTrace();
                                             }
-                                            System.out.println("获取的返回值：" + result);
+                                            Utils.println("获取的返回值：" + result);
                                             if (result == LOGIN_SUCCESS) {
                                                 //登陆成功后把本地缓存的头像删了。
                                                 File file = new File(FileUtil.getCachePath(getApplicationContext()), "user-avatar.jpg");
@@ -210,7 +213,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                 {
                                                     file.delete();
                                                 }
-                                                System.out.println("跳到主界面！");
+                                                Utils.println("跳到主界面！");
                                                 MainActivity.Companion.setIslogin(true);
                                                 MainActivity.Companion.setPhoneNum(phoneNum);
                                                 try {
@@ -238,10 +241,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                                                             @Override
                                                             public void onNext(ResponseBody responseBody) {
-                                                                System.out.println("这一步");
+                                                                Utils.println("这一步");
                                                                 boolean writtenToDisk = writeResponseBodyToDisk(responseBody);
-
-                                                                Log.d("下载文件", "file download was a success? " + writtenToDisk);
+                                                                if(BuildConfig.DEBUG){
+                                                                    LogUtils.dTag("下载","file download was a success? " + writtenToDisk);
+                                                                }
                                                                 dialog.cancel();
                                                                 finish();
                                                             }
@@ -250,7 +254,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                             public void onError(Throwable throwable) {
                                                                 throwable.printStackTrace();
                                                                 dialog.cancel();
-                                                                Log.d("下载文件", "没有头像");
+                                                                if(BuildConfig.DEBUG){
+                                                                    LogUtils.dTag("下载文件", "没有头像");
+                                                                }
                                                                 finish();
                                                             }
 
@@ -290,10 +296,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 break;
             case R.id.register_button:
-                System.out.println("跳到注册界面！");
+                Utils.println("跳到注册界面！");
                 Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(registerIntent);
-                System.out.println("正跳到注册界面！");
+                Utils.println("正跳到注册界面！");
                 break;
             case R.id.reset_button:
                 break;
@@ -334,7 +340,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     fileSizeDownloaded += read;
 
-                    Log.d("下载文件", "file download: " + fileSizeDownloaded + " of " + fileSize);
+                    if(BuildConfig.DEBUG){
+                        LogUtils.dTag("下载文件", "file download: " + fileSizeDownloaded + " of " + fileSize);
+                    }
                 }
 
                 outputStream.flush();
