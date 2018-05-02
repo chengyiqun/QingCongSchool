@@ -73,9 +73,9 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     public Observable<ResponseBody> observable;   //登录之前获取验证码
     public Observable<ResponseBody> observableing;   //登录进行时
     public Observable<ResponseBody> observableing2;   //登录进行时,重定向一次
-    public Observer observer;
+    //public Observer observer;
 
-    public Context mContext;
+    //public Context mContext;
 
 
     private Button loginButton;
@@ -85,12 +85,11 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     private EditText identifyCodeEditText;
     private ImageView codeImage;
 
-    private Bitmap codeBitmap;
+    //private Bitmap codeBitmap;
 
     // Host地址
     public static final String HOST = "xk1.ahu.cn";
     // 登录成功的首页
-    //public static String URL_MAIN = "http://xk1.ahu.cn/";
     public static String URL_MAIN = "http://xk1.ahu.cn";
     // 基础地址
     public static final String URL_BASE = "http://***.***.***.***/";

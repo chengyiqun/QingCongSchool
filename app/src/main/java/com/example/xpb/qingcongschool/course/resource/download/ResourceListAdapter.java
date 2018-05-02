@@ -7,9 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Environment;
-import android.support.annotation.Keep;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -20,7 +18,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.RetrofitFactory;
 import com.example.xpb.qingcongschool.course.resource.upload.RetrofitCallback;

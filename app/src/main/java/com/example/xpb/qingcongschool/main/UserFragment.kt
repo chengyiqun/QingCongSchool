@@ -48,15 +48,15 @@ class UserFragment : Fragment(), View.OnClickListener {
     private var uri: Uri? = null
     private var uriPhoto: Uri? = null
     private var file: File? = null//头像
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, saveInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saveInstanceState: Bundle?): View? {
         if (MainActivity.islogin) {
-            return inflater!!.inflate(R.layout.fragment_me_after_entry, container, false)
+            return inflater.inflate(R.layout.fragment_me_after_entry, container, false)
         } else {
-            return inflater!!.inflate(R.layout.fragment_me_before_entry, container, false)
+            return inflater.inflate(R.layout.fragment_me_before_entry, container, false)
         }
     }
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         if (MainActivity.islogin) {
             init1()
@@ -72,7 +72,7 @@ class UserFragment : Fragment(), View.OnClickListener {
             uri = Uri.fromFile(file)
         } else {
             //通过FileProvider创建一个content类型的Uri(android 7.0需要这样的方法跨应用访问)
-            uri = FileProvider.getUriForFile(activity, MyApplication.packagename, file)
+            uri = FileProvider.getUriForFile(activity!!, MyApplication.packagename, file!!)
         }
         (activity as AppCompatActivity).setSupportActionBar(toolbar_islogin)
         ib_settings.setOnClickListener(this)
@@ -85,7 +85,7 @@ class UserFragment : Fragment(), View.OnClickListener {
         }
         simpleDraweeView_user_avatar.setOnClickListener {
             val items = arrayOf("拍照", "来自相册")
-            val listDialog = AlertDialog.Builder(activity)
+            val listDialog = AlertDialog.Builder(activity!!)
             listDialog.setTitle("设置头像")
             listDialog.setItems(items) { _, which ->
                 when (which) {
@@ -135,7 +135,7 @@ class UserFragment : Fragment(), View.OnClickListener {
             uriPhoto = Uri.fromFile(file)
         } else {
             //通过FileProvider创建一个content类型的Uri(android 7.0需要这样的方法跨应用访问)
-            uriPhoto = FileProvider.getUriForFile(activity, MyApplication.packagename, file)
+            uriPhoto = FileProvider.getUriForFile(activity!!, MyApplication.packagename, file)
         }
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

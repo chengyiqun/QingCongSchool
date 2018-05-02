@@ -67,7 +67,7 @@
             android:name=".comment.ReplyDialogActivity"
             android:theme="@style/MyDialogStyle" />
         <activity android:name=".course.resource.comment.ResourceCommentActivity" />
-        <activity android:name=".course.resource.comment.CommentDetaillActivity"></activity>
+        <activity android:name=".course.resource.comment.CommentDetaillActivity" />
     </application>
 
 </manifest>

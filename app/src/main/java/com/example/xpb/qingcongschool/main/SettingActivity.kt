@@ -31,6 +31,7 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.settings_back -> this.finish()
             R.id.loginout -> {
+                //清除登陆状态
                 MainActivity.islogin = false
                 MainActivity.phoneNum = ""
                 MainActivity.accessToken = ""
@@ -45,11 +46,14 @@ class SettingActivity : AppCompatActivity(), View.OnClickListener {
                 editor.putString("userName", MainActivity.userName)
                 editor.commit()
 
+                //清除课表
                 val sharedPreferencesCourse = getSharedPreferences("GetCourse", Context.MODE_PRIVATE)
                 val editor1 = sharedPreferencesCourse.edit()
                 editor1.putInt("getCourseState", 0)
                 editor1.commit()
                 DataSupport.deleteAll(Course::class.java)
+
+                //清除应用缓存
                 DataCleanManager.cleanExternalCache(this)
 
                 val intent = packageManager.getLaunchIntentForPackage(packageName)

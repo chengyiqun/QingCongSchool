@@ -6,12 +6,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -22,6 +26,8 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.example.xpb.qingcongschool.BuildConfig;
 import com.example.xpb.qingcongschool.LoginActivity;
 import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.app.MyApplication;
@@ -31,6 +37,8 @@ import com.example.xpb.qingcongschool.course.CourseLayout;
 import com.example.xpb.qingcongschool.course.CourseService;
 import com.example.xpb.qingcongschool.course.CourseView;
 import com.example.xpb.qingcongschool.course.GetCourseActivity;
+
+import org.litepal.crud.DataSupport;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -82,6 +90,37 @@ public class CurriculumFragment extends Fragment implements View.OnClickListener
     private int getCourseState = 0;
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);//fragment 有菜单
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.course_menu,menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_clear:
+                //清除课表
+                SharedPreferences sharedPreferencesCourse = MyApplication.getContext().getSharedPreferences("GetCourse", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor1 = sharedPreferencesCourse.edit();
+                editor1.putInt("getCourseState", 0);
+                editor1.commit();
+                DataSupport.deleteAll(Course.class);
+                Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage(getActivity().getPackageName());
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                MainActivity.Companion.setFragmentNUM(1);
+                startActivity(intent);
+                ToastUtils.showShort("课表已清除");
+                break;
+        }
+        return true;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle saveInstanceState) {
@@ -96,7 +135,7 @@ public class CurriculumFragment extends Fragment implements View.OnClickListener
             course_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(MainActivity.Companion.getIslogin()){
+                    if(MainActivity.Companion.getIslogin()||true){//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         Intent intent = new Intent(getActivity(), GetCourseActivity.class);
                         getActivity().startActivity(intent);
                     }else {

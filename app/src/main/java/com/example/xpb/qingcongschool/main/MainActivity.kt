@@ -5,6 +5,8 @@ import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
+import com.ashokvarma.bottomnavigation.BottomNavigationBar
+import com.ashokvarma.bottomnavigation.BottomNavigationItem
 import com.example.xpb.qingcongschool.util.DataCleanManager
 import com.example.xpb.qingcongschool.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -45,17 +47,35 @@ class MainActivity : AppCompatActivity() {
         list.add(SquareFragment())
         list.add(CurriculumFragment())
         list.add(UserFragment())
+        list.add(MoreFragment())
         mViewPager?.adapter = MyFragmentAdapter(supportFragmentManager,list)
-        mViewPager?.offscreenPageLimit = 2
-        bottom_navigation.setOnNavigationItemSelectedListener { item ->
-            val id = item.itemId
-            when (id) {
-                R.id.action_square -> mViewPager?.setCurrentItem(0,false)
-                R.id.action_curriculum -> mViewPager?.setCurrentItem(1,false)
-                R.id.action_user -> mViewPager?.setCurrentItem(2,false)
+        mViewPager?.offscreenPageLimit = 3
+
+        bottom_navigation
+                .setMode(BottomNavigationBar.MODE_FIXED)
+                .addItem(BottomNavigationItem(R.drawable.bottom_menu_square,"广场"))
+                .addItem(BottomNavigationItem(R.drawable.bottom_menu_curriculum,"课表"))
+                .addItem(BottomNavigationItem(R.drawable.bottom_menu_user,"用户"))
+                .addItem(BottomNavigationItem(R.drawable.bottom_menu_user,"更多"))
+                .initialise()
+
+        bottom_navigation.setTabSelectedListener(object :BottomNavigationBar.OnTabSelectedListener{
+            override fun onTabReselected(position: Int) {
             }
-            true
-        }
+
+            override fun onTabUnselected(position: Int) {
+            }
+
+            override fun onTabSelected(position: Int) {
+                when (position) {
+                    0 -> mViewPager?.setCurrentItem(0,false)
+                    1 -> mViewPager?.setCurrentItem(1,false)
+                    2 -> mViewPager?.setCurrentItem(2,false)
+                    3 -> mViewPager?.setCurrentItem(3,false)
+                }
+            }
+
+        })
     }
 
 
@@ -75,14 +95,17 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         if (islogin) {
             if (fragmentNUM == 2) {
-                bottom_navigation.selectedItemId = R.id.action_user
+                bottom_navigation.selectTab(2)
+                //bottom_navigation.selectedItemId = R.id.action_user
                 fragmentNUM = 3
             } else if (fragmentNUM == 1) {
-                bottom_navigation.selectedItemId = R.id.action_curriculum
+                bottom_navigation.selectTab(1)
+                //bottom_navigation.selectedItemId = R.id.action_curriculum
                 fragmentNUM = 3
             }
         } else {
-            bottom_navigation.selectedItemId = R.id.action_square
+            bottom_navigation.selectTab(0)
+            //bottom_navigation.selectedItemId = R.id.action_square
         }
 
     }

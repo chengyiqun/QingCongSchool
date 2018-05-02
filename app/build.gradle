@@ -6,12 +6,12 @@ apply plugin: 'kotlin-android-extensions'
 
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion '26.0.3'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.example.xpb.qingcongschool"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.1"
         vectorDrawables.useSupportLibrary = true
@@ -74,14 +74,14 @@ dependencies {
     //课程表数据库
     implementation 'org.jsoup:jsoup:1.10.3'
     //解析网页1.10.2
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     //弹性布局
-    implementation 'com.android.support:cardview-v7:26.1.0'
-    implementation 'com.android.support:appcompat-v7:26.1.0'
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:support-vector-drawable:26.1.0'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support:design:27.1.1'
+    implementation 'com.android.support:support-vector-drawable:27.1.1'
     implementation 'junit:junit:4.12'
-    implementation 'com.android.support:support-annotations:27.0.2'
+    implementation 'com.android.support:support-annotations:27.1.1'
     //官方注解库//混淆Keep
     //之前1.1
     implementation 'com.facebook.fresco:fresco:1.4.0'
@@ -96,4 +96,8 @@ dependencies {
     //https://github.com/googlesamples/easypermissions 谷歌的动态权限申请库
     implementation 'com.facebook.stetho:stetho:1.5.0'
     //facebook 数据库+网络调试
+
+    implementation 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
+
+    implementation 'com.android.support:support-v4:27.1.1'
 }
