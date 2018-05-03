@@ -87,18 +87,18 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
 
     //private Bitmap codeBitmap;
 
-    // Host地址
-    public static final String HOST = "xk1.ahu.cn";
-    // 登录成功的首页
-    public static String URL_MAIN = "http://xk1.ahu.cn";
-    // 基础地址
-    public static final String URL_BASE = "http://***.***.***.***/";
-    //登录首页面地址，
-    public static final String URL_BEFORE_LOGIN = "http://xk1.ahu.cn/";
-    // 验证码地址
-    public static final String URL_CODE = "http://xk1.ahu.cn/";
-    // 登陆进系统地址
-    public static final String URL_LOGIN = "http://xk1.ahu.cn/default2.aspx/";
+
+    public static final String HOST = "xk1.ahu.cn";// Host地址
+
+    public static String URL_MAIN = "http://xk1.ahu.cn";// 登录成功的首页
+
+    public static final String URL_BASE = "http://***.***.***.***/";// 基础地址
+
+    public static final String URL_BEFORE_LOGIN = "http://xk1.ahu.cn/";//登录首页面地址，
+
+    public static final String URL_CODE = "http://xk1.ahu.cn/";// 验证码地址
+
+    public static final String URL_LOGIN = "http://xk1.ahu.cn/default2.aspx/";// 登陆进系统地址
 
     
     // 请求地址
@@ -108,18 +108,21 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
             "fr=detail&url=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F54%2F14%2F09E58PICUpb_1024.jpg&" +
             "thumburl=http%3A%2F%2Fimg1.imgtn.bdimg.com%2Fit%2Fu%3D3611450414%2C2684460387%26fm%3D23%26gp%3D0.jpg/";
 
+    //这两个玩意是访问教务处的隐藏参数
+    private String __VIEWSTATE = "/wEPDwUJODk4OTczODQxZGQhFC7x2TzAGZQfpidAZYYjo/LeoQ==";
+    private String __EVENTVALIDATION = "/wEWDgKX/4yyDQKl1bKzCQLs0fbZDAKEs66uBwK/wuqQDgKAqenNDQLN7c0VAuaMg+INAveMotMNAoznisYGArursYYIAt+RzN8IApObsvIHArWNqOoPqeRyuQR+OEZezxvi70FKdYMjxzk=";
 
-    private String __VIEWSTATE = "/wEPDwUJODk4OTczODQxZGSd5+vukryCS8lHzdVXKTT0u4iBCQ==";
+    private String txtUserName = "E11514029"; //用户名
+    private String TextBox2 = "SHB.19971008";//密码
+    private String txtSecretCode = "";   //验证码
+    private String RadioButtonList1 = "学生"; //学生登陆的选项
 
-    private String txtUserName = "E11414081";
-    private String TextBox2 = "123456b";
-    private String txtSecretCode = "";
-    private String RadioButtonList1 = "学生";
+    //这四个玩意儿时访问教务处的空参数，不知道意义何在
+    //难不成时为了以后增加内容防扒的？滑稽😂
     private String Button1 = "";
     private String lbLanguage = "";
     private String hidPdrs = "";
     private String hidsc = "";
-    private String __EVENTVALIDATION = "/wEWDgLzoKm3DwKl1bKzCQLs0fbZDAKEs66uBwK/wuqQDgKAqenNDQLN7c0VAuaMg+INAveMotMNAoznisYGArursYYIAt+RzN8IApObsvIHArWNqOoPaI2efK7Edblvk63PR91f855AKWE=";
 
 
     private static String xh = "E11414081";
@@ -176,14 +179,11 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
 
     private static OkHttpClient httpClient = new OkHttpClient.Builder()
             .addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addInterceptor(new Interceptor() {
-                @Override
-                public Response intercept(Chain chain) throws IOException {
-                    Request.Builder builder = chain.request().newBuilder();
-                    builder.addHeader("cookie", cookiesone);
-                    builder.addHeader("Referer","http://xk1.ahu.cn/xs_main.aspx?xh="+xh);
-                    return chain.proceed(builder.build());
-                }
+            .addInterceptor(chain -> {
+                Request.Builder builder = chain.request().newBuilder();
+                builder.addHeader("cookie", cookiesone);
+                builder.addHeader("Referer","http://xk1.ahu.cn/xs_main.aspx?xh="+xh);
+                return chain.proceed(builder.build());
             }).connectTimeout(120,TimeUnit.SECONDS)
             .build();
 
@@ -193,13 +193,10 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
 
         return client.addNetworkInterceptor(
                 new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .addInterceptor(new Interceptor() {
-                    @Override
-                    public Response intercept(Chain chain) throws IOException {
-                        Request.Builder builder = chain.request().newBuilder();
-                        builder.addHeader("cookie", cookiesone);
-                        return chain.proceed(builder.build());
-                    }
+                .addInterceptor(chain -> {
+                    Request.Builder builder = chain.request().newBuilder();
+                    builder.addHeader("cookie", cookiesone);
+                    return chain.proceed(builder.build());
                 })
                 .connectTimeout(120, TimeUnit.SECONDS)
                 .build();
@@ -207,20 +204,17 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
 
     private static OkHttpClient getNewClient2() {
         OkHttpClient.Builder client = new OkHttpClient.Builder();
-        client.addInterceptor(new Interceptor() {
-            @Override
-            public Response intercept(Chain chain) throws IOException {
-                Response originalResponse = chain.proceed(chain.request());
-                //System.out.println(" 555555555555555555555555555555555");
-                if (!originalResponse.headers("Set-Cookie").isEmpty()) {
-                    for (String header : originalResponse.headers("Set-Cookie")) {
-                        cookies.add(header);
-                        cookiesone = header;
-                        //System.out.println(cookiesone + "      hhhh");
-                    }
+        client.addInterceptor(chain -> {
+            Response originalResponse = chain.proceed(chain.request());
+            //System.out.println(" 555555555555555555555555555555555");
+            if (!originalResponse.headers("Set-Cookie").isEmpty()) {
+                for (String header : originalResponse.headers("Set-Cookie")) {
+                    cookies.add(header);
+                    cookiesone = header;
+                    //System.out.println(cookiesone + "      hhhh");
                 }
-                return originalResponse;
             }
+            return originalResponse;
         });
 
         return client.addNetworkInterceptor(
