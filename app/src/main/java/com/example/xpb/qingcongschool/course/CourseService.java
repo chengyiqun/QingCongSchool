@@ -9,6 +9,7 @@ package com.example.xpb.qingcongschool.course;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.xpb.qingcongschool.RetrofitFactory;
 import com.google.gson.Gson;
 
@@ -635,7 +636,7 @@ public class CourseService {
 
         Gson gson = new Gson();
         String coursesJson = gson.toJson(coursesList);
-        //System.out.println("coursesJson: "+coursesJson);
+        LogUtils.d("上传课表coursesList",coursesList);
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),coursesJson);
         Observable<String> observableUploadCourse= RetrofitFactory.getInstance().uploadCourse(body);
         observableUploadCourse.subscribeOn(Schedulers.io())

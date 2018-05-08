@@ -1,27 +1,21 @@
 package com.example.xpb.qingcongschool.course;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
-
-import com.blankj.utilcode.util.LogUtils;
 import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.app.MyApplication;
 import com.example.xpb.qingcongschool.main.BaseActivity;
 import com.example.xpb.qingcongschool.main.MainActivity;
 import com.example.xpb.qingcongschool.util.NetworkUtil;
-import com.example.xpb.qingcongschool.util.Utils;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import org.jsoup.Jsoup;
@@ -66,17 +60,11 @@ import retrofit2.http.Query;
  * Created by xpb on 2017/3/4.
  */
 public class GetCourseActivity extends BaseActivity implements View.OnClickListener {
-
-    // private TextView textView;
     Context context=this;
 
     public Observable<ResponseBody> observable;   //登录之前获取验证码
     public Observable<ResponseBody> observableing;   //登录进行时
     public Observable<ResponseBody> observableing2;   //登录进行时,重定向一次
-    //public Observer observer;
-
-    //public Context mContext;
-
 
     private Button loginButton;
     private Button reIdentifyButton;
@@ -85,29 +73,7 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     private EditText identifyCodeEditText;
     private ImageView codeImage;
 
-    //private Bitmap codeBitmap;
-
-
-    public static final String HOST = "xk1.ahu.cn";// Host地址
-
     public static String URL_MAIN = "http://xk1.ahu.cn";// 登录成功的首页
-
-    public static final String URL_BASE = "http://***.***.***.***/";// 基础地址
-
-    public static final String URL_BEFORE_LOGIN = "http://xk1.ahu.cn/";//登录首页面地址，
-
-    public static final String URL_CODE = "http://xk1.ahu.cn/";// 验证码地址
-
-    public static final String URL_LOGIN = "http://xk1.ahu.cn/default2.aspx/";// 登陆进系统地址
-
-    
-    // 请求地址
-    public static String URL_QUERY = "http://***.***.***.***/QUERY";
-
-    public static String URL_BAIDU = "http://image.baidu.com/search/down?tn=download&word=download&ie=utf8&" +
-            "fr=detail&url=http%3A%2F%2Fpic.58pic.com%2F58pic%2F14%2F54%2F14%2F09E58PICUpb_1024.jpg&" +
-            "thumburl=http%3A%2F%2Fimg1.imgtn.bdimg.com%2Fit%2Fu%3D3611450414%2C2684460387%26fm%3D23%26gp%3D0.jpg/";
-
     //这两个玩意是访问教务处的隐藏参数
     private String __VIEWSTATE = "/wEPDwUJODk4OTczODQxZGQhFC7x2TzAGZQfpidAZYYjo/LeoQ==";
     private String __EVENTVALIDATION = "/wEWDgKX/4yyDQKl1bKzCQLs0fbZDAKEs66uBwK/wuqQDgKAqenNDQLN7c0VAuaMg+INAveMotMNAoznisYGArursYYIAt+RzN8IApObsvIHArWNqOoPqeRyuQR+OEZezxvi70FKdYMjxzk=";
@@ -125,10 +91,10 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     private String hidsc = "";
 
 
-    private static String xh = "E11414081";
-    private String xm = "%D0%EC%C5%F4%B0%EF";
+    private static String xh = "E11514029";
+    private String xm = "%cb%ef%ba%ad%b1%f2";//孙涵彬的GB2312编码
     private String gnmkdm = "N121603";
-    //http://xk1.ahu.cn/xskbcx.aspx?xh=E11414083&xm=%D6%EC%D6%BE%CE%C4&gnmkdm=N121603
+    //http://xk1.ahu.cn/xskbcx.aspx?xh=E11514029&xm=%CB%EF%BA%AD%B1%F2&gnmkdm=N121603
     public static SharedPreferences sharedPreferences;
     //SharedPreferences  pref = GetCourseActivity.this.getSharedPreferences("xxcookie",MODE_PRIVATE);
 
@@ -136,12 +102,12 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     private static String cookiesone = "";
     private static HashSet<String> cookies = new HashSet<>();
 
-    public interface RetrofitServiceBeforeSchool {
+    public interface RetrofitServiceBeforeSchool {//获取验证码
         @GET("CheckCode.aspx")
         Observable<ResponseBody> loginSchoolBefore();
     }
 
-    public interface RetrofitServiceSchool {
+    public interface RetrofitServiceSchool {//登入
 
         @Headers({
                 "Host: xk1.ahu.cn",
@@ -153,29 +119,14 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
         Observable<ResponseBody> loginSchool(@FieldMap(encoded = true) Map<String, String> reviews);   // encoded =true 至关重要,表示不进行URL编码
     }
 
-    public interface RetrofitServiceSchool2 {
-        //http://xk1.ahu.cn/xskbcx.aspx?xh=E11414081&xm=%D0%EC%C5%F4%B0%EF&gnmkdm=N121603
-        //http://xk1.ahu.cn/xskbcx.aspx?xh=E11414083&xm=%D6%EC%D6%BE%CE%C4&gnmkdm=N121603
+    public interface RetrofitServiceSchool2 {//查询课表
+        //http://xk1.ahu.cn/xskbcx.aspx?xh=E11514029&xm=%CB%EF%BA%AD%B1%F2&gnmkdm=N121603
         @Headers({
                 "Host: xk1.ahu.cn",
                 "User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"})
         @GET("xskbcx.aspx")
         Observable<ResponseBody> loginSchool2(@Query("xh") String xh, @Query("xm") String xm, @Query("gnmkdm") String gnmkdm);
     }
-
-
-
-    /*private static Retrofit create() {
-        OkHttpClient.Builder builder = new OkHttpClient().newBuilder();
-        builder.readTimeout(10, TimeUnit.SECONDS);
-        builder.connectTimeout(9, TimeUnit.SECONDS);
-
-        return new Retrofit.Builder().baseUrl(URL_CODE)
-                .client(builder.build())
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
-    }*/
 
     private static OkHttpClient httpClient = new OkHttpClient.Builder()
             .addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
@@ -206,12 +157,10 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
         OkHttpClient.Builder client = new OkHttpClient.Builder();
         client.addInterceptor(chain -> {
             Response originalResponse = chain.proceed(chain.request());
-            //System.out.println(" 555555555555555555555555555555555");
             if (!originalResponse.headers("Set-Cookie").isEmpty()) {
                 for (String header : originalResponse.headers("Set-Cookie")) {
                     cookies.add(header);
                     cookiesone = header;
-                    //System.out.println(cookiesone + "      hhhh");
                 }
             }
             return originalResponse;
@@ -240,7 +189,6 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
 
     private static RetrofitServiceSchool2 retrofitServiceSchool2 = new Retrofit.Builder()
             .baseUrl(URL_MAIN)
-            // .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(httpClient)
             .build()
@@ -251,16 +199,11 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_getcourse);
-
         init();
-        //System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
-
-
         observableing2 = retrofitServiceSchool2.loginSchool2(xh, xm, gnmkdm);
 
         reIdentifyButton.setOnClickListener(this);
         loginButton.setOnClickListener(this);
-        //System.out.println("hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
     }
 
     private boolean identifyCodeEditTextClickFirst=true;
@@ -285,7 +228,6 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                     public Bitmap apply(ResponseBody responseBody) {
                                         InputStream inputStream = null;
                                         inputStream = responseBody.byteStream();
-                                        //System.out.println();
                                         if (inputStream != null) {
                                             return BitmapFactory.decodeStream(inputStream);
                                         } else {
@@ -334,11 +276,8 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
         if(NetworkUtil.isNetworkAvailable(context)){
             switch (v.getId()) {
                 case R.id.getCode_button:
-                    //System.out.println("OnClick getCode_button");
                     identifyCodeEditText.setText("");
-                    //System.out.println("wwwwwwwwwwwwwwwwww");
                     observable = retrofitServiceBeforeSchool.loginSchoolBefore();
-                    //System.out.println("oooooooooooooooooooooooooooooo");
                     observable.subscribeOn(Schedulers.io())                     //登录进教务系统之前，获取验证码
 
                             .map(new Function<ResponseBody, Bitmap>() {
@@ -346,13 +285,9 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                 public Bitmap apply(ResponseBody responseBody) {
                                     InputStream inputStream = null;
                                     inputStream = responseBody.byteStream();
-                                    //System.out.println("4444444466666");
-                                    //System.out.println();
                                     if (inputStream != null) {
-                                        //System.out.println("tutututu");
                                         return BitmapFactory.decodeStream(inputStream);
                                     } else {
-                                        //System.out.println("null!");
                                         return null;
                                     }
                                 }
@@ -385,21 +320,16 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
 
                 case R.id.login_button:
 
-                    //System.out.println("333333333333333333333333");
                     int n = cookiesone.length() - 18;
-                    //System.out.println(n + "      lllllllllllllllllllllllll");
                     cookiesone = cookiesone.substring(0, n);
-                    //System.out.println(cookiesone + "llllllllllllllllllllllllll");
                     txtSecretCode = identifyCodeEditText.getText().toString();
 
                     txtUserName=studentCodeEditText.getText().toString();
                     TextBox2=passwordEditText.getText().toString();
                     xh = txtUserName;
-                    //System.out.println(txtUserName);
-                    //System.out.println(TextBox2);
+
                     Map<String, String> reviewMap = new HashMap<String, String>();
 
-                    //System.out.println("ggggggggggggggghhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
                     try {
                         RadioButtonList1 = URLEncoder.encode("学生", "gb2312");
                         __VIEWSTATE = URLEncoder.encode(__VIEWSTATE, "gb2312");
@@ -415,6 +345,8 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                     //System.out.println(__EVENTVALIDATION);
 
                     reviewMap.put("__VIEWSTATE", __VIEWSTATE);
+                    reviewMap.put("__EVENTVALIDATION", __EVENTVALIDATION);   // 这两个是安大教务处的隐藏参数
+
                     reviewMap.put("txtUserName", txtUserName);
                     reviewMap.put("TextBox2", TextBox2);//密码。。。
                     reviewMap.put("txtSecretCode", txtSecretCode);
@@ -423,10 +355,8 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                     reviewMap.put("lbLanguage", lbLanguage);
                     reviewMap.put("hidPdrs", hidPdrs);
                     reviewMap.put("hidsc", hidsc);
-                    reviewMap.put("__EVENTVALIDATION", __EVENTVALIDATION);   // 参考资料没有此项,要有，应该是系统不同的问题
 
                     observableing = retrofitServiceSchool.loginSchool(reviewMap);
-                    //System.out.println(txtSecretCode);
                     observableing.subscribeOn(Schedulers.io())                     //登录进教务系统
                             .flatMap(new Function<ResponseBody, Observable<ResponseBody>>() {
                                 @Override

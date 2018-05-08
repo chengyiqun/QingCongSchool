@@ -38,4 +38,12 @@
         android:layout_centerHorizontal="true"
         android:text="课程评论" />
 
+    <Button
+        android:id="@+id/button_clear_course"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bt_ActivityComment"
+        android:layout_centerHorizontal="true"
+        android:text="清除课表" />
+
 </RelativeLayout>

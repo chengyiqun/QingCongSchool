@@ -3,6 +3,7 @@ package com.example.xpb.qingcongschool;
 
 import android.support.annotation.NonNull;
 
+import com.blankj.utilcode.util.LogUtils;
 import com.example.xpb.qingcongschool.course.resource.download.FileResponseBody;
 import com.example.xpb.qingcongschool.course.resource.upload.RetrofitCallback;
 import com.example.xpb.qingcongschool.main.MainActivity;
@@ -37,6 +38,9 @@ public class RetrofitFactory {
                 Request.Builder  builder = chain.request().newBuilder();
                 builder.addHeader("accessToken", MainActivity.Companion.getAccessToken());
                 String encodedUserName= URLEncoder.encode(MainActivity.Companion.getUserName(),"UTF-8");
+                if(BuildConfig.DEBUG){
+                    LogUtils.d("encodedUserName",encodedUserName);
+                }
                 builder.addHeader("userName",encodedUserName);
                 /*Request request= builder.build();
                 System.out.println(request);*/
