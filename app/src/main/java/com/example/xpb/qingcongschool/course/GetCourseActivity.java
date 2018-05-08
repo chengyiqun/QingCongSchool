@@ -32,23 +32,19 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Observer;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.FieldMap;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -116,7 +112,8 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
         })
         @POST("default2.aspx")
         @FormUrlEncoded
-        Observable<ResponseBody> loginSchool(@FieldMap(encoded = true) Map<String, String> reviews);   // encoded =true 至关重要,表示不进行URL编码
+        Observable<ResponseBody> loginSchool(@FieldMap(encoded = true) Map<String, String> reviews);
+        //encoded参数为true的话，key-value-pair将会被编码，即将中文和特殊字符进行编码转换
     }
 
     public interface RetrofitServiceSchool2 {//查询课表
@@ -200,8 +197,6 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_getcourse);
         init();
-        observableing2 = retrofitServiceSchool2.loginSchool2(xh, xm, gnmkdm);
-
         reIdentifyButton.setOnClickListener(this);
         loginButton.setOnClickListener(this);
     }
@@ -397,7 +392,8 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                 @Override
                                 public String apply(ResponseBody responseBody) throws Exception {
                                     String string = responseBody2String(responseBody);
-                                    System.out.println(string);
+                                    //System.out.println("教务处返回的课程表字符串");
+                                    //System.out.println(string);
                                     if(string.contains("敏感字符"))
                                     {
                                         runOnUiThread(new Runnable() {
@@ -407,11 +403,8 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                             }
                                         });
                                     }
-                                    //System.out.println("eeeeeee111111111111111");
                                     CourseService courseService = CourseService.getCourseService();
-                                    //System.out.println("eeeeeee22222222222222222");
                                     courseService.getCourseInfo(string);
-                                    //System.out.println("eeeeeee333333333333333333333333333");
                                     if (string!=null&&!string.equals("")) {
                                         sharedPreferences = getApplicationContext().getSharedPreferences("GetCourse", Context.MODE_PRIVATE);
                                         final SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -447,7 +440,6 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                     ;
                     break;
                 default:
-                    //System.out.println("0000000000");
                     break;
             }
         }else {
