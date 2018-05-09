@@ -134,7 +134,7 @@ public class CurriculumFragment extends Fragment implements View.OnClickListener
             course_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(MainActivity.Companion.getIslogin()||true){//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                    if(MainActivity.Companion.getIslogin()){
                         Intent intent = new Intent(getActivity(), GetCourseActivity.class);
                         getActivity().startActivity(intent);
                     }else {
