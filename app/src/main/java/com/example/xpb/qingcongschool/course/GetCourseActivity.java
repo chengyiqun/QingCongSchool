@@ -51,6 +51,8 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     private EditText identifyCodeEditText;
     private ImageView codeImage;
 
+    private boolean getCoursesSuccessed=false;
+
 
 
 
@@ -178,10 +180,19 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                             System.out.println("课表"+value);
                                             JSONObject jsonObject = JSONObject.parseObject(value);
                                             int result = jsonObject.getInteger("result");
-                                            List<Course> list = JSONArray.parseArray(jsonObject.getJSONArray("courses").toString(),Course.class);
-                                            CourseService courseService = CourseService.getCourseService();
-                                            courseService.saveCourseInfo(list);
-                                            ToastUtils.showShort(String.valueOf(result));
+                                            if (result == 3004)
+                                            {
+                                                ToastUtils.showShort("tokenError");
+                                            }else if (result == 0){
+                                                ToastUtils.showShort("登陆错误");
+                                            }else {
+                                                ToastUtils.showShort(String.valueOf(result));
+                                                getCoursesSuccessed=true;
+                                                List<Course> list = JSONArray.parseArray(jsonObject.getJSONArray("courses").toString(),Course.class);
+                                                CourseService courseService = CourseService.getCourseService();
+                                                courseService.saveCourseInfo(list);
+                                            }
+
                                         }
                                         @Override
                                         public void onError(Throwable e) {
@@ -189,12 +200,15 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                         }
                                         @Override
                                         public void onComplete() {
-                                            LogUtils.i("获取课表","完毕");
-                                            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("GetCourse", Context.MODE_PRIVATE);
-                                            final SharedPreferences.Editor editor = sharedPreferences.edit();
-                                            editor.putInt("getCourseState", 1);             //   0:不成功，1：成功
-                                            editor.commit();
-                                            finish();
+                                            if(getCoursesSuccessed){
+                                                LogUtils.i("获取课表","完毕");
+                                                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("GetCourse", Context.MODE_PRIVATE);
+                                                final SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                editor.putInt("getCourseState", 1);             //   0:不成功，1：成功
+                                                editor.commit();
+                                                finish();
+                                            }
+
                                         }
                                     });
                         }
