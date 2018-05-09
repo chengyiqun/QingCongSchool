@@ -26,7 +26,7 @@ public class CourseView extends android.support.v7.widget.AppCompatButton {
     public CourseView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         TypedArray array=context.obtainStyledAttributes(attrs, R.styleable.CourseView);
-        courseId = array.getInt(R.styleable.CourseView_courseId, 0);
+        courseId = array.getInt(R.styleable.CourseView_startSection, 0);;
         startSection=array.getInt(R.styleable.CourseView_startSection, 0);
         endSection=array.getInt(R.styleable.CourseView_endSection, 0);
         weekDay=array.getInt(R.styleable.CourseView_weekDay, 0);

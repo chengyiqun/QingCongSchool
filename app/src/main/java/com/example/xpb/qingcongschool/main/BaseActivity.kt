@@ -24,7 +24,7 @@ open class BaseActivity : AppCompatActivity() {
             //如果不是落在EditText区域，则需要关闭输入法
             if (HideKeyboard(v, ev)) {
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-                imm.hideSoftInputFromWindow(v!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+                imm.hideSoftInputFromWindow(v?.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
             }
         }
         return super.dispatchTouchEvent(ev)

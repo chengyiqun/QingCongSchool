@@ -27,7 +27,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
-import com.example.xpb.qingcongschool.BuildConfig;
 import com.example.xpb.qingcongschool.LoginActivity;
 import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.app.MyApplication;

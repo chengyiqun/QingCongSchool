@@ -11,46 +11,29 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.example.xpb.qingcongschool.R;
-import com.example.xpb.qingcongschool.app.MyApplication;
+import com.example.xpb.qingcongschool.RetrofitFactory;
 import com.example.xpb.qingcongschool.main.BaseActivity;
 import com.example.xpb.qingcongschool.main.MainActivity;
 import com.example.xpb.qingcongschool.util.NetworkUtil;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.google.gson.Gson;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import okhttp3.logging.HttpLoggingInterceptor;
-import retrofit2.Retrofit;
-import retrofit2.http.FieldMap;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.Headers;
-import retrofit2.http.POST;
-import retrofit2.http.Query;
 
 /**
  * Created by xpb on 2017/3/4.
@@ -58,9 +41,8 @@ import retrofit2.http.Query;
 public class GetCourseActivity extends BaseActivity implements View.OnClickListener {
     Context context=this;
 
-    public Observable<ResponseBody> observable;   //登录之前获取验证码
-    public Observable<ResponseBody> observableing;   //登录进行时
-    public Observable<ResponseBody> observableing2;   //登录进行时,重定向一次
+    public Observable<ResponseBody> observableGetIdentifyCode;   //登录之前获取验证码
+    public Observable<String> observableGetCourse;   //获取课表
 
     private Button loginButton;
     private Button reIdentifyButton;
@@ -69,127 +51,7 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     private EditText identifyCodeEditText;
     private ImageView codeImage;
 
-    public static String URL_MAIN = "http://xk1.ahu.cn";// 登录成功的首页
-    //这两个玩意是访问教务处的隐藏参数
-    private String __VIEWSTATE = "/wEPDwUJODk4OTczODQxZGQhFC7x2TzAGZQfpidAZYYjo/LeoQ==";
-    private String __EVENTVALIDATION = "/wEWDgKX/4yyDQKl1bKzCQLs0fbZDAKEs66uBwK/wuqQDgKAqenNDQLN7c0VAuaMg+INAveMotMNAoznisYGArursYYIAt+RzN8IApObsvIHArWNqOoPqeRyuQR+OEZezxvi70FKdYMjxzk=";
 
-    private String txtUserName = "E11514029"; //用户名
-    private String TextBox2 = "SHB.19971008";//密码
-    private String txtSecretCode = "";   //验证码
-    private String RadioButtonList1 = "学生"; //学生登陆的选项
-
-    //这四个玩意儿时访问教务处的空参数，不知道意义何在
-    //难不成时为了以后增加内容防扒的？滑稽😂
-    private String Button1 = "";
-    private String lbLanguage = "";
-    private String hidPdrs = "";
-    private String hidsc = "";
-
-
-    private static String xh = "E11514029";
-    private String xm = "%cb%ef%ba%ad%b1%f2";//孙涵彬的GB2312编码
-    private String gnmkdm = "N121603";
-    //http://xk1.ahu.cn/xskbcx.aspx?xh=E11514029&xm=%CB%EF%BA%AD%B1%F2&gnmkdm=N121603
-    public static SharedPreferences sharedPreferences;
-    //SharedPreferences  pref = GetCourseActivity.this.getSharedPreferences("xxcookie",MODE_PRIVATE);
-
-
-    private static String cookiesone = "";
-    private static HashSet<String> cookies = new HashSet<>();
-
-    public interface RetrofitServiceBeforeSchool {//获取验证码
-        @GET("CheckCode.aspx")
-        Observable<ResponseBody> loginSchoolBefore();
-    }
-
-    public interface RetrofitServiceSchool {//登入
-
-        @Headers({
-                "Host: xk1.ahu.cn",
-                "Referer: http://xk1.ahu.cn/default2.aspx",
-                "User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"
-        })
-        @POST("default2.aspx")
-        @FormUrlEncoded
-        Observable<ResponseBody> loginSchool(@FieldMap(encoded = true) Map<String, String> reviews);
-        //encoded参数为true的话，key-value-pair将会被编码，即将中文和特殊字符进行编码转换
-    }
-
-    public interface RetrofitServiceSchool2 {//查询课表
-        //http://xk1.ahu.cn/xskbcx.aspx?xh=E11514029&xm=%CB%EF%BA%AD%B1%F2&gnmkdm=N121603
-        @Headers({
-                "Host: xk1.ahu.cn",
-                "User-Agent:Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.102 Safari/537.36"})
-        @GET("xskbcx.aspx")
-        Observable<ResponseBody> loginSchool2(@Query("xh") String xh, @Query("xm") String xm, @Query("gnmkdm") String gnmkdm);
-    }
-
-    private static OkHttpClient httpClient = new OkHttpClient.Builder()
-            .addNetworkInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-            .addInterceptor(chain -> {
-                Request.Builder builder = chain.request().newBuilder();
-                builder.addHeader("cookie", cookiesone);
-                builder.addHeader("Referer","http://xk1.ahu.cn/xs_main.aspx?xh="+xh);
-                return chain.proceed(builder.build());
-            }).connectTimeout(120,TimeUnit.SECONDS)
-            .build();
-
-
-    private static OkHttpClient getNewClient() {
-        OkHttpClient.Builder client = new OkHttpClient.Builder();
-
-        return client.addNetworkInterceptor(
-                new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .addInterceptor(chain -> {
-                    Request.Builder builder = chain.request().newBuilder();
-                    builder.addHeader("cookie", cookiesone);
-                    return chain.proceed(builder.build());
-                })
-                .connectTimeout(120, TimeUnit.SECONDS)
-                .build();
-    }
-
-    private static OkHttpClient getNewClient2() {
-        OkHttpClient.Builder client = new OkHttpClient.Builder();
-        client.addInterceptor(chain -> {
-            Response originalResponse = chain.proceed(chain.request());
-            if (!originalResponse.headers("Set-Cookie").isEmpty()) {
-                for (String header : originalResponse.headers("Set-Cookie")) {
-                    cookies.add(header);
-                    cookiesone = header;
-                }
-            }
-            return originalResponse;
-        });
-
-        return client.addNetworkInterceptor(
-                new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .build();
-    }
-
-
-    RetrofitServiceBeforeSchool retrofitServiceBeforeSchool = new Retrofit.Builder()
-            .baseUrl(URL_MAIN)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(getNewClient2())
-            .build()
-            .create(RetrofitServiceBeforeSchool.class);
-
-    private static RetrofitServiceSchool retrofitServiceSchool = new Retrofit.Builder()
-            .baseUrl(URL_MAIN)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(getNewClient())
-            .build()
-            .create(RetrofitServiceSchool.class);
-
-    private static RetrofitServiceSchool2 retrofitServiceSchool2 = new Retrofit.Builder()
-            .baseUrl(URL_MAIN)
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(httpClient)
-            .build()
-            .create(RetrofitServiceSchool2.class);
 
 
     @Override
@@ -200,68 +62,51 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
         reIdentifyButton.setOnClickListener(this);
         loginButton.setOnClickListener(this);
     }
-
-    private boolean identifyCodeEditTextClickFirst=true;
     public void init() {
         loginButton = (Button) findViewById(R.id.login_button);
         reIdentifyButton = (Button) findViewById(R.id.getCode_button);
         studentCodeEditText = (EditText) findViewById(R.id.studentname_editText);
         passwordEditText = (EditText) findViewById(R.id.password_editText);
         identifyCodeEditText = (EditText) findViewById(R.id.identifyCode_editText);
-        identifyCodeEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus&&identifyCodeEditTextClickFirst)
-                {
-                    if(NetworkUtil.isNetworkAvailable(context)){
-                        identifyCodeEditText.setText("");
-                        observable = retrofitServiceBeforeSchool.loginSchoolBefore();
-                        observable.subscribeOn(Schedulers.io())                     //登录进教务系统之前，获取验证码
+        if(NetworkUtil.isNetworkAvailable(context)){
+            identifyCodeEditText.setText("");
+            observableGetIdentifyCode = RetrofitFactory.getInstance().getIdentifyCode();
+            observableGetIdentifyCode.subscribeOn(Schedulers.io())                     //登录进教务系统之前，获取验证码
 
-                                .map(new Function<ResponseBody, Bitmap>() {
-                                    @Override
-                                    public Bitmap apply(ResponseBody responseBody) {
-                                        InputStream inputStream = null;
-                                        inputStream = responseBody.byteStream();
-                                        if (inputStream != null) {
-                                            return BitmapFactory.decodeStream(inputStream);
-                                        } else {
-                                            return null;
-                                        }
-                                    }
-                                })
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new io.reactivex.Observer<Bitmap>() {
-                                    @Override
-                                    public void onSubscribe(Disposable d) {
+                    .map(responseBody -> {
+                        InputStream inputStream = null;
+                        inputStream = responseBody.byteStream();
+                        if (inputStream != null) {
+                            return BitmapFactory.decodeStream(inputStream);
+                        } else {
+                            return null;
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new io.reactivex.Observer<Bitmap>() {
+                        @Override
+                        public void onSubscribe(Disposable d) {
 
-                                    }
+                        }
 
-                                    @Override
-                                    public void onNext(Bitmap bitmap) {
-                                        codeImage.setImageBitmap(bitmap);
-                                        identifyCodeEditTextClickFirst=false;
-                                    }
+                        @Override
+                        public void onNext(Bitmap bitmap) {
+                            codeImage.setImageBitmap(bitmap);
+                        }
 
-                                    @Override
-                                    public void onError(Throwable e) {
-                                        identifyCodeEditTextClickFirst=false;
-                                        codeImage.setContentDescription("刷新验证码");
-                                        e.printStackTrace();
-                                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            codeImage.setContentDescription("刷新验证码");
+                            e.printStackTrace();
+                        }
 
-                                    @Override
-                                    public void onComplete() {
-                                        identifyCodeEditTextClickFirst=false;
-                                    }
-                                });
-                    }else {
-                        Toast.makeText(context,"网络不可用",Toast.LENGTH_SHORT).show();
-                    }
-
-                }
-            }
-        });
+                        @Override
+                        public void onComplete() {
+                        }
+                    });
+        }else {
+            Toast.makeText(context,"网络不可用",Toast.LENGTH_SHORT).show();
+        }
         codeImage = (ImageView) findViewById(R.id.codeImage);
     }
 
@@ -272,172 +117,88 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
             switch (v.getId()) {
                 case R.id.getCode_button:
                     identifyCodeEditText.setText("");
-                    observable = retrofitServiceBeforeSchool.loginSchoolBefore();
-                    observable.subscribeOn(Schedulers.io())                     //登录进教务系统之前，获取验证码
-
-                            .map(new Function<ResponseBody, Bitmap>() {
-                                @Override
-                                public Bitmap apply(ResponseBody responseBody) {
-                                    InputStream inputStream = null;
-                                    inputStream = responseBody.byteStream();
-                                    if (inputStream != null) {
-                                        return BitmapFactory.decodeStream(inputStream);
-                                    } else {
-                                        return null;
-                                    }
+                    observableGetIdentifyCode = RetrofitFactory.getInstance().getIdentifyCode();
+                    observableGetIdentifyCode.subscribeOn(Schedulers.io())                     //登录进教务系统之前，获取验证码
+                            .map(responseBody -> {
+                                InputStream inputStream = null;
+                                inputStream = responseBody.byteStream();
+                                if (inputStream != null) {
+                                    return BitmapFactory.decodeStream(inputStream);
+                                } else {
+                                    return null;
                                 }
                             })
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new io.reactivex.Observer<Bitmap>() {
                                 @Override
-                                public void onSubscribe(Disposable d) {
-
-                                }
-
+                                public void onSubscribe(Disposable d) { }
                                 @Override
                                 public void onNext(Bitmap bitmap) {
                                     codeImage.setImageBitmap(bitmap);
                                 }
-
                                 @Override
                                 public void onError(Throwable e) {
-
-                                }
-
-                                @Override
-                                public void onComplete() {
-
-                                }
-                            });
-
-
-                    break;
-
-                case R.id.login_button:
-
-                    int n = cookiesone.length() - 18;
-                    cookiesone = cookiesone.substring(0, n);
-                    txtSecretCode = identifyCodeEditText.getText().toString();
-
-                    txtUserName=studentCodeEditText.getText().toString();
-                    TextBox2=passwordEditText.getText().toString();
-                    xh = txtUserName;
-
-                    Map<String, String> reviewMap = new HashMap<String, String>();
-
-                    try {
-                        RadioButtonList1 = URLEncoder.encode("学生", "gb2312");
-                        __VIEWSTATE = URLEncoder.encode(__VIEWSTATE, "gb2312");
-                        __EVENTVALIDATION = URLEncoder.encode(__EVENTVALIDATION, "gb2312");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    //System.out.println(txtSecretCode);
-                    //System.out.println(TextBox2);
-                    //System.out.println(RadioButtonList1);
-                    //System.out.println(hidsc);
-                    //System.out.println(__VIEWSTATE);
-                    //System.out.println(__EVENTVALIDATION);
-
-                    reviewMap.put("__VIEWSTATE", __VIEWSTATE);
-                    reviewMap.put("__EVENTVALIDATION", __EVENTVALIDATION);   // 这两个是安大教务处的隐藏参数
-
-                    reviewMap.put("txtUserName", txtUserName);
-                    reviewMap.put("TextBox2", TextBox2);//密码。。。
-                    reviewMap.put("txtSecretCode", txtSecretCode);
-                    reviewMap.put("RadioButtonList1", RadioButtonList1);
-                    reviewMap.put("Button1", Button1);
-                    reviewMap.put("lbLanguage", lbLanguage);
-                    reviewMap.put("hidPdrs", hidPdrs);
-                    reviewMap.put("hidsc", hidsc);
-
-                    observableing = retrofitServiceSchool.loginSchool(reviewMap);
-                    observableing.subscribeOn(Schedulers.io())                     //登录进教务系统
-                            .flatMap(new Function<ResponseBody, Observable<ResponseBody>>() {
-                                @Override
-                                public Observable<ResponseBody> apply(ResponseBody responseBody) throws Exception {
-                                    //判断登录是否错误，如密码错，用户名错，提取系统反馈的信息
-                                    String str = responseBody2String(responseBody);
-                                    System.out.println(str);
-                                    if(str.contains("敏感字符"))
-                                    {
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Toast.makeText(MyApplication.getContext(),"你的ip已被记录\n请不要使用敏感字符！！",Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                                    }
-                                    String studentName = isLogin(str);
-                                    if (studentName!=null&&!studentName.equals("")) {
-                                        //  Toast.makeText(getApplicationContext(), stringtext,Toast.LENGTH_SHORT).show();
-                                        xm = studentName.substring(0, studentName.length() - 2);
-                                    }
-                                    final String errorType = errorType(str);
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(MyApplication.getContext(), errorType,Toast.LENGTH_LONG).show();
-                                            if(errorType.contains("验证码")){
-                                                identifyCodeEditText.setText("");
-                                                reIdentifyButton.performClick();
-                                            }
-                                        }
-                                    });
-                                    return retrofitServiceSchool2.loginSchool2(xh, xm, gnmkdm);
-                                }
-                            })
-                            .map(new Function<ResponseBody, String>() {
-
-                                @Override
-                                public String apply(ResponseBody responseBody) throws Exception {
-                                    String string = responseBody2String(responseBody);
-                                    //System.out.println("教务处返回的课程表字符串");
-                                    //System.out.println(string);
-                                    if(string.contains("敏感字符"))
-                                    {
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Toast.makeText(MyApplication.getContext(),"你的ip已被记录\n请不要使用敏感字符！！",Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                                    }
-                                    CourseService courseService = CourseService.getCourseService();
-                                    courseService.getCourseInfo(string);
-                                    if (string!=null&&!string.equals("")) {
-                                        sharedPreferences = getApplicationContext().getSharedPreferences("GetCourse", Context.MODE_PRIVATE);
-                                        final SharedPreferences.Editor editor = sharedPreferences.edit();
-                                        editor.putInt("getCourseState", 1);             //   0:不成功，1：成功
-                                        editor.commit();
-                                        //System.out.println("课表字符串不为空");
-
-                                    }
-                                    return string;
-                                }
-                            })
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe(new io.reactivex.Observer<String>() {
-                                @Override
-                                public void onSubscribe(Disposable d) {
-
-                                }
-
-                                @Override
-                                public void onNext(String value) {
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
+                                    codeImage.setContentDescription("刷新验证码");
                                     e.printStackTrace();
                                 }
 
                                 @Override
-                                public void onComplete() {
-                                    finish();
-                                }
-                            })
-                    ;
+                                public void onComplete() {}
+                            });
+
+                    break;
+
+                case R.id.login_button:
+                    String txtUserName = studentCodeEditText.getText().toString();
+                    String TextBox2 = passwordEditText.getText().toString();
+                    String txtSecretCode = identifyCodeEditText.getText().toString();
+                    if(txtUserName.equals("")||TextBox2.equals("")){
+                        ToastUtils.showShort("学号或密码为空");
+                    }else {
+                        if (txtSecretCode.equals("")){
+                            ToastUtils.showShort("请输入验证码");
+                        }
+                        else {
+                            HashMap<String, Object> userInfo = new HashMap<String, Object>();
+                            userInfo.put("txtUserName",txtUserName);//学号
+                            userInfo.put("TextBox2",TextBox2);//密码
+                            userInfo.put("txtSecretCode",txtSecretCode);//验证码
+                            Gson gson=new Gson();
+                            String userJson= gson.toJson(userInfo);
+                            RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), userJson);
+                            observableGetCourse=RetrofitFactory.getInstance().getCourse(body);
+                            observableGetCourse.subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(new Observer<String>() {
+                                        @Override
+                                        public void onSubscribe(Disposable d) {}
+
+                                        @Override
+                                        public void onNext(String value) {
+                                            System.out.println("课表"+value);
+                                            JSONObject jsonObject = JSONObject.parseObject(value);
+                                            int result = jsonObject.getInteger("result");
+                                            List<Course> list = JSONArray.parseArray(jsonObject.getJSONArray("courses").toString(),Course.class);
+                                            CourseService courseService = CourseService.getCourseService();
+                                            courseService.saveCourseInfo(list);
+                                            ToastUtils.showShort(String.valueOf(result));
+                                        }
+                                        @Override
+                                        public void onError(Throwable e) {
+                                            LogUtils.e("获取课表","失败");
+                                        }
+                                        @Override
+                                        public void onComplete() {
+                                            LogUtils.i("获取课表","完毕");
+                                            SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("GetCourse", Context.MODE_PRIVATE);
+                                            final SharedPreferences.Editor editor = sharedPreferences.edit();
+                                            editor.putInt("getCourseState", 1);             //   0:不成功，1：成功
+                                            editor.commit();
+                                            finish();
+                                        }
+                                    });
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -447,72 +208,9 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
-    /*
-    判断是否登录成功，通过页面中是否能提取出“XX同学”判断。
-     */
-    public String isLogin(String content) {
-        Document doc = Jsoup.parse(content, "UTF-8");
-        Elements elements = doc.select("span#xhxm");
-        try {
-            Element element = elements.get(0);
-            return element.text();
-        } catch (IndexOutOfBoundsException e) {
-            //e.printStackTrace();
-        }
-        return null;
-    }
 
-    /*
-查找登录出错原因，通过提取页面中“<script language='javascript' defer>alert('用户名不能为空！！');”的信息判断。
- */
-    public String errorType(String content) {
-        String errorType3 = "";
-        Document doc = Jsoup.parse(content, "UTF-8");
-        Elements script = doc.select("script");
-        int j = 0;
-        for (Element element : script) {
-            if (j == 2) {
-                errorType3 = element.html();
-            }
-            j++;
-        }
-        int firstLeft = errorType3.indexOf("(");
-        int firstRight = errorType3.indexOf(")");
 
-        return errorType3.substring(firstLeft + 2, firstRight - 1);
-    }
 
-    /*
-    把ResponseBody类型转换成String类型
-     */
-    public String responseBody2String(ResponseBody responseBody) {
-        InputStream inputStream = null;
-        inputStream = responseBody.byteStream();
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new InputStreamReader(inputStream, "GB2312"));
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-        String string = null;
-        StringBuilder sb = new StringBuilder();
-        String line = null;
-        try {
-            while ((line = br.readLine()) != null) {
-                sb.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        string = sb.toString();
-        return string;
-    }
 
     @Override
     public void finish() {

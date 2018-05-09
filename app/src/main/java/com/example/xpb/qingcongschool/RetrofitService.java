@@ -1,9 +1,10 @@
 package com.example.xpb.qingcongschool;
 
 
-import com.jakewharton.retrofit2.adapter.rxjava2.Result;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
-import java.util.Map;
+import java.util.HashMap;
 
 
 import io.reactivex.Observable;
@@ -12,6 +13,8 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.FieldMap;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -36,6 +39,12 @@ public interface RetrofitService {
 
     @POST("/QingXiao/User/DownloadAvatar")//下载头像
     Observable<ResponseBody>downloadAvatar();
+
+    @GET("/QingXiao/Course/GetIdentifyCode")
+    Observable<ResponseBody>getIdentifyCode();
+
+    @POST("/QingXiao/Course/GetCourse")//获取课表
+    Observable<String> getCourse(@Body RequestBody user);
 
     @POST("/QingXiao/Course/Insert")//上传课表
     Observable<String>uploadCourse(@Body RequestBody course);

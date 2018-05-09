@@ -97,14 +97,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         setSupportActionBar(mToolbar);
         //设置是否有返回箭头
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
-        //单击空白处取消editview焦点并关闭输入法
+        mToolbar.setNavigationOnClickListener(v -> finish());
         root_linearLayout = (LinearLayout) findViewById(R.id.root_linearlayout);
         registerButton = (Button) findViewById(R.id.register_button);
         loginButton = (Button) findViewById(R.id.login_button);
@@ -137,49 +130,41 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), userJson);
                             observablelogin = RetrofitFactory.getInstanceLogin().login(body);
                             observablelogin.subscribeOn(Schedulers.io())
-                                    .doOnSubscribe(new Consumer<Disposable>() {
-                                        @Override
-                                        public void accept(Disposable disposable) throws Exception {
-                                            Utils.println("doOnScribe,showDiaglog");
-                                            if(dialog!=null&&!dialog.isShowing())
-                                            {
-                                                dialog.show();
-                                            }
+                                    .doOnSubscribe(disposable -> {
+                                        Utils.println("doOnScribe,showDiaglog");
+                                        if(dialog!=null&&!dialog.isShowing())
+                                        {
+                                            dialog.show();
                                         }
                                     })
-                                    .map(new Function<ResponseBody, String>() {
-                                        @Override
-                                        public String apply(ResponseBody responseBody) {
-                                            Utils.println("正在登录！");
-                                            Utils.println("请求返回数据为：" + responseBody);
-                                            InputStream inputStream = null;
-                                            inputStream = responseBody.byteStream();
-                                            BufferedReader br = null;
+                                    .map(responseBody -> {
+                                        Utils.println("正在登录！");
+                                        Utils.println("请求返回数据为：" + responseBody);
+                                        InputStream inputStream = null;
+                                        inputStream = responseBody.byteStream();
+                                        BufferedReader br = null;
 
-                                            br = new BufferedReader(new InputStreamReader(inputStream));
-                                            String string = null;
-                                            StringBuilder sb = new StringBuilder();
-                                            String line = null;
+                                        br = new BufferedReader(new InputStreamReader(inputStream));
+                                        String string = null;
+                                        StringBuilder sb = new StringBuilder();
+                                        String line = null;
+                                        try {
+                                            while ((line = br.readLine()) != null) {
+                                                sb.append(line + "\n");
+                                            }
+
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        } finally {
                                             try {
-                                                while ((line = br.readLine()) != null) {
-                                                    sb.append(line + "\n");
-                                                }
-
+                                                inputStream.close();
                                             } catch (IOException e) {
                                                 e.printStackTrace();
-                                            } finally {
-                                                try {
-                                                    inputStream.close();
-                                                } catch (IOException e) {
-                                                    e.printStackTrace();
-                                                }
                                             }
-                                            string = sb.toString();
-                                            Utils.println("请求返回数据为：" + string);
-                                            return string;
                                         }
-
-
+                                        string = sb.toString();
+                                        Utils.println("请求返回数据为：" + string);
+                                        return string;
                                     })
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(new Observer<String>() {
