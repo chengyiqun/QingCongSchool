@@ -183,8 +183,10 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                             if (result == 3004)
                                             {
                                                 ToastUtils.showShort("tokenError");
-                                            }else if (result == 0){
+                                            }else if (result == 3005){
                                                 ToastUtils.showShort("登陆错误");
+                                            }else if (result==3006){
+                                                ToastUtils.showShort("验证码错误");
                                             }else {
                                                 ToastUtils.showShort(String.valueOf(result));
                                                 getCoursesSuccessed=true;
