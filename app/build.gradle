@@ -94,8 +94,6 @@ dependencies {
     //emoj表情包
     implementation 'pub.devrel:easypermissions:1.0.1'
     //https://github.com/googlesamples/easypermissions 谷歌的动态权限申请库
-    implementation 'com.facebook.stetho:stetho:1.5.0'
-    //facebook 数据库+网络调试
 
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
 

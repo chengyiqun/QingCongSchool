@@ -99,6 +99,7 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                         @Override
                         public void onError(Throwable e) {
                             codeImage.setContentDescription("刷新验证码");
+                            ToastUtils.showShort("教务处异常");
                             e.printStackTrace();
                         }
 
