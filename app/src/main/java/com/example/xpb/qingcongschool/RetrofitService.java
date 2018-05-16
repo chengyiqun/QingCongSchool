@@ -63,6 +63,12 @@ public interface RetrofitService {
     @POST("/QingXiao/ResourceComment/Insert")
     Observable<String>insertResourceComment(@Body RequestBody jsonStringInsertResourceComment);
 
+    @POST("/QingXiao/ResourceComment/GetCommentList")//获取资源评价
+    Observable<String>getResourceCommentList(@Body RequestBody jsonStringGetResourceCommentList);
+
+
+
+
     @POST("/QingXiao/TeachComment/GetCommentList")//获取教学评价
     Observable<String>getCommentList(@Body RequestBody jsonStringGetCommentList);
 
@@ -71,4 +77,6 @@ public interface RetrofitService {
 
     @POST("/QingXiao/TeachComment/GetCommentReplyList")
     Observable<String>getCommentReplyList(@Body RequestBody jsonStringgetCommentReplyList);
+
+
 }

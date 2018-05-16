@@ -126,8 +126,7 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
         teachID=(hashMap["teachID"]).toString()
         objectID=(hashMap["objectID"]).toString()
 
-        val intent = Intent()
-        setResult(result!!,intent)
+
         imageButton_send.setOnClickListener(this)
     }
 
@@ -228,8 +227,6 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
                         override fun onComplete() {
                             dialog!!.cancel()
                             if(result== INSERT_COMMENT_SUCCESS){
-                                val intent = Intent()
-                                setResult(INSERT_COMMENT_SUCCESS,intent)
                                 finish()
                             }
                         }

@@ -22,7 +22,7 @@ import com.facebook.drawee.view.SimpleDraweeView
  */
 
 class MyAdapter// Provide a suitable constructor (depends on the kind of dataset)
-(myDataset: Array<String>) : RecyclerView.Adapter<MyAdapter.MViewHolder>() {
+(myDataset: List<HashMap<*,*>>) : RecyclerView.Adapter<MyAdapter.MViewHolder>() {
     init {
         mDataset = myDataset
     }
@@ -48,9 +48,9 @@ class MyAdapter// Provide a suitable constructor (depends on the kind of dataset
 
 
         init {
-            root_layout = v.findViewById(R.id.root_layout)
+            root_layout = v.findViewById(R.id.root_layout_viewholder)
 
-            iv_user_avatar = v.findViewById(R.id.iv_user_avatar)
+            iv_user_avatar = v.findViewById(R.id.iv_user_avatar2)
             tv_username = v.findViewById(R.id.tv_username)
             tv_thumbDown_count_comment = v.findViewById(R.id.tv_thumbDown_count_comment)
             iv_thumbDown_comment = v.findViewById(R.id.iv_thumbDown_comment)
@@ -82,32 +82,33 @@ class MyAdapter// Provide a suitable constructor (depends on the kind of dataset
             if(BuildConfig.DEBUG)
                 LogUtils.dTag("position ", i.toString())
             when (v.id) {
-                R.id.root_layout -> Utils.println("单击root_layout")
-                R.id.iv_user_avatar -> {
+                R.id.root_layout_viewholder -> Utils.println("root_layout_viewholder")
+                R.id.iv_user_avatar2 -> {
                     Utils.println("单击用户头像")
                 }
                 R.id.tv_username -> {
                     Utils.println("单击用户名")
                 }
                 R.id.iv_thumbDown_comment -> {
-                    iv_thumbDown_comment.isSelected = true
-                    iv_thumbUp_comment.isSelected = false
+                    println("点👎")
                 }
                 R.id.iv_thumbUp_comment -> {
                     iv_thumbUp_comment.isSelected = true
-                    iv_thumbDown_comment.isSelected = false
+                    println("点👍")
                 }
                 R.id.tv_comment -> {
                     Utils.println("单击评论")
+                }
+                R.id.tv_publish_time -> {
+                    Utils.println("单击发布时间")
+                }
+                R.id.tv_reply->{
+                    Utils.println("单击回复")
                     //new ReplyDialog(v.getContext()).show();
                     //改成跳转到新的页面呢而不是回复框
                     val intent = Intent(v.context, CommentDetaillActivity::class.java)
                     v.context.startActivity(intent)
                 }
-                R.id.tv_publish_time -> {
-                    Utils.println("单击发布时间")
-                }
-                R.id.tv_reply->{Utils.println("单击回复")}
                 R.id.tv_share->{Utils.println("单击分享")}
             }
         }
@@ -128,7 +129,7 @@ class MyAdapter// Provide a suitable constructor (depends on the kind of dataset
     override fun onBindViewHolder(holder: MyAdapter.MViewHolder, position: Int) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.tv_username.text = mDataset[position]
+        holder.tv_username.text= mDataset[position]["userName"] as CharSequence?
 
         holder.root_layout.tag=position
         holder.iv_user_avatar.tag=position
@@ -150,6 +151,6 @@ class MyAdapter// Provide a suitable constructor (depends on the kind of dataset
     }
 
     companion object {
-        lateinit var mDataset: Array<String>
+        lateinit var mDataset: List<HashMap<*,*>>
     }
 }

@@ -5,6 +5,7 @@ import android.app.NotificationManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.TextView;
 
 import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.RetrofitFactory;
+import com.example.xpb.qingcongschool.course.resource.comment.ResourceCommentActivity;
 import com.example.xpb.qingcongschool.course.resource.upload.RetrofitCallback;
 
 import java.io.BufferedInputStream;
@@ -67,6 +69,7 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
 
         RViewHolder(View v) {
             super(v);
+            System.out.println(filelist);
             cardView = v.findViewById(R.id.card_view_course_resource);
             ivFileType = v.findViewById(R.id.imageView_fileType);
             tvFileType = v.findViewById(R.id.textView_fileType);
@@ -92,7 +95,10 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
             position = (int) v.getTag();
             switch (v.getId()) {
                 case R.id.card_view_course_resource:
-                    System.out.println("111");
+                    Intent intent = new Intent(v.getContext(), ResourceCommentActivity.class);
+                    intent.putExtra("courseResourceID", filelist.get(position).getCourseResourceID());
+                    v.getContext().startActivity(intent);
+                    System.out.println("跳转到资源评论页面");
                     break;
                 case R.id.imageView_resource_comment:
                     System.out.println("222");

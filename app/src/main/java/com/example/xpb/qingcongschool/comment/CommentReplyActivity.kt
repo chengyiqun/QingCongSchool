@@ -1,6 +1,8 @@
 package com.example.xpb.qingcongschool.comment
 
 import android.app.Dialog
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.app.AppCompatActivity
@@ -56,7 +58,7 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
                 LogUtils.d(hashMap)
                 val intent = Intent(this,ReplyDialogActivity::class.java)
                 intent.putExtra("commentReplyInfo",hashMap)
-                startActivityForResult(intent,0)
+                startActivity(intent)
             }
             R.id.tv_share->{println("分享")}
         }
@@ -67,6 +69,10 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
         setContentView(R.layout.activity_comment_reply)
         initView()
         init()
+    }
+
+    override fun onResume() {
+        super.onResume()
         getCommentReplyList()
     }
 
@@ -184,7 +190,7 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
         comment_recycler_view!!.layoutManager = mLayoutManager
         // specify an adapter (see also next example)
 
-        mAdapter = MyAdapterReply(myDataset,teachID)
+        mAdapter = MyAdapterReply(myDataset!!,teachID!!)
         comment_recycler_view!!.adapter = mAdapter
         comment_recycler_view!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
@@ -256,7 +262,7 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
                         override fun onComplete() {
                             println("onComplete")
                             dialog!!.cancel()
-                            mAdapter = MyAdapterReply(myDataset,teachID)
+                            mAdapter = MyAdapterReply(myDataset!!,teachID!!)
                             comment_recycler_view!!.adapter = mAdapter
                             mAdapter!!.notifyDataSetChanged()
                         }
@@ -265,14 +271,5 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
             Snackbar.make(recource_comment_rootview, "网络未连接", Snackbar.LENGTH_SHORT).show()
         }
 
-    }
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        println("返回")
-        if(requestCode == 0 && resultCode == INSERT_COMMENT_SUCCESS)
-        {
-            println("onActivityResult")
-            getCommentReplyListOnActivityResult()
-        }
     }
 }

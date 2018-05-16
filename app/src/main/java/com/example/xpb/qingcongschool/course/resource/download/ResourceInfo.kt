@@ -7,6 +7,7 @@ import android.support.annotation.Keep
  */
 @Keep
 class ResourceInfo {
+    var courseResourceID = ""//资源id
     var fileName = ""//文件名
     var resourceStoreName = ""//存储在服务器的文件名
     var downloadTimes = 0//下载次数
@@ -16,15 +17,9 @@ class ResourceInfo {
     var commentTimes = 0//评论次数
     var uploadTime = ""//上传时间日期
 
-
     override fun toString(): String {
-        return "ResourceInfo{" +
-                "fileName='" + fileName + '\'' +
-                ", resourceStoreName='" + resourceStoreName + '\'' +
-                ", downloadTimes=" + downloadTimes +
-                ", resourceDescribe='" + resourceDescribe + '\'' +
-                ", commentTimes=" + commentTimes +
-                ", uploadTime='" + uploadTime + '\'' +
-                '}'
+        return "ResourceInfo(courseResourceID='$courseResourceID', fileName='$fileName', resourceStoreName='$resourceStoreName', downloadTimes=$downloadTimes, resourceDescribe='$resourceDescribe', commentTimes=$commentTimes, uploadTime='$uploadTime')"
     }
+
+
 }
