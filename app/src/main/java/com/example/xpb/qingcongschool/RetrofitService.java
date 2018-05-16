@@ -46,8 +46,6 @@ public interface RetrofitService {
     @POST("/QingXiao/Course/GetCourse")//获取课表
     Observable<String> getCourse(@Body RequestBody user);
 
-    @POST("/QingXiao/Course/Insert")//上传课表
-    Observable<String>uploadCourse(@Body RequestBody course);
 
     @Multipart
     @POST("/QingXiao/CourseResource/Upload")//上传课程资源
@@ -64,4 +62,13 @@ public interface RetrofitService {
 
     @POST("/QingXiao/ResourceComment/Insert")
     Observable<String>insertResourceComment(@Body RequestBody jsonStringInsertResourceComment);
+
+    @POST("/QingXiao/TeachComment/GetCommentList")//获取教学评价
+    Observable<String>getCommentList(@Body RequestBody jsonStringGetCommentList);
+
+    @POST("/QingXiao/TeachComment/Insert")
+    Observable<String>insertTeachComment(@Body RequestBody jsonStringInsertTeachComment);
+
+    @POST("/QingXiao/TeachComment/GetCommentReplyList")
+    Observable<String>getCommentReplyList(@Body RequestBody jsonStringgetCommentReplyList);
 }

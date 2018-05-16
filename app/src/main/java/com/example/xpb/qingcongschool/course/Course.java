@@ -10,6 +10,8 @@ public class Course extends DataSupport {
     private int id;
     @Nullable
     private String courseID;
+    @Nullable
+    private String teachID;
     private int startYear;
     private int endYear;
     private int semester;
@@ -44,6 +46,15 @@ public class Course extends DataSupport {
 
     public void setCourseID(@Nullable String courseID) {
         this.courseID = courseID;
+    }
+
+    @Nullable
+    public String getTeachID() {
+        return teachID;
+    }
+
+    public void setTeachID(@Nullable String teachID) {
+        this.teachID = teachID;
     }
 
     public int getStartYear() {

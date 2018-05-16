@@ -347,7 +347,7 @@ public class CurriculumFragment extends Fragment implements View.OnClickListener
         int tag = (int) v.getTag();
         if (tag >= 0 && tag < 50) {
             Intent courseInfoIntent = new Intent(getActivity(), CourseInfoActivity.class);
-            courseInfoIntent.putExtra("courseID", tag);
+            courseInfoIntent.putExtra("courseID", tag);////////////////////////////////////////
             startActivity(courseInfoIntent);
         }
 

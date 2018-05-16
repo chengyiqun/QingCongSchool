@@ -26,7 +26,7 @@ import retrofit2.http.Multipart;
  * Created by 程义群（空灵入耳） on 2017/3/3.
  */
 public class RetrofitFactory {
-    private static   String baseUrl = BuildConfig.DEBUG? "http://192.168.183.1:8080":"http://60.205.218.103:80";
+    public static final String baseUrl = BuildConfig.DEBUG? "http://192.168.183.1:8080":"http://60.205.218.103:80";
     //private static String baseUrl ="http://60.205.218.103:80";
     private RetrofitFactory(String BaseUrl){};
 

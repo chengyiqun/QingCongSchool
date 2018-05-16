@@ -150,7 +150,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                         String line = null;
                                         try {
                                             while ((line = br.readLine()) != null) {
-                                                sb.append(line + "\n");
+                                                sb.append(line).append("\n");
                                             }
 
                                         } catch (IOException e) {

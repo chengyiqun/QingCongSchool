@@ -32,6 +32,7 @@ public class CourseInfoActivity extends AppCompatActivity implements View.OnClic
     private TextView tvCourseName;
     private Course course;
     private CourseService courseService;
+    private String teachID;
 
     int courseID;
 
@@ -42,9 +43,8 @@ public class CourseInfoActivity extends AppCompatActivity implements View.OnClic
         setContentView(R.layout.activity_courseinfo);
         Intent intent = getIntent();
         courseID = intent.getIntExtra("courseID", 0);
+        System.out.println("courseID:"+courseID);
         inits(courseID);
-
-
     }
 
     public void inits(int courseID) {
@@ -75,7 +75,7 @@ public class CourseInfoActivity extends AppCompatActivity implements View.OnClic
         tvTeacher = (TextView) findViewById(R.id.teacher_tv);
         tvWeek = (TextView) findViewById(R.id.weeks_tv);
         tvCourseName = (TextView) findViewById(R.id.coursename_tv);
-        System.out.println(course.getCourseTime());
+        System.out.println(course.getCourseTime());//没有课程时间这一项
         tvTime.setText(course.getCourseTime());
         tvClassroom.setText(course.getClasssroom());
         tvSection.setText(course.getStartSection() + "--" + course.getEndSection() + "节");
@@ -83,6 +83,8 @@ public class CourseInfoActivity extends AppCompatActivity implements View.OnClic
         tvWeek.setText(course.getStartWeek() + "--" + course.getEndWeek() + "周");
         tvCourseName.setText(course.getCourseName());
         System.out.println("----------------教室" + course.getClasssroom() + "----------------");
+        teachID=course.getTeachID();
+        System.out.println("teachID:"+teachID);
     }
 
     @Override
@@ -90,6 +92,7 @@ public class CourseInfoActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.button_comment://实现点击评论，调出评论页面
                 Intent intent0=new Intent(this, CommentActivity.class);
+                intent0.putExtra("teachID", teachID);
                 startActivity(intent0);
 
                 break;

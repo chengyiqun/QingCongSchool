@@ -103,7 +103,7 @@ public class GetResourceListActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(String s) {
-                        //System.out.println("onNext "+s);
+                        System.out.println("onNext "+s);
                         if(s!=null&&!s.equals("")&&!s.equals("null")){
                             Gson gson=new Gson();
                             //LogUtils.d(s);

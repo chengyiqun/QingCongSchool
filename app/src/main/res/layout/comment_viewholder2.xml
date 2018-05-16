@@ -5,8 +5,7 @@
     xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/root_layout"
-    >
+    android:id="@+id/root_layout_viewholder">
 
     <!--<TextView
         android:id="@+id/textView2"
@@ -25,11 +24,14 @@
         android:layout_height="50dp"
         >
         <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/iv_user_avatar"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:id="@+id/iv_user_avatar2"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="4dp"
+            android:clickable="true"
+            android:scaleType="centerCrop"
+            android:focusable="true"
             fresco:placeholderImage="@drawable/ic_launcher_24dp"
             fresco:placeholderImageScaleType="fitCenter"
             tools:background="@color/user_id"
@@ -49,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:id="@+id/relativeLayout"
+            android:id="@+id/relativeLayout1"
             >
 
             <RelativeLayout
@@ -61,6 +63,7 @@
                 android:layout_toStartOf="@+id/relativeLayout2">
                 <TextView
                     android:id="@+id/tv_thumbDown_count_comment"
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="14dp"
                     android:layout_marginLeft="6dp"
@@ -73,6 +76,7 @@
 
                 <ImageView
                     android:id="@+id/iv_thumbDown_comment"
+                    android:visibility="gone"
                     android:layout_width="16dp"
                     android:layout_height="20dp"
                     android:layout_marginLeft="8dp"
@@ -98,7 +102,7 @@
                 <TextView
                     android:id="@+id/tv_thumbUp_count_comment"
                     android:layout_width="wrap_content"
-                    android:layout_height="14dp"
+                    android:layout_height="18dp"
                     android:layout_marginLeft="6dp"
                     android:gravity="right"
                     android:paddingLeft="10dp"
@@ -149,7 +153,7 @@
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/relativeLayout"
+            android:layout_below="@+id/relativeLayout1"
             android:layout_marginBottom="4dp"
             android:gravity="center_vertical"
             android:orientation="horizontal"
@@ -171,6 +175,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
+                android:background="@drawable/radius_textview_bg"
                 android:text="回复"
                 android:textColor="@color/textview_String"
                 android:textSize="14sp" />
@@ -180,6 +185,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
+                android:background="@drawable/radius_textview_bg"
                 android:text="分享"
                 android:textColor="@color/textview_String"
                 android:textSize="14sp" />

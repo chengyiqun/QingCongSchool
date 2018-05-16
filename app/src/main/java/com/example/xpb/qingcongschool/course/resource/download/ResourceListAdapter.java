@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Environment;
+import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -40,7 +41,7 @@ import retrofit2.Response;
 
 public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapter.RViewHolder> {
 
-    public static List<ResourceInfo> filelist;
+    static List<ResourceInfo> filelist;
 
 
     // Provide a reference to the views for each data item
@@ -64,7 +65,7 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
         private Button btDownload;
 
 
-        public RViewHolder(View v) {
+        RViewHolder(View v) {
             super(v);
             cardView = v.findViewById(R.id.card_view_course_resource);
             ivFileType = v.findViewById(R.id.imageView_fileType);
@@ -135,7 +136,7 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
             dialog.show();
             RetrofitCallback<ResponseBody> callback = new RetrofitCallback<ResponseBody>() {
                 @Override
-                public void onSuccess(Call<ResponseBody> call, Response<ResponseBody> response) {
+                public void onSuccess(@NonNull Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
                         InputStream is = response.body().byteStream();
                         if (file.exists()) {
@@ -203,13 +204,14 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
                 }
 
             };
+            System.out.println("下载的文件存储名："+filelist.get(position).getResourceStoreName());
             callDownloadFile = RetrofitFactory.getRetrofitService(callback).download(filelist.get(position).getResourceStoreName());
             callDownloadFile.enqueue(callback);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public ResourceListAdapter(ArrayList<ResourceInfo> list) {
+    ResourceListAdapter(ArrayList<ResourceInfo> list) {
         //构造函数
         filelist = list;
     }
@@ -222,8 +224,9 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
     ;
 
     // Create new views (invoked by the layout manager)
+    @NonNull
     @Override
-    public RViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.course_resource_viewholder, parent, false);
         // set the view's size, margins, paddings and layout parameters
@@ -232,7 +235,7 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(RViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         //holder.tv_username.setText(mDataset[position]);
