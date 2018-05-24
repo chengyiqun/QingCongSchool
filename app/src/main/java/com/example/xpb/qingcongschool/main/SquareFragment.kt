@@ -1,10 +1,12 @@
 package com.example.xpb.qingcongschool.main
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.*
 import com.blankj.utilcode.util.ToastUtils
 import com.example.xpb.qingcongschool.R
+import com.example.xpb.qingcongschool.topic.NewTopicActivity
 import kotlinx.android.synthetic.main.fragment_square.*
 
 /**
@@ -22,14 +24,16 @@ class SquareFragment : android.support.v4.app.Fragment(){
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.subject_menu,menu)
+        inflater?.inflate(R.menu.topic_menu,menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when(item?.itemId){
-            R.id.action_new_subject->{
+            R.id.action_new_topic->{
                 if(MainActivity.Companion.islogin){
                     ToastUtils.showShort("发布动态")
+                    val intent = Intent(activity, NewTopicActivity::class.java)
+                    startActivity(intent)
                 }else{
                     ToastUtils.showShort("登陆才能发布动态")
                 }

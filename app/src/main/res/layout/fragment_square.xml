@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
-        android:text="热门话题（预留位置）"
+        tools:text="热门话题（预留位置）"
         android:textSize="24sp"
         android:layout_below="@+id/toolbar_square"
         />

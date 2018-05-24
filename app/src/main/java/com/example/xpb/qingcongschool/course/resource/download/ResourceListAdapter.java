@@ -83,6 +83,7 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
             ivMenu = v.findViewById(R.id.imageView_menu);
             btDownload = v.findViewById(R.id.button_download);
 
+
             cardView.setOnClickListener(this);
             ivComment.setOnClickListener(this);
             ivThumbUp.setOnClickListener(this);
@@ -313,7 +314,8 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
         holder.tvFileName.setText(fileName);
         holder.tvUploadTime.setText(filelist.get(position).getUploadTime());
         holder.tvFileDescription.setText(filelist.get(position).getResourceDescribe());
-        holder.tvCommentCount.setText(String.valueOf(filelist.get(position).getCommentTimes()));
+
+        holder.tvCommentCount.setText(String.valueOf(filelist.get(position).getDownloadTimes()));
         //holder.tvThumbUpCount.setText(filelist.get(position).get);
 
         holder.itemView.setTag(position);

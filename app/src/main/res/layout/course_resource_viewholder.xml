@@ -116,7 +116,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_weight="1"
-                        app:srcCompat="@drawable/imagebt_comment"
+                        app:srcCompat="@drawable/iv_download"
                         android:contentDescription="TODO"
                         tools:ignore="ContentDescription" />
 

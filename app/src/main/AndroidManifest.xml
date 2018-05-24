@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.xpb.qingcongschool">
 
     <uses-permission android:name="android.permission.READ_CONTACTS" /> <!-- 需动态，联系人读取 -->
@@ -24,7 +25,8 @@
         android:icon="@drawable/ic_launcher_24dp"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        >
         <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -54,11 +56,14 @@
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.xpb.qingcongschool"
+            tools:replace="android:authorities"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/filepaths" />
+                android:resource="@xml/filepaths"
+                tools:replace="android:resource"
+                />
         </provider>
 
         <activity android:name=".course.resource.upload.UploadCourseResourceActivity" />
@@ -68,7 +73,20 @@
             android:theme="@style/MyDialogStyle" />
         <activity android:name=".course.resource.comment.ResourceCommentActivity" />
         <activity android:name=".course.resource.comment.CommentDetaillActivity" />
-        <activity android:name=".comment.CommentReplyActivity"></activity>
+        <activity android:name=".comment.CommentReplyActivity" />
+
+
+
+        <activity
+            android:theme="@style/customTheme"
+            android:name="me.iwf.photopicker.PhotoPickerActivity"
+            />
+
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="me.iwf.photopicker.PhotoPagerActivity"
+            />
+        <activity android:name=".topic.NewTopicActivity"/>
     </application>
 
 </manifest>

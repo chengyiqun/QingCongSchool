@@ -200,6 +200,7 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                         @Override
                                         public void onError(Throwable e) {
                                             LogUtils.e("获取课表","失败");
+                                            ToastUtils.showShort("登陆信息有误");
                                         }
                                         @Override
                                         public void onComplete() {

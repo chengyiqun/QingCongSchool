@@ -365,7 +365,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     public void finish() {//关闭这个Activity时重新加载整个应用，用来刷新登陆状态
-        //MainActivity.islogin=true;
+        //TopicActivity.islogin=true;
         MainActivity.Companion.setFragmentNUM(2);
         Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
