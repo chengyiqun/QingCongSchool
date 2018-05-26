@@ -13,20 +13,41 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.xpb.qingcongschool.R;
+import com.example.xpb.qingcongschool.RetrofitFactory;
+import com.google.gson.JsonObject;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTextChanged;
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.Scheduler;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import me.iwf.photopicker.PhotoPicker;
 import me.iwf.photopicker.PhotoPreview;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+
 
 public class NewTopicActivity extends AppCompatActivity {
+    public static final int INSERT_TOPIC_SUCCESS = 3411;
+    int result=0;
     @BindView(R.id.id_editor_detail)
     EditText idEditorDetail;
     @BindView(R.id.id_editor_detail_font_count)
@@ -59,13 +80,79 @@ public class NewTopicActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_send_topic:
-                System.out.println(selectedPhotos);
-                System.out.println(idEditorDetail.getText().toString());
+                String content= idEditorDetail.getText().toString();
+                if(content.length()<5){
+                    ToastUtils.showShort("动态不少于5字");
+                }else {
+                    System.out.println(selectedPhotos);
+                    System.out.println(content);
+                    HashMap<String, Object> hashMap = new HashMap<>();
+                    hashMap.put("subjectID", "");
+                    hashMap.put("dontMaskStranger", 0);
+                    hashMap.put("content", content);
+                    hashMap.put("topicPlace","安徽大学罄苑校区");
+                    List<HashMap<String, Object>> lableList = new LinkedList<>();
+                    for (int i=0 ;i<2;i++){
+                        HashMap<String, Object> map = new HashMap<>();
+                        map.put("lable","lable"+i);
+                        lableList.add(map);
+                    }
+                    JSONArray jsonArray = JSONArray.parseArray(JSON.toJSONString(lableList));
+                    hashMap.put("lableList",jsonArray);
+                    JSONObject jsonObject = JSON.parseObject(JSON.toJSONString(hashMap));
+                    System.out.println(jsonObject);
+                    uploadTopic(jsonObject.toString());
+                }
+
                 break;
             default:
                 break;
         }
         return true;
+    }
+
+    private void uploadTopic(String s) {
+
+        Map<String , RequestBody> photos = new HashMap<>();
+        RequestBody topicRequestBody = RequestBody.create(MultipartBody.FORM, s);
+        photos.put("jsonStringInsertTopic", topicRequestBody);//话题json字符串
+
+        for(int i = 0;i<selectedPhotos.size();i++){
+            File file = new File(selectedPhotos.get(i));
+            String fileName = file.getName();
+            String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
+            RequestBody photoRequestBody = RequestBody.create(MediaType.parse("image/"+suffix), file);
+            //photos.put("file\"; filename=\""+file.getName()+"", photoRequestBody);//这一步是关键，拼接字符串
+            photos.put("file\"; filename=\""+i+"."+suffix, photoRequestBody);//这一步是关键，拼接字符串
+        }
+        Observable<String> observable = RetrofitFactory.getInstance().testUpload(photos);
+        observable.subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<String>() {
+                    @Override
+                    public void onSubscribe(Disposable d) { }
+                    @Override
+                    public void onNext(String value) {
+                        System.out.println(value);
+                        JSONObject jsonObject = JSONObject.parseObject(value);
+                        result = jsonObject.getIntValue("result");
+                        System.out.println(result);
+                        if (result == INSERT_TOPIC_SUCCESS) {
+                            ToastUtils.showShort("发布成功");
+                        }
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        e.printStackTrace();
+                    }
+                    @Override
+                    public void onComplete() {
+                        System.out.println("完毕");
+                        if (result == INSERT_TOPIC_SUCCESS) {
+                            finish();
+                        }
+                    }
+                });
     }
 
 
