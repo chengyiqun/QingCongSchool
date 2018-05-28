@@ -29,60 +29,77 @@ import retrofit2.http.Query;
  */
 public interface RetrofitService {
 
-    @POST("/QingXiao/User/Register")//注册
+    @POST("/QingXiao/User/Register")
+//注册
     Observable<ResponseBody> registerUser(@Body RequestBody user);
 
-    @POST("/QingXiao/User/Login")//登陆
+    @POST("/QingXiao/User/Login")
+//登陆
     Observable<ResponseBody> login(@Body RequestBody user);
 
     @Multipart
-    @POST("/QingXiao/User/updateAvatar")//上传头像
+    @POST("/QingXiao/User/updateAvatar")
+//上传头像
     Observable<String> updateAvatar1(@Part MultipartBody.Part file);
 
 
-    @POST("/QingXiao/User/DownloadAvatar")//下载头像
-    Observable<ResponseBody>downloadAvatar();
+    @POST("/QingXiao/User/DownloadAvatar")
+//下载头像
+    Observable<ResponseBody> downloadAvatar();
 
     @GET("/QingXiao/Course/GetIdentifyCode")
-    Observable<ResponseBody>getIdentifyCode();
+    Observable<ResponseBody> getIdentifyCode();
 
-    @POST("/QingXiao/Course/GetCourse")//获取课表
+    @POST("/QingXiao/Course/GetCourse")
+//获取课表
     Observable<String> getCourse(@Body RequestBody user);
 
 
     @Multipart
-    @POST("/QingXiao/CourseResource/Upload")//上传课程资源
+    @POST("/QingXiao/CourseResource/Upload")
+//上传课程资源
     Call<String> upload(
             @Part("jsonStringUploadCourseResource") RequestBody description,
             @Part MultipartBody.Part file
     );
 
-    @POST("/QingXiao/CourseResource/GetList")//获取课程资源列表
-    Observable<String>getFileList(@Body RequestBody courseName);
+    @POST("/QingXiao/CourseResource/GetList")
+//获取课程资源列表
+    Observable<String> getFileList(@Body RequestBody courseName);
 
-    @GET("/QingXiao/CourseResource/Download")//下载课程资源
+    @GET("/QingXiao/CourseResource/Download")
+//下载课程资源
     Call<ResponseBody> download(@Query("resourceStoreName") String resourceStoreName);
 
     @POST("/QingXiao/ResourceComment/Insert")
-    Observable<String>insertResourceComment(@Body RequestBody jsonStringInsertResourceComment);
+    Observable<String> insertResourceComment(@Body RequestBody jsonStringInsertResourceComment);
 
-    @POST("/QingXiao/ResourceComment/GetCommentList")//获取资源评价
-    Observable<String>getResourceCommentList(@Body RequestBody jsonStringGetResourceCommentList);
+    @POST("/QingXiao/ResourceComment/GetCommentList")
+//获取资源评价
+    Observable<String> getResourceCommentList(@Body RequestBody jsonStringGetResourceCommentList);
 
 
-
-
-    @POST("/QingXiao/TeachComment/GetCommentList")//获取教学评价
-    Observable<String>getCommentList(@Body RequestBody jsonStringGetCommentList);
+    @POST("/QingXiao/TeachComment/GetCommentList")
+//获取教学评价
+    Observable<String> getCommentList(@Body RequestBody jsonStringGetCommentList);
 
     @POST("/QingXiao/TeachComment/Insert")
-    Observable<String>insertTeachComment(@Body RequestBody jsonStringInsertTeachComment);
+    Observable<String> insertTeachComment(@Body RequestBody jsonStringInsertTeachComment);
 
     @POST("/QingXiao/TeachComment/GetCommentReplyList")
-    Observable<String>getCommentReplyList(@Body RequestBody jsonStringgetCommentReplyList);
+    Observable<String> getCommentReplyList(@Body RequestBody jsonStringgetCommentReplyList);
 
 
     @Multipart
     @POST("/QingXiao/Topic/Insert")
-    Observable<String> testUpload(@PartMap() Map<String,RequestBody> files);
+    Observable<String> testUpload(@PartMap() Map<String, RequestBody> files);
+
+    @POST("/QingXiao/Topic/GetTopicList")
+    Observable<String> getTopicList(@Query("page") int page);
+
+    @POST("/QingXiao/Topic/GetCommentList")
+    Observable<String> getTopicCommentList(@Body RequestBody jsonStringGetCommentList);
+
+    @POST("/QingXiao/Topic/InsertComment")
+    Observable<String> insertTopicComment(@Body RequestBody jsonStringTopicComment);
 }

@@ -1,4 +1,4 @@
-package com.example.xpb.qingcongschool.comment
+package com.example.xpb.qingcongschool.topic.comment.reply
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable

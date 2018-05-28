@@ -99,6 +99,20 @@ public class FileUtil {
         return new File(filename);
     }
 
+    public static File getSmallBitmap2(Context context, String fileSrc) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(fileSrc, options);
+        options.inSampleSize = calculateInSampleSize(options, 800, 800);
+        //Log.i(TAG, "options.inSampleSize-->" + options.inSampleSize);
+        options.inJustDecodeBounds = false;
+        Bitmap img = BitmapFactory.decodeFile(fileSrc, options);
+        //Log.i(TAG, "file size after compress-->" + img.getByteCount() / 256);
+        String filename = getCachePath(context) + File.separator + "video-"+img.hashCode() + ".jpg";
+        saveBitmap2File(img, filename);
+        return new File(filename);
+    }
+
     /**
      * 设置压缩的图片的大小设置的参数
      *

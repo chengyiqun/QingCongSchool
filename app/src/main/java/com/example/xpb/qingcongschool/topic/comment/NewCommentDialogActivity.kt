@@ -1,18 +1,17 @@
-package com.example.xpb.qingcongschool.comment
+package com.example.xpb.qingcongschool.topic.comment
 
+import android.app.Activity
+import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import com.example.xpb.qingcongschool.R
-import android.app.Activity
-import android.app.Dialog
-import android.content.Intent
 import android.support.design.widget.Snackbar
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import com.alibaba.fastjson.JSONObject
 import com.blankj.utilcode.util.ToastUtils
+import com.example.xpb.qingcongschool.R
 import com.example.xpb.qingcongschool.RetrofitFactory
 import com.example.xpb.qingcongschool.util.NetworkUtil
 import com.example.xpb.qingcongschool.util.Utils
@@ -24,22 +23,18 @@ import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.dialog_reply.*
+import kotlinx.android.synthetic.main.activity_new_comment_dialog.*
 import okhttp3.RequestBody
 
 
-class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojiconClickedListener, EmojiconsFragment.OnEmojiconBackspaceClickedListener,View.OnClickListener{
+class NewCommentDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojiconClickedListener, EmojiconsFragment.OnEmojiconBackspaceClickedListener, View.OnClickListener{
 
-    private var teachID: String? = null
-    private var objectID:String ? = null
+    private var topicID: String? = null
+    private var toUserID:String ? = null
     private var dialog: Dialog? = null
     private var result:Int? =0
     companion object {
-        const val INSERT_COMMENT_SUCCESS = 3221
-        const val TEACH_NOTEXIST = 3222
-        const val COURSE_NOTEXIST = 3223
-        const val TEACHER_NOTEXIST = 3224
-        const val STUDENTCOURSE_NOTEXIST = 3225
+        const val INSERT_TOPICCOMMENT_SUCCESS=3431
         const val TOKEN_ERROR = 3004
     }
 
@@ -52,31 +47,31 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
                     showSnackBar("不可少于2字")
                 }else{
                     val commentInfoMap = HashMap<String,Any>()
-                    commentInfoMap.put("topicID",teachID!!)
-                    commentInfoMap.put("commentType",1)
-                    commentInfoMap.put("objectID", objectID!!)
+                    commentInfoMap.put("topicID",topicID!!)
+                    commentInfoMap.put("commentType",0)
+                    commentInfoMap.put("toUserID", toUserID!!)
                     commentInfoMap.put("content",emg_editText.text.toString())
                     commentInfoMap.put("isAnonymous",0)
                     val commentInfo:String = Gson().toJson(commentInfoMap)
                     println(commentInfo)
-                    insertTeachComment(commentInfo)
+                    insertTopicComment(commentInfo)
                 }
             }
             R.id.iv_chose_emoji->{
-                if(emojicons.visibility==View.GONE){
+                if(emojicons.visibility== View.GONE){
                     hideSoftKeyboard()
-                    emojicons.visibility=View.VISIBLE
+                    emojicons.visibility= View.VISIBLE
                     iv_chose_emoji.isSelected=true
                 }else{
                     showSoftKeyboard()
-                    emojicons.visibility=View.GONE
+                    emojicons.visibility= View.GONE
                     iv_chose_emoji.isSelected=false
                 }
             }
             R.id.emg_editText->{
-                if(emojicons.visibility==View.VISIBLE)
+                if(emojicons.visibility== View.VISIBLE)
                 {
-                    emojicons.visibility=View.GONE
+                    emojicons.visibility= View.GONE
                     iv_chose_emoji.isSelected=false
                 }
             }
@@ -108,7 +103,7 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
         setContentView(R.layout.dialog_reply)
         setEmojiconFragment(false)//设置emoji选择器Fragment//false是苹果风格，true是安卓风格
         emojicons.layoutParams.height=600//设置高度，最好和输入法一样高
-        emojicons.visibility=View.GONE
+        emojicons.visibility= View.GONE
         val dialogWindow = this.window
         dialogWindow.setGravity(Gravity.BOTTOM)
         dialogWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))//dialog设置这货才能横向满屏，不过此处只是设个背景而已
@@ -121,10 +116,8 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
         emg_editText.setOnClickListener(this)
 
 
-        val hashMap = intent.getSerializableExtra("commentReplyInfo") as HashMap<*,*>
-        println(hashMap)
-        teachID=(hashMap["topicID"]).toString()
-        objectID=(hashMap["objectID"]).toString()
+        topicID=intent.getStringExtra("topicID")
+        toUserID=intent.getStringExtra("toUserID")
 
 
         imageButton_send.setOnClickListener(this)
@@ -199,8 +192,8 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
 
     override fun onResume() {
         super.onResume()
-        if(emojicons.visibility==View.VISIBLE){
-            emojicons.visibility=View.GONE
+        if(emojicons.visibility== View.VISIBLE){
+            emojicons.visibility= View.GONE
         }
     }
 
@@ -208,13 +201,13 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
         Snackbar.make(new_sub_comment_rootView, text, Snackbar.LENGTH_SHORT).show()
     }
 
-    private fun insertTeachComment(commentInfo: String) {
-        if(NetworkUtil.isNetworkAvailable(this@ReplyDialogActivity)) {
-            dialog = Dialog(this@ReplyDialogActivity)
+    private fun insertTopicComment(commentInfo: String) {
+        if(NetworkUtil.isNetworkAvailable(this@NewCommentDialogActivity)) {
+            dialog = Dialog(this@NewCommentDialogActivity)
             dialog!!.setTitle("正在刷新，请稍后...")
             dialog!!.setCancelable(true)
             val body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), commentInfo)
-            val observableInsertTeachComment = RetrofitFactory.getInstance().insertTeachComment(body)
+            val observableInsertTeachComment = RetrofitFactory.getInstance().insertTopicComment(body)
             observableInsertTeachComment.subscribeOn(Schedulers.io())
                     .doOnSubscribe({_->
                         Utils.println("doOnScribe,showDialog")
@@ -226,7 +219,7 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
                     .subscribe(object : Observer<String> {
                         override fun onComplete() {
                             dialog!!.cancel()
-                            if(result== INSERT_COMMENT_SUCCESS){
+                            if(result== INSERT_TOPICCOMMENT_SUCCESS){
                                 finish()
                             }
                         }
@@ -235,15 +228,12 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
                             val jsonObject = JSONObject.parseObject(s)
                             result = jsonObject.getInteger("result")
                             when(result){
-                                INSERT_COMMENT_SUCCESS->{
+                                INSERT_TOPICCOMMENT_SUCCESS->{
                                     ToastUtils.showShort("发送成功")
-                                    result= INSERT_COMMENT_SUCCESS
+                                    result= INSERT_TOPICCOMMENT_SUCCESS
                                 }
-                                TEACH_NOTEXIST->{ToastUtils.showShort("教学活动不存在")}
-                                COURSE_NOTEXIST->{ToastUtils.showShort("课程不存在")}
-                                TEACHER_NOTEXIST->{ToastUtils.showShort("教师不存在")}
-                                STUDENTCOURSE_NOTEXIST->{ToastUtils.showShort("选课信息不在数据库")}
-                                TOKEN_ERROR->{ToastUtils.showShort("请重新登陆")}
+                                TOKEN_ERROR->{
+                                    ToastUtils.showShort("请重新登陆")}
                             }
                         }
                         override fun onError(e: Throwable?) {

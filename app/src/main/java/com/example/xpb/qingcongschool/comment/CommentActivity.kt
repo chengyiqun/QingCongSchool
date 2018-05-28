@@ -41,7 +41,7 @@ class CommentActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_comment)
         initView()
-        teachID = intent.getStringExtra("teachID")
+        teachID = intent.getStringExtra("topicID")
         println(teachID)
         getCommentList()
     }
@@ -60,7 +60,7 @@ class CommentActivity : BaseActivity() {
 
     private fun getCommentList() {
         val hashMap = HashMap<String, Any>()
-        hashMap.put("teachID", teachID!!)
+        hashMap.put("topicID", teachID!!)
         hashMap.put("nowTime", TimeFactory.getCurrentTime())
         hashMap.put("sinceTime", "2018-05-13 17:51:39.004")
         val gson = Gson()
@@ -153,14 +153,14 @@ class CommentActivity : BaseActivity() {
 
         bt_new_comment.setOnClickListener {
             val intent = Intent(this, NewCommentActivity::class.java)
-            intent.putExtra("teachID",teachID)
+            intent.putExtra("topicID",teachID)
             startActivityForResult(intent,0)
         }
     }
 
     private fun getCommentListonActivityResult() {
         val hashMap = HashMap<String, Any>()
-        hashMap.put("teachID", teachID!!)
+        hashMap.put("topicID", teachID!!)
         hashMap.put("nowTime", TimeFactory.getCurrentTime())
         hashMap.put("sinceTime", "2018-05-13 17:51:39.004")
         val gson = Gson()

@@ -1,4 +1,4 @@
-package com.example.xpb.qingcongschool.comment;
+package com.example.xpb.qingcongschool.topic.comment;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -13,23 +13,23 @@ import android.widget.TextView;
 
 import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.RetrofitFactory;
-import com.example.xpb.qingcongschool.util.TimeFactory;
+import com.example.xpb.qingcongschool.main.Topic;
+import com.example.xpb.qingcongschool.topic.comment.reply.TopicCommentReplyActivity;
 import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.drawee.generic.RoundingParams;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by lenovo on 2017/10/15 0015.
  */
 
-public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MViewHolder> {
+public class TopicCommentAdapter extends RecyclerView.Adapter<TopicCommentAdapter.MViewHolder> {
 
-    public static List<HashMap> mDataset;
-    public static String teachID;
+    public static List<Topic.TopicCommentListBean> mDataset;
+    public static String topicID;
 
 
     // Provide a reference to the views for each data item
@@ -88,9 +88,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MViewHolder> {
             switch (v.getId()){
                 case R.id.card_view:
                     System.out.println("单击CardView");
-                    Intent intent = new Intent(v.getContext(), CommentReplyActivity.class);
-                    intent.putExtra("topicID",teachID);
-                    intent.putExtra("userTeachComment", mDataset.get(i));
+                    Intent intent = new Intent(v.getContext(), TopicCommentReplyActivity.class);
+                    intent.putExtra("comment", (Serializable) mDataset.get(i));
+                    //intent.putExtra("userTeachComment", mDataset.get(i));
                     v.getContext().startActivity(intent);
                     break;
                 case R.id.user_picture:
@@ -120,10 +120,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(List<HashMap> myDataset,String mteachID) {
+    public TopicCommentAdapter(List<Topic.TopicCommentListBean> myDataset, String mtopicID) {
         mDataset = myDataset;
-        teachID = mteachID;
+        topicID = mtopicID;
     }
+
+    public void refreshAdapter(List<Topic.TopicCommentListBean> myDataset, String mtopicID) {
+        mDataset.clear();
+        mDataset = myDataset;
+        topicID = mtopicID;
+        this.notifyDataSetChanged();
+    }
+
+
 
     // Create new views (invoked by the layout manager)
     @NonNull
@@ -142,15 +151,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MViewHolder> {
     public void onBindViewHolder(@NonNull MViewHolder holder, int position) {//设置数据
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.tv_username.setText((CharSequence) mDataset.get(position).get("user_name"));
-        holder.tv_comment.setText((CharSequence) mDataset.get(position).get("content"));
-        long timedate= (long) mDataset.get(position).get("comment_time");
-        holder.tv_timedata.setText(TimeFactory.second2TimeStrapString(timedate));
-        holder.tv_thumbup_count.setText(String.valueOf((int) mDataset.get(position).get("like_times")));
-        holder.tv_comment_count.setText(String.valueOf((int) mDataset.get(position).get("comment_times")));
-        holder.tv_share_count.setText(String.valueOf((int) mDataset.get(position).get("share_times")));
+        holder.tv_username.setText((CharSequence) mDataset.get(position).getUserName());
+        holder.tv_comment.setText((CharSequence) mDataset.get(position).getContent());
 
-        Uri uri = Uri.parse(RetrofitFactory.baseUrl+"/QingXiao/avatar/"+mDataset.get(position).get("avatar_store_name"));
+        holder.tv_timedata.setText(mDataset.get(position).getCommentTime());
+        holder.tv_thumbup_count.setText(String.valueOf(mDataset.get(position).getLikeTimes()));
+        holder.tv_comment_count.setText(String.valueOf((int) mDataset.get(position).getReplyTimes()));
+        holder.tv_share_count.setText(String.valueOf((int) mDataset.get(position).getShareTimes()));
+
+        Uri uri = Uri.parse(RetrofitFactory.baseUrl+"/QingXiao/avatar/"+mDataset.get(position).getAvatarStoreName());
         System.out.println(uri);
         holder.iv_userpicture.setImageURI(uri);
 

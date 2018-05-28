@@ -25,8 +25,7 @@
         android:icon="@drawable/ic_launcher_24dp"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-        >
+        android:theme="@style/AppTheme">
         <activity android:name=".main.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,14 +55,13 @@
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.example.xpb.qingcongschool"
-            tools:replace="android:authorities"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="android:authorities">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths"
-                tools:replace="android:resource"
-                />
+                tools:replace="android:resource" />
         </provider>
 
         <activity android:name=".course.resource.upload.UploadCourseResourceActivity" />
@@ -74,19 +72,21 @@
         <activity android:name=".course.resource.comment.ResourceCommentActivity" />
         <activity android:name=".course.resource.comment.CommentDetaillActivity" />
         <activity android:name=".comment.CommentReplyActivity" />
-
-
-
         <activity
-            android:theme="@style/customTheme"
             android:name="me.iwf.photopicker.PhotoPickerActivity"
-            />
-
+            android:theme="@style/customTheme" />
         <activity
-            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:name="me.iwf.photopicker.PhotoPagerActivity"
-            />
-        <activity android:name=".topic.NewTopicActivity"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".topic.NewTopicActivity" />
+        <activity
+            android:name=".topic.ImageViewActivity"
+            android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen" />
+        <activity android:name=".topic.comment.TopicCommentActivity" />
+        <activity
+            android:name=".topic.comment.NewCommentDialogActivity"
+            android:theme="@style/MyDialogStyle" />
+        <activity android:name=".topic.comment.reply.TopicCommentReplyActivity"></activity>
     </application>
 
 </manifest>

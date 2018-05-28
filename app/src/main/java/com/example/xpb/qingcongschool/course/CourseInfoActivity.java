@@ -84,7 +84,7 @@ public class CourseInfoActivity extends AppCompatActivity implements View.OnClic
         tvCourseName.setText(course.getCourseName());
         System.out.println("----------------教室" + course.getClasssroom() + "----------------");
         teachID=course.getTeachID();
-        System.out.println("teachID:"+teachID);
+        System.out.println("topicID:"+teachID);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class CourseInfoActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.button_comment://实现点击评论，调出评论页面
                 Intent intent0=new Intent(this, CommentActivity.class);
-                intent0.putExtra("teachID", teachID);
+                intent0.putExtra("topicID", teachID);
                 startActivity(intent0);
 
                 break;

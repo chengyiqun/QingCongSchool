@@ -4,6 +4,9 @@ import com.blankj.utilcode.util.Utils
 
 import com.facebook.drawee.backends.pipeline.Fresco
 import org.litepal.LitePalApplication
+import com.facebook.imagepipeline.core.ImagePipelineConfig
+
+
 
 
 /**
@@ -14,7 +17,10 @@ class MyApplication : LitePalApplication() {//继承了那个数据库的 applic
     override fun onCreate() {
         super.onCreate()
         //初始化Fresco
-        Fresco.initialize(this)
+        val config = ImagePipelineConfig.newBuilder(this)
+                .setDownsampleEnabled(true)
+                .build()
+        Fresco.initialize(this,config)
         //初始化工具类
         Utils.init(this)
 

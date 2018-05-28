@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:id="@+id/root_layout"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:background="@color/untext_white_background"
+android:fitsSystemWindows="true"
+tools:context=".topic.comment.TopicCommentActivity">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="fill"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="4dp"
+        android:layout_gravity="top"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:title="动态评论" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/comment_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_comment">
+
+    </android.support.v7.widget.RecyclerView>
+
+</RelativeLayout>
+
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/bt_new_comment"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|end"
+    android:layout_margin="16dp"
+    android:clickable="true"
+    android:focusable="true"
+    app:backgroundTint="@color/colorAccent"
+    app:elevation="16dp"
+    app:fabSize="normal"
+    app:rippleColor="@color/colorPrimaryDark"
+    app:srcCompat="@android:drawable/ic_input_add"
+    />
+
+</android.support.design.widget.CoordinatorLayout>

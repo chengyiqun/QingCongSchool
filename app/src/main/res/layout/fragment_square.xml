@@ -21,10 +21,41 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:gravity="center"
-        tools:text="热门话题（预留位置）"
+        android:text="热门话题（预留位置）"
         android:textSize="24sp"
         android:layout_below="@+id/toolbar_square"
         />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/textView_uploadTime">
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_gravity="bottom|center_horizontal" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout_topic"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+
+            >
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view_topic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentStart="true"
+                />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </FrameLayout>
+
+
 
 
 

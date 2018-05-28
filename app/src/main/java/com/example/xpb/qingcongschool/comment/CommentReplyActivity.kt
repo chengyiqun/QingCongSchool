@@ -40,9 +40,7 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
     private var dialog: Dialog? = null
     private var result:Int ? = 0
     private  var comment_recycler_view : RecyclerView? = null
-    companion object {
-        const val INSERT_COMMENT_SUCCESS = 3221
-    }
+
 
 
     override fun onClick(v: View?) {
@@ -54,7 +52,7 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
                 println("回复")
                 val hashMap = HashMap<String, Any>()
                 hashMap.put("objectID", teachCommentID!!)
-                hashMap.put("teachID",teachID!!)
+                hashMap.put("topicID",teachID!!)
                 LogUtils.d(hashMap)
                 val intent = Intent(this,ReplyDialogActivity::class.java)
                 intent.putExtra("commentReplyInfo",hashMap)
@@ -94,7 +92,7 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
 
     private fun init() {
         val hashMap = intent.getSerializableExtra("userTeachComment") as HashMap<*, *>
-        teachID = intent.getStringExtra("teachID")
+        teachID = intent.getStringExtra("topicID")
         LogUtils.d("hashmap",hashMap)
         val uri = Uri.parse(RetrofitFactory.baseUrl + "/QingXiao/avatar/" + hashMap.get("avatar_store_name"))
         println(uri)

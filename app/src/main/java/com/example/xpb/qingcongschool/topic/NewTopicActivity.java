@@ -19,6 +19,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.RetrofitFactory;
+import com.example.xpb.qingcongschool.util.FileUtil;
 import com.google.gson.JsonObject;
 
 import java.io.File;
@@ -119,9 +120,10 @@ public class NewTopicActivity extends AppCompatActivity {
 
         for(int i = 0;i<selectedPhotos.size();i++){
             File file = new File(selectedPhotos.get(i));
-            String fileName = file.getName();
+            File file1= FileUtil.getSmallBitmap2(this,file.getPath());
+            String fileName = file1.getName();
             String suffix = fileName.substring(fileName.lastIndexOf(".") + 1);
-            RequestBody photoRequestBody = RequestBody.create(MediaType.parse("image/"+suffix), file);
+            RequestBody photoRequestBody = RequestBody.create(MediaType.parse("image/"+suffix), file1);
             //photos.put("file\"; filename=\""+file.getName()+"", photoRequestBody);//这一步是关键，拼接字符串
             photos.put("file\"; filename=\""+i+"."+suffix, photoRequestBody);//这一步是关键，拼接字符串
         }
