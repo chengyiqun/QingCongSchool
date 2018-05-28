@@ -108,8 +108,6 @@ public class TopicCommentAdapter extends RecyclerView.Adapter<TopicCommentAdapte
                     break;
                 case R.id.iv_comment:
                     System.out.println("评论");
-                    /*Intent intent=new Intent(v.getContext(),ReplyDialogActivity.class);
-                    v.getContext().startActivity(intent);*/
                     break;
                 case R.id.iv_menu:
                     Log.d("menu","menu");
