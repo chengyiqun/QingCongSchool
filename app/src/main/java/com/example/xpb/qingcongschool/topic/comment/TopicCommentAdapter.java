@@ -89,6 +89,7 @@ public class TopicCommentAdapter extends RecyclerView.Adapter<TopicCommentAdapte
                 case R.id.card_view:
                     System.out.println("单击CardView");
                     Intent intent = new Intent(v.getContext(), TopicCommentReplyActivity.class);
+                    mDataset.get(i).setTopicID(topicID);
                     intent.putExtra("comment", (Serializable) mDataset.get(i));
                     //intent.putExtra("userTeachComment", mDataset.get(i));
                     v.getContext().startActivity(intent);

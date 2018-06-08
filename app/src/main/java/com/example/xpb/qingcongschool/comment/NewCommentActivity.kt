@@ -37,7 +37,7 @@ class NewCommentActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_new_comment)
-        teachID = intent.getStringExtra("topicID")
+        teachID = intent.getStringExtra("teachID")
         println(teachID)
         val intent = Intent()
         setResult(0,intent)
@@ -57,7 +57,7 @@ class NewCommentActivity : BaseActivity() {
                         showSnackBar("评论不可少于2字")
                     }else{
                         val commentInfoMap = HashMap<String,Any>()
-                        commentInfoMap.put("topicID",teachID!!)
+                        commentInfoMap.put("teachID",teachID!!)
                         commentInfoMap.put("commentType",0)
                         commentInfoMap.put("score", (ratingBar_teachRating.rating).toInt())
                         commentInfoMap.put("content",comment_editText.text.toString())

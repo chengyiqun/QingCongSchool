@@ -1,5 +1,6 @@
 package com.example.xpb.qingcongschool.app
 import com.blankj.utilcode.util.Utils
+import com.example.xpb.qingcongschool.util.NetworkUtil
 
 
 import com.facebook.drawee.backends.pipeline.Fresco
@@ -23,6 +24,7 @@ class MyApplication : LitePalApplication() {//继承了那个数据库的 applic
         Fresco.initialize(this,config)
         //初始化工具类
         Utils.init(this)
+        NetworkUtil.init(this)
 
         //初始化com.facebook.stetho:stetho
         //Stetho.initializeWithDefaults(this);

@@ -1,5 +1,7 @@
 package com.example.xpb.qingcongschool.main
+
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -10,9 +12,13 @@ import android.support.v4.app.Fragment
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.app.AppCompatDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import com.blankj.utilcode.util.ToastUtils
 
@@ -32,6 +38,7 @@ import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.dialog_change_name.*
 
 import org.json.JSONException
 import org.json.JSONObject
@@ -41,6 +48,8 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import kotlinx.android.synthetic.main.fragment_me_after_entry.*
 import kotlinx.android.synthetic.main.fragment_me_before_entry.*
+import java.net.URLEncoder
+
 /**
  * Created by xpb on 2016/7/24.
  */
@@ -48,6 +57,8 @@ class UserFragment : Fragment(), View.OnClickListener {
     private var uri: Uri? = null
     private var uriPhoto: Uri? = null
     private var file: File? = null//头像
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, saveInstanceState: Bundle?): View? {
         if (MainActivity.islogin) {
             return inflater.inflate(R.layout.fragment_me_after_entry, container, false)
@@ -77,6 +88,7 @@ class UserFragment : Fragment(), View.OnClickListener {
         (activity as AppCompatActivity).setSupportActionBar(toolbar_islogin)
         ib_settings.setOnClickListener(this)
         ib_logininfo.setOnClickListener(this)
+        change_name_view.setOnClickListener(this)
         tv_name1.text = "昵称：" + MainActivity.userName
         tv_num.text = "手机号：" + MainActivity.phoneNum
         if (file!!.length() > 1024) {//文件大小大于1kb，证明图片存在的。
@@ -109,6 +121,7 @@ class UserFragment : Fragment(), View.OnClickListener {
         }
     }
 
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.ib_settings -> {
@@ -118,6 +131,75 @@ class UserFragment : Fragment(), View.OnClickListener {
             R.id.login_textview -> {
                 val intent = Intent(activity, LoginActivity::class.java)
                 startActivity(intent)
+            }
+            R.id.change_name_view -> {
+                println("改名")
+                val dialog: AppCompatDialog = AppCompatDialog(activity)
+                dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                val inflater = LayoutInflater.from(activity)
+                val dialogView = inflater.inflate(R.layout.dialog_change_name, null)
+                dialog.setContentView(dialogView)
+                val btConform = dialogView.findViewById<Button>(R.id.button_conform_name)
+                val etNewName = dialogView.findViewById<EditText>(R.id.editText_newName)
+                btConform.setOnClickListener(object : View.OnClickListener {
+                    override fun onClick(v: View?) {
+                        val newName = etNewName.text.toString()
+                        println(newName)
+                        if (newName == "") {
+                            ToastUtils.showShort("不能为空")
+                        } else if (newName.length > 10) {
+                            ToastUtils.showShort("不能超过10位")
+                        } else {
+                            val newName0 = URLEncoder.encode(newName,"UTF-8")
+                            println("UTF-8 URL编码名字"+newName0)
+                            val observable = RetrofitFactory.getInstance().changeName(newName0)
+                            observable.subscribeOn(Schedulers.io())
+                                    .observeOn(AndroidSchedulers.mainThread())
+                                    .subscribe(object :Observer<String>{
+                                        override fun onComplete() {
+                                            println("onComplete")
+                                        }
+                                        override fun onSubscribe(d: Disposable?) {}
+                                        override fun onNext(value: String?) {
+                                            println("onNext")
+                                            println(value)
+                                            val jsonObject = com.alibaba.fastjson.JSONObject.parseObject(value)
+                                            val result = jsonObject.getInteger("result")
+                                            when (result) {
+                                                TOKEN_ERROR->{
+                                                    println("请重新登陆")
+                                                    ToastUtils.showShort("请重新登陆")
+                                                }
+                                                NAME_EXISTS->{
+                                                    ToastUtils.showShort("该名字已重复")
+                                                    etNewName.setText("")
+                                                }
+                                                CHANGE_NAME_SUCCESS->{
+                                                    ToastUtils.showShort("改名成功")
+                                                    MainActivity.userName = newName
+                                                    val myLoginSharedPreferences = activity!!.getSharedPreferences("myLoginSharedPreferences",
+                                                            Activity.MODE_PRIVATE)
+                                                    val editor = myLoginSharedPreferences.edit()
+                                                    editor.putString("userName", MainActivity.userName)
+                                                    editor.commit()
+                                                    tv_name1.text=newName
+                                                    dialog.cancel()
+                                                }
+                                                else->{
+                                                    ToastUtils.showShort("未知错误 "+result)
+                                                }
+                                            }
+                                        }
+                                        override fun onError(e: Throwable?) {
+                                            e?.printStackTrace()
+                                            ToastUtils.showShort("服务器通信异常")
+                                        }
+                                    })
+
+                        }
+                    }
+                })
+                dialog.show()
             }
         }
     }
@@ -302,12 +384,17 @@ class UserFragment : Fragment(), View.OnClickListener {
 
     companion object {
         //startActivityForResult
-        private val REQUEST_CODE_TAKE_PHOTO = 1
-        private val REQUEST_CODE_ALBUM = 2
-        private val REQUEST_CODE_CROUP_PHOTO = 3
+        const val REQUEST_CODE_TAKE_PHOTO = 1
+        const val REQUEST_CODE_ALBUM = 2
+        const val REQUEST_CODE_CROUP_PHOTO = 3
 
         //上传头像返回值
-        val TOKEN_ERROR = 3004
-        val UPDATE_AVATAR_SUCCESS = 3005
+        const val TOKEN_ERROR = 3004
+        const val UPDATE_AVATAR_SUCCESS = 3005
+
+        //修改用户名返回值
+        const val CHANGE_NAME_SUCCESS = 3007
+        const val NAME_EXISTS = 3008
+
     }
 }

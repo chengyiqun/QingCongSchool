@@ -149,7 +149,11 @@ class SquareFragment : android.support.v4.app.Fragment(){
                                             val list0= JSON.parseObject(resultString,object :TypeReference<MutableList<Topic>>(){})
                                             mAdapter!!.appendList(list0)
                                             mAdapter!!.printList()
-                                            ToastUtils.showShort("刷新成功")
+                                            if(list0.size==0){
+                                                ToastUtils.showShort("没有更多了")
+                                            }else{
+                                                ToastUtils.showShort("刷新成功")
+                                            }
                                         }
                                         TOKEN_ERROR->{
                                             ToastUtils.showShort("请重新登陆")

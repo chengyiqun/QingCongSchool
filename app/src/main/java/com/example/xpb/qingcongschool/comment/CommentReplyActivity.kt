@@ -52,7 +52,7 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
                 println("回复")
                 val hashMap = HashMap<String, Any>()
                 hashMap.put("objectID", teachCommentID!!)
-                hashMap.put("topicID",teachID!!)
+                hashMap.put("teachID",teachID!!)
                 LogUtils.d(hashMap)
                 val intent = Intent(this,ReplyDialogActivity::class.java)
                 intent.putExtra("commentReplyInfo",hashMap)
@@ -92,7 +92,7 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
 
     private fun init() {
         val hashMap = intent.getSerializableExtra("userTeachComment") as HashMap<*, *>
-        teachID = intent.getStringExtra("topicID")
+        teachID = intent.getStringExtra("teachID")
         LogUtils.d("hashmap",hashMap)
         val uri = Uri.parse(RetrofitFactory.baseUrl + "/QingXiao/avatar/" + hashMap.get("avatar_store_name"))
         println(uri)
@@ -200,74 +200,5 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
                 }
             }
         })
-    }
-    private fun getCommentReplyListOnActivityResult() {
-        val hashMap = HashMap<String, Any>()
-        hashMap.put("teachCommentID", teachCommentID!!)
-        hashMap.put("nowTime", TimeFactory.getCurrentTime())
-        hashMap.put("sinceTime", "2018-05-13 17:51:39.004")
-        val gson = Gson()
-        val jsonString = gson.toJson(hashMap)
-        Utils.println("获取课程评论列表")
-
-        //检查网络
-        if (NetworkUtil.isNetworkAvailable(applicationContext)) {
-            dialog = Dialog(this@CommentReplyActivity)
-            dialog!!.setTitle("正在刷新，请稍后...")
-            dialog!!.setCancelable(true)
-            val body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), jsonString)
-            val observablelogin = RetrofitFactory.getInstance().getCommentReplyList(body)
-            observablelogin.subscribeOn(Schedulers.io())
-                    .doOnSubscribe({ _ ->
-                        Utils.println("doOnScribe,showDialog")
-                        if (dialog != null && !dialog!!.isShowing) {
-                            dialog!!.show()
-                        }
-                    })
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(object : Observer<String> {
-                        override fun onSubscribe(disposable: Disposable) {}
-                        override fun onNext(s: String) {
-                            println("onNext")
-                            val jsonObject = JSONObject.parseObject(s)
-                            println(jsonObject)
-                            result = jsonObject.getInteger("result")
-                            if (result == 3004) {
-                                ToastUtils.showShort("tokenError")
-                            } else {
-                                println("commentList:"+jsonObject.getJSONArray("commentReplyList"))
-                                val listHashMap = JSONArray.parseArray(jsonObject.getJSONArray("commentReplyList").toString(), HashMap::class.java)
-                                //https://www.cnblogs.com/pcheng/p/5336903.html
-                                //listHashMap 循环遍历删除
-                                val iterator = listHashMap.iterator()
-                                while(iterator.hasNext()){
-                                    val map = iterator.next()
-                                    if(map.get("comment_type")==0){
-                                        iterator.remove()
-                                    }
-                                }
-                                myDataset=listHashMap
-                                for (map in listHashMap)
-                                    println(map.toString()+"listHashMap map")
-                            }
-                        }
-
-                        override fun onError(throwable: Throwable) {
-                            dialog!!.cancel()
-                            throwable.printStackTrace()
-                        }
-
-                        override fun onComplete() {
-                            println("onComplete")
-                            dialog!!.cancel()
-                            mAdapter = MyAdapterReply(myDataset!!,teachID!!)
-                            comment_recycler_view!!.adapter = mAdapter
-                            mAdapter!!.notifyDataSetChanged()
-                        }
-                    })
-        } else {
-            Snackbar.make(recource_comment_rootview, "网络未连接", Snackbar.LENGTH_SHORT).show()
-        }
-
     }
 }

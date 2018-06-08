@@ -69,9 +69,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     // 填写从短信SDK应用后台注册得到的APPSECRET
     private static final String APPSECRET = "193dd6346affefdbf56831b200e96651";
 
-    public  static final int LOGIN_SUCCESS=3001;
-    public  static final int PASSWORD_ERROR=3002;
-    public  static final int USER_NOTEXIST=3003;
+    public static final int LOGIN_SUCCESS = 3001;
+    public static final int PASSWORD_ERROR = 3002;
+    public static final int USER_NOTEXIST = 3003;
 
 
     public Observable<ResponseBody> observablelogin;   //登录
@@ -91,6 +91,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         resetPasswordButton.setOnClickListener(this);
 
     }
+
     public void init() {
         mToolbar = (Toolbar) findViewById(R.id.toolbar_loggin);
         mToolbar.setTitle("用户登陆");
@@ -106,6 +107,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         passwordEditText = (EditText) findViewById(R.id.password_editText);
     }
 
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.login_button:
@@ -119,10 +121,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 Utils.println("开始登陆");
                 if (checkEdit()) {//检查注册信息
                     //检查网络
-                    if (NetworkUtil.isNetworkAvailable(getApplicationContext()))
-                        if (userNameEditText.getText().toString().equals(""))
+                    if (NetworkUtil.isNetworkAvailable(getApplicationContext())) {
+                        if ("".equals(userNameEditText.getText().toString())) {
                             Snackbar.make(root_linearLayout, "请输入账号", Snackbar.LENGTH_SHORT).show();
-                        else {
+                        } else {
                             //启动登录Thread
                             dialog = new Dialog(LoginActivity.this);
                             dialog.setTitle("正在登陆，请稍后...");
@@ -132,8 +134,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             observablelogin.subscribeOn(Schedulers.io())
                                     .doOnSubscribe(disposable -> {
                                         Utils.println("doOnScribe,showDiaglog");
-                                        if(dialog!=null&&!dialog.isShowing())
-                                        {
+                                        if (dialog != null && !dialog.isShowing()) {
                                             dialog.show();
                                         }
                                     })
@@ -194,8 +195,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                             if (result == LOGIN_SUCCESS) {
                                                 //登陆成功后把本地缓存的头像删了。
                                                 File file = new File(FileUtil.getCachePath(getApplicationContext()), "user-avatar.jpg");
-                                                if(file.exists())
-                                                {
+                                                if (file.exists()) {
                                                     file.delete();
                                                 }
                                                 Utils.println("跳到主界面！");
@@ -206,7 +206,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                 } catch (JSONException e) {
                                                     e.printStackTrace();
                                                 }
-                                                SharedPreferences myLoginSharedPreferences= getSharedPreferences("myLoginSharedPreferences",
+                                                SharedPreferences myLoginSharedPreferences = getSharedPreferences("myLoginSharedPreferences",
                                                         Activity.MODE_PRIVATE);
                                                 SharedPreferences.Editor editor = myLoginSharedPreferences.edit();
                                                 editor.putString("phoneNum", MainActivity.Companion.getPhoneNum());
@@ -215,7 +215,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                 editor.putString("userName", MainActivity.Companion.getUserName());
                                                 editor.commit();
 
-                                                Observable<ResponseBody> observableDownloadAvatar=RetrofitFactory.getInstance().downloadAvatar();
+                                                Observable<ResponseBody> observableDownloadAvatar = RetrofitFactory.getInstance().downloadAvatar();
                                                 observableDownloadAvatar.subscribeOn(Schedulers.io())
                                                         .observeOn(AndroidSchedulers.mainThread())
                                                         .subscribe(new Observer<ResponseBody>() {
@@ -228,8 +228,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                             public void onNext(ResponseBody responseBody) {
                                                                 Utils.println("这一步");
                                                                 boolean writtenToDisk = writeResponseBodyToDisk(responseBody);
-                                                                if(BuildConfig.DEBUG){
-                                                                    LogUtils.dTag("下载","file download was a success? " + writtenToDisk);
+                                                                if (BuildConfig.DEBUG) {
+                                                                    LogUtils.dTag("下载", "file download was a success? " + writtenToDisk);
                                                                 }
                                                                 dialog.cancel();
                                                                 finish();
@@ -239,7 +239,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                             public void onError(Throwable throwable) {
                                                                 throwable.printStackTrace();
                                                                 dialog.cancel();
-                                                                if(BuildConfig.DEBUG){
+                                                                if (BuildConfig.DEBUG) {
                                                                     LogUtils.dTag("下载文件", "没有头像");
                                                                 }
                                                                 finish();
@@ -257,7 +257,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                 passwordEditText.setText("");
                                                 Snackbar.make(root_linearLayout, "密码错误", Snackbar.LENGTH_SHORT).show();
                                             } else {
-                                                Snackbar.make(root_linearLayout, "登录失败 "+result, Snackbar.LENGTH_SHORT).show();
+                                                Snackbar.make(root_linearLayout, "登录失败 " + result, Snackbar.LENGTH_SHORT).show();
                                             }
                                             dialog.cancel();
                                         }
@@ -274,9 +274,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                         }
                                     });
                         }
-                    else {
+                    } else {
                         Snackbar.make(root_linearLayout, "网络未连接", Snackbar.LENGTH_SHORT).show();
                     }
+
                 }
 
                 break;
@@ -297,8 +298,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         try {
             // todo change the file location/name according to your needs
             File userAvatarFile = new File(FileUtil.getCachePath(getApplicationContext()), "user-avatar.jpg");
-            if (userAvatarFile.exists())
-            {
+            if (userAvatarFile.exists()) {
                 userAvatarFile.delete();
             }
 
@@ -325,7 +325,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     fileSizeDownloaded += read;
 
-                    if(BuildConfig.DEBUG){
+                    if (BuildConfig.DEBUG) {
                         LogUtils.dTag("下载文件", "file download: " + fileSizeDownloaded + " of " + fileSize);
                     }
                 }

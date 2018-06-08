@@ -1,5 +1,7 @@
 package com.example.xpb.qingcongschool.main
+import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
@@ -121,7 +123,6 @@ class MainActivity : AppCompatActivity() {
         var phoneNum: String? = ""
         var islogin = false//////////////////////默认值为false，true是调试用的
         var userName: String? = ""//用户昵称
-
         var fragmentNUM = 2
     }
 }

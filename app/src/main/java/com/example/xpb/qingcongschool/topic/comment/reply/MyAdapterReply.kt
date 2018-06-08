@@ -3,8 +3,6 @@ package com.example.xpb.qingcongschool.topic.comment.reply
 
 import android.content.Intent
 import android.net.Uri
-import android.support.v4.app.ActivityCompat.startActivityForResult
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,8 +25,16 @@ import com.facebook.drawee.view.SimpleDraweeView
  * Created by lenovo on 2017/10/15 0015.
  */
 
-class MyAdapterReply// Provide a suitable constructor (depends on the kind of dataset)
-(myDataset: List<HashMap<*, *>>, mteachID: String) : RecyclerView.Adapter<MyAdapterReply.MViewHolder>() {
+class MyAdapterReply(myDataset: MutableList<TopicCommentReply>, mTopicID: String) : RecyclerView.Adapter<MyAdapterReply.MViewHolder>() {
+    companion object {
+
+        lateinit var mDataset: MutableList<TopicCommentReply>
+        lateinit var topicID: String
+    }
+    // Return the size of your dataset (invoked by the layout manager)
+    override fun getItemCount(): Int {
+        return mDataset.size
+    }
 
 
     // Provide a reference to the views for each data item
@@ -91,21 +97,21 @@ class MyAdapterReply// Provide a suitable constructor (depends on the kind of da
                 R.id.tv_reply -> {
                     println("回复")
                     val hashMap = HashMap<String, Any>()
-                    hashMap.put("objectID", ((mDataset.get(i).get("teach_comment_id"))!!))
-                    hashMap.put("topicID",teachID)
+                    hashMap.put("topicID",topicID)
+                    hashMap.put("objectID", mDataset[i].getCommentID())
+                    hashMap.put("toUserID", mDataset[i].getUserID())
                     LogUtils.d(hashMap)
-                    val intent = Intent(v.context,ReplyDialogActivity::class.java)
+                    val intent = Intent(v.context,TopicCommentReplyDialogActivity::class.java)
                     intent.putExtra("commentReplyInfo",hashMap)
                     v.context.startActivity(intent)
                 }
-            }/*Intent intent=new Intent(v.getContext(),ReplyDialogActivity.class);
-                    v.getContext().startActivity(intent);*/
+            }
         }
     }
 
     init {
         mDataset = myDataset
-        teachID = mteachID
+        topicID = mTopicID
     }
 
     // Create new views (invoked by the layout manager)
@@ -129,27 +135,24 @@ class MyAdapterReply// Provide a suitable constructor (depends on the kind of da
         holder.tv_reply.tag = position
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.tv_username.text = mDataset[position]["toUsername"] as CharSequence
-        holder.tv_comment.text = ("@"+mDataset[position]["toUsername"]+"："+mDataset[position]["content"])
+        holder.tv_username.text = mDataset[position].getUserName() as CharSequence
+        if(mDataset[position].toUserName==null||mDataset[position].toUserName.equals("")){
+            System.out.println(position.toString() + " 回复的是评论，不是回复")
+            holder.tv_comment.text = mDataset[position].getContent()
+        }else{
+            holder.tv_comment.text = ("@"+mDataset[position].getToUserName()+"："+mDataset[position].getContent())
+        }
 
-        val timedate = mDataset[position]["comment_time"] as Long
-        holder.tv_publish_time.text = TimeFactory.second2TimeStrapString(timedate)
-        holder.tv_thumbUp_count_comment.text = (mDataset[position]["like_times"] as Int).toString()
-        val uri = Uri.parse(RetrofitFactory.baseUrl + "/QingXiao/avatar/" + mDataset[position]["avatar_store_name"])
+        holder.tv_publish_time.text = mDataset[position].getCommentTime()
+        holder.tv_thumbUp_count_comment.text = (mDataset[position].getLikeTimes()).toString()
+        val uri = Uri.parse(RetrofitFactory.baseUrl + "/QingXiao/avatar/" + mDataset[position].getAvatar_store_name())
         println(uri)
         holder.iv_user_avatar2.setImageURI(uri)
 
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount(): Int {
-        return mDataset.size
-    }
 
-    companion object {
 
-        lateinit var mDataset: List<HashMap<*, *>>
-        lateinit var teachID: String
-    }
+
 }

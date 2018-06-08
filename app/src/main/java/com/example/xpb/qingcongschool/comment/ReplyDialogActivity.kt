@@ -52,7 +52,7 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
                     showSnackBar("不可少于2字")
                 }else{
                     val commentInfoMap = HashMap<String,Any>()
-                    commentInfoMap.put("topicID",teachID!!)
+                    commentInfoMap.put("teachID",teachID!!)
                     commentInfoMap.put("commentType",1)
                     commentInfoMap.put("objectID", objectID!!)
                     commentInfoMap.put("content",emg_editText.text.toString())
@@ -123,7 +123,7 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
 
         val hashMap = intent.getSerializableExtra("commentReplyInfo") as HashMap<*,*>
         println(hashMap)
-        teachID=(hashMap["topicID"]).toString()
+        teachID=(hashMap["teachID"]).toString()
         objectID=(hashMap["objectID"]).toString()
 
 

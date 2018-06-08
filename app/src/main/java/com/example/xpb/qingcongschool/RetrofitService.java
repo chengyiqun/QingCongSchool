@@ -33,6 +33,9 @@ public interface RetrofitService {
 //注册
     Observable<ResponseBody> registerUser(@Body RequestBody user);
 
+    @POST("/QingXiao/User/changeName")
+    Observable<String> changeName(@Query("newName") String newName);
+
     @POST("/QingXiao/User/Login")
 //登陆
     Observable<ResponseBody> login(@Body RequestBody user);
@@ -102,4 +105,7 @@ public interface RetrofitService {
 
     @POST("/QingXiao/Topic/InsertComment")
     Observable<String> insertTopicComment(@Body RequestBody jsonStringTopicComment);
+
+    @POST("/QingXiao/Topic/GetCommentReplyList")
+    Observable<String> getTopicCommentReplyList(@Body RequestBody jsonStringTopicCommentReply);
 }

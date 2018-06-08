@@ -7,7 +7,6 @@ import android.os.Bundle
 import com.example.xpb.qingcongschool.R
 import android.app.Activity
 import android.app.Dialog
-import android.content.Intent
 import android.support.design.widget.Snackbar
 import android.view.*
 import android.view.inputmethod.InputMethodManager
@@ -28,56 +27,56 @@ import kotlinx.android.synthetic.main.dialog_reply.*
 import okhttp3.RequestBody
 
 
-class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojiconClickedListener, EmojiconsFragment.OnEmojiconBackspaceClickedListener,View.OnClickListener{
+class TopicCommentReplyDialogActivity : AppCompatActivity(), EmojiconGridFragment.OnEmojiconClickedListener, EmojiconsFragment.OnEmojiconBackspaceClickedListener, View.OnClickListener {
 
-    private var teachID: String? = null
-    private var objectID:String ? = null
+    private var  hashMap:HashMap<*,*>?=null
+    private var topicID: String? = null
+    private var objectID: String? = null
+    private var toUserID:String? = null
     private var dialog: Dialog? = null
-    private var result:Int? =0
+    private var result: Int? = 0
+
     companion object {
-        const val INSERT_COMMENT_SUCCESS = 3221
-        const val TEACH_NOTEXIST = 3222
-        const val COURSE_NOTEXIST = 3223
-        const val TEACHER_NOTEXIST = 3224
-        const val STUDENTCOURSE_NOTEXIST = 3225
+        const val INSERT_TOPICCOMMENTREPLY_SUCCESS = 3441
         const val TOKEN_ERROR = 3004
     }
 
     @Override
     override fun onClick(v: View?) {
-        when(v?.id){
-            R.id.imageButton_send->{
+        when (v?.id) {
+            R.id.imageButton_send -> {
                 println("发送")
-                if(emg_editText.text.toString().length<2){
+                if (emg_editText.text.toString().length < 2) {
                     showSnackBar("不可少于2字")
-                }else{
-                    val commentInfoMap = HashMap<String,Any>()
-                    commentInfoMap.put("topicID",teachID!!)
-                    commentInfoMap.put("commentType",1)
+                } else {
+                    val commentInfoMap = HashMap<String, Any>()
+                    commentInfoMap.put("topicID", topicID!!)
+                    commentInfoMap.put("commentType", 1)
                     commentInfoMap.put("objectID", objectID!!)
-                    commentInfoMap.put("content",emg_editText.text.toString())
-                    commentInfoMap.put("isAnonymous",0)
-                    val commentInfo:String = Gson().toJson(commentInfoMap)
+                    if (hashMap!!.contains("toUserID")){
+                        commentInfoMap.put("toUserID",toUserID!!)
+                    }
+                    commentInfoMap.put("content", emg_editText.text.toString())
+                    val commentInfo: String = Gson().toJson(commentInfoMap)
                     println(commentInfo)
                     insertTeachComment(commentInfo)
                 }
             }
-            R.id.iv_chose_emoji->{
-                if(emojicons.visibility==View.GONE){
+            R.id.iv_chose_emoji -> {
+                if (emojicons.visibility == View.GONE) {
                     hideSoftKeyboard()
-                    emojicons.visibility=View.VISIBLE
-                    iv_chose_emoji.isSelected=true
-                }else{
+                    emojicons.visibility = View.VISIBLE
+                    iv_chose_emoji.isSelected = true
+                } else {
                     showSoftKeyboard()
-                    emojicons.visibility=View.GONE
-                    iv_chose_emoji.isSelected=false
+                    emojicons.visibility = View.GONE
+                    iv_chose_emoji.isSelected = false
                 }
             }
-            R.id.emg_editText->{
-                if(emojicons.visibility==View.VISIBLE)
-                {
-                    emojicons.visibility=View.GONE
-                    iv_chose_emoji.isSelected=false
+            R.id.emg_editText -> {
+                if (emojicons.visibility == View.VISIBLE) {
+                    emojicons.visibility = View.GONE
+                    iv_chose_emoji.isSelected = false
                 }
             }
         }
@@ -107,8 +106,8 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
         super.onCreate(savedInstanceState)
         setContentView(R.layout.dialog_reply)
         setEmojiconFragment(false)//设置emoji选择器Fragment//false是苹果风格，true是安卓风格
-        emojicons.layoutParams.height=600//设置高度，最好和输入法一样高
-        emojicons.visibility=View.GONE
+        emojicons.layoutParams.height = 600//设置高度，最好和输入法一样高
+        emojicons.visibility = View.GONE
         val dialogWindow = this.window
         dialogWindow.setGravity(Gravity.BOTTOM)
         dialogWindow.setBackgroundDrawable(ColorDrawable(Color.WHITE))//dialog设置这货才能横向满屏，不过此处只是设个背景而已
@@ -121,10 +120,13 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
         emg_editText.setOnClickListener(this)
 
 
-        val hashMap = intent.getSerializableExtra("commentReplyInfo") as HashMap<*,*>
+        hashMap = intent.getSerializableExtra("commentReplyInfo") as HashMap<*, *>
         println(hashMap)
-        teachID=(hashMap["topicID"]).toString()
-        objectID=(hashMap["objectID"]).toString()
+        topicID = (hashMap!!["topicID"]).toString()
+        objectID = (hashMap!!["objectID"]).toString()
+        if(hashMap!!.contains("toUserID")){
+            toUserID = hashMap!!["toUserID"] as String
+        }
 
 
         imageButton_send.setOnClickListener(this)
@@ -137,6 +139,7 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
             true
         } else super.onTouchEvent(event)
     }
+
     private fun isOutOfBounds(context: Activity, event: MotionEvent): Boolean {
         val x = event.x.toInt()
         val y = event.y.toInt()
@@ -199,24 +202,24 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
 
     override fun onResume() {
         super.onResume()
-        if(emojicons.visibility==View.VISIBLE){
-            emojicons.visibility=View.GONE
+        if (emojicons.visibility == View.VISIBLE) {
+            emojicons.visibility = View.GONE
         }
     }
 
-    fun showSnackBar(text:String) {
+    fun showSnackBar(text: String) {
         Snackbar.make(new_sub_comment_rootView, text, Snackbar.LENGTH_SHORT).show()
     }
 
     private fun insertTeachComment(commentInfo: String) {
-        if(NetworkUtil.isNetworkAvailable(this@ReplyDialogActivity)) {
-            dialog = Dialog(this@ReplyDialogActivity)
+        if (NetworkUtil.isNetworkAvailable(this@TopicCommentReplyDialogActivity)) {
+            dialog = Dialog(this@TopicCommentReplyDialogActivity)
             dialog!!.setTitle("正在刷新，请稍后...")
             dialog!!.setCancelable(true)
             val body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), commentInfo)
-            val observableInsertTeachComment = RetrofitFactory.getInstance().insertTeachComment(body)
+            val observableInsertTeachComment = RetrofitFactory.getInstance().insertTopicComment(body)
             observableInsertTeachComment.subscribeOn(Schedulers.io())
-                    .doOnSubscribe({_->
+                    .doOnSubscribe({ _ ->
                         Utils.println("doOnScribe,showDialog")
                         if (dialog != null && !dialog!!.isShowing) {
                             dialog!!.show()
@@ -226,26 +229,27 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
                     .subscribe(object : Observer<String> {
                         override fun onComplete() {
                             dialog!!.cancel()
-                            if(result== INSERT_COMMENT_SUCCESS){
+                            if (result == INSERT_TOPICCOMMENTREPLY_SUCCESS) {
+                                println("onComplete")
                                 finish()
                             }
                         }
+
                         override fun onSubscribe(d: Disposable?) {}
                         override fun onNext(s: String?) {
                             val jsonObject = JSONObject.parseObject(s)
                             result = jsonObject.getInteger("result")
-                            when(result){
-                                INSERT_COMMENT_SUCCESS->{
+                            when (result) {
+                                INSERT_TOPICCOMMENTREPLY_SUCCESS -> {
                                     ToastUtils.showShort("发送成功")
-                                    result= INSERT_COMMENT_SUCCESS
+                                    result = INSERT_TOPICCOMMENTREPLY_SUCCESS
                                 }
-                                TEACH_NOTEXIST->{ToastUtils.showShort("教学活动不存在")}
-                                COURSE_NOTEXIST->{ToastUtils.showShort("课程不存在")}
-                                TEACHER_NOTEXIST->{ToastUtils.showShort("教师不存在")}
-                                STUDENTCOURSE_NOTEXIST->{ToastUtils.showShort("选课信息不在数据库")}
-                                TOKEN_ERROR->{ToastUtils.showShort("请重新登陆")}
+                                TOKEN_ERROR -> {
+                                    ToastUtils.showShort("请重新登陆")
+                                }
                             }
                         }
+
                         override fun onError(e: Throwable?) {
                             dialog!!.cancel()
                             ToastUtils.showLong("服务器通信异常")
@@ -253,7 +257,7 @@ class ReplyDialogActivity : AppCompatActivity() , EmojiconGridFragment.OnEmojico
                         }
 
                     })
-        }else{
+        } else {
             showSnackBar("网络未连接")
         }
     }

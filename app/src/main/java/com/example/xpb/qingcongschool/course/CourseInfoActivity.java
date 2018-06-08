@@ -92,7 +92,7 @@ public class CourseInfoActivity extends AppCompatActivity implements View.OnClic
         switch (v.getId()) {
             case R.id.button_comment://实现点击评论，调出评论页面
                 Intent intent0=new Intent(this, CommentActivity.class);
-                intent0.putExtra("topicID", teachID);
+                intent0.putExtra("teachID", teachID);
                 startActivity(intent0);
 
                 break;

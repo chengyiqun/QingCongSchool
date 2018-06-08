@@ -92,13 +92,13 @@ class MyAdapterReply// Provide a suitable constructor (depends on the kind of da
                     println("回复")
                     val hashMap = HashMap<String, Any>()
                     hashMap.put("objectID", ((mDataset.get(i).get("teach_comment_id"))!!))
-                    hashMap.put("topicID",teachID)
+                    hashMap.put("teachID",teachID)
                     LogUtils.d(hashMap)
                     val intent = Intent(v.context,ReplyDialogActivity::class.java)
                     intent.putExtra("commentReplyInfo",hashMap)
                     v.context.startActivity(intent)
                 }
-            }/*Intent intent=new Intent(v.getContext(),ReplyDialogActivity.class);
+            }/*Intent intent=new Intent(v.getContext(),TopicCommentReplyDialogActivity.class);
                     v.getContext().startActivity(intent);*/
         }
     }

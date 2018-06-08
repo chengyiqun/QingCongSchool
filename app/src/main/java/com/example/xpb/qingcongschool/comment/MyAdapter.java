@@ -89,7 +89,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MViewHolder> {
                 case R.id.card_view:
                     System.out.println("单击CardView");
                     Intent intent = new Intent(v.getContext(), CommentReplyActivity.class);
-                    intent.putExtra("topicID",teachID);
+                    intent.putExtra("teachID",teachID);
                     intent.putExtra("userTeachComment", mDataset.get(i));
                     v.getContext().startActivity(intent);
                     break;
@@ -108,7 +108,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MViewHolder> {
                     break;
                 case R.id.iv_comment:
                     System.out.println("评论");
-                    /*Intent intent=new Intent(v.getContext(),ReplyDialogActivity.class);
+                    /*Intent intent=new Intent(v.getContext(),TopicCommentReplyDialogActivity.class);
                     v.getContext().startActivity(intent);*/
                     break;
                 case R.id.iv_menu:
