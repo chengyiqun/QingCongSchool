@@ -42,7 +42,9 @@ public class RetrofitFactory {
                 builder.addHeader("accessToken", MainActivity.Companion.getAccessToken());
                 String encodedUserName= URLEncoder.encode(MainActivity.Companion.getUserName(),"UTF-8");
                 builder.addHeader("userName",encodedUserName);
-
+                String userAgent = NetworkUtil.getUserAgent();
+                System.out.println("登陆用户代理"+userAgent);
+                builder.removeHeader("User-Agent").addHeader("User-Agent", userAgent);
                 //新增的响应拦截by程义群
                 return chain.proceed(builder.build());
             }).connectTimeout(30, TimeUnit.SECONDS).
@@ -67,7 +69,7 @@ public class RetrofitFactory {
             addInterceptor(chain -> {
                 Request.Builder  builder = chain.request().newBuilder();
                 String userAgent = NetworkUtil.getUserAgent();
-                System.out.println("用户代理"+userAgent);
+                System.out.println("登陆用户代理"+userAgent);
                 builder.removeHeader("User-Agent").addHeader("User-Agent", userAgent);
                 //新增的响应拦截by程义群
                 Response response=chain.proceed(builder.build());
@@ -97,7 +99,9 @@ public class RetrofitFactory {
             builder.addHeader("accessToken", MainActivity.Companion.getAccessToken());
             String encodedUserName= URLEncoder.encode(MainActivity.Companion.getUserName(),"UTF-8");
             builder.addHeader("userName",encodedUserName);
-
+            String userAgent = NetworkUtil.getUserAgent();
+            System.out.println("登陆用户代理"+userAgent);
+            builder.removeHeader("User-Agent").addHeader("User-Agent", userAgent);
             Response response = chain.proceed(builder.build());
             //将ResponseBody转换成我们需要的FileResponseBody
             return response.newBuilder().body(new FileResponseBody<T>(response.body(), callback)).build();

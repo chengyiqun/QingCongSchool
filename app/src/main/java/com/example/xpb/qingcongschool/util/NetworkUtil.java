@@ -10,6 +10,7 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.webkit.WebSettings;
 
+import com.blankj.utilcode.BuildConfig;
 import com.blankj.utilcode.util.Utils;
 
 /**
@@ -62,6 +63,8 @@ public class NetworkUtil {
                 sb.append(c);
             }
         }
+        sb.append(";QingXiao/");//加上青校的版本信息
+        sb.append(BuildConfig.VERSION_NAME);
         return sb.toString();
     }
 }
