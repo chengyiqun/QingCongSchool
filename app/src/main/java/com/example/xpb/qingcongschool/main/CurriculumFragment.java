@@ -316,8 +316,8 @@ public class CurriculumFragment extends Fragment implements View.OnClickListener
      */
     public void initSectionView(View courseFragment) {
         section_Layout = courseFragment.findViewById(R.id.section_ll);
-        monthWidth = MyApplication.Companion.getScreenwidth()/15;
-        sectionHeight = (MyApplication.Companion.getCourceLayoutHeightPX()-divideWidth * sectionNumber)/sectionNumber;
+        monthWidth = MyApplication.getScreenwidth()/15;
+        sectionHeight = (MyApplication.getCourceLayoutHeightPX()-divideWidth * sectionNumber)/sectionNumber;
         LinearLayout.LayoutParams p = new LinearLayout.LayoutParams(
                 monthWidth,
                 sectionHeight

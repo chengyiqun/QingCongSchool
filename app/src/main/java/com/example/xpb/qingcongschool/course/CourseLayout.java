@@ -6,7 +6,6 @@ import android.util.DisplayMetrics;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.example.xpb.qingcongschool.app.MyApplication;
 import com.example.xpb.qingcongschool.util.Utils;
 
@@ -39,10 +38,14 @@ public class CourseLayout extends ViewGroup {
 
     public CourseLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        width = getScreenWidth();//默认宽度全屏
-        height = MyApplication.Companion.getCourceLayoutHeightPX();//默认高度600dp 转换成PX
-        divideWidth = Utils.dip2px(2);//默认分隔线宽度2dp
-        divideHeight = Utils.dip2px(2);//默认分隔线高度2dp
+        //默认宽度全屏
+        width = getScreenWidth();
+        //默认高度600dp 转换成PX
+        height = MyApplication.getCourceLayoutHeightPX();
+        //默认分隔线宽度2dp
+        divideWidth = Utils.dip2px(2);
+        //默认分隔线高度2dp
+        divideHeight = Utils.dip2px(2);
     }
 
 

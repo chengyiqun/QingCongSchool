@@ -1,29 +1,20 @@
 package com.example.xpb.qingcongschool;
 
 
-import android.support.annotation.NonNull;
-import android.webkit.WebView;
-
-import com.blankj.utilcode.util.LogUtils;
-import com.example.xpb.qingcongschool.app.MyApplication;
 import com.example.xpb.qingcongschool.course.resource.download.FileResponseBody;
 import com.example.xpb.qingcongschool.course.resource.upload.RetrofitCallback;
 import com.example.xpb.qingcongschool.main.MainActivity;
 import com.example.xpb.qingcongschool.util.NetworkUtil;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.concurrent.TimeUnit;
 
-import okhttp3.Interceptor;
-import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Multipart;
 
 /**
  * Created by 程义群（空灵入耳） on 2017/3/3.

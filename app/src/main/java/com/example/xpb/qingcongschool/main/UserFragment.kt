@@ -38,7 +38,6 @@ import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.dialog_change_name.*
 
 import org.json.JSONException
 import org.json.JSONObject
@@ -83,7 +82,7 @@ class UserFragment : Fragment(), View.OnClickListener {
             uri = Uri.fromFile(file)
         } else {
             //通过FileProvider创建一个content类型的Uri(android 7.0需要这样的方法跨应用访问)
-            uri = FileProvider.getUriForFile(activity!!, MyApplication.packagename, file!!)
+            uri = FileProvider.getUriForFile(activity!!, MyApplication.PACKAGE_NAME, file!!)
         }
         (activity as AppCompatActivity).setSupportActionBar(toolbar_islogin)
         ib_settings.setOnClickListener(this)
@@ -217,7 +216,7 @@ class UserFragment : Fragment(), View.OnClickListener {
             uriPhoto = Uri.fromFile(file)
         } else {
             //通过FileProvider创建一个content类型的Uri(android 7.0需要这样的方法跨应用访问)
-            uriPhoto = FileProvider.getUriForFile(activity!!, MyApplication.packagename, file)
+            uriPhoto = FileProvider.getUriForFile(activity!!, MyApplication.PACKAGE_NAME, file)
         }
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)

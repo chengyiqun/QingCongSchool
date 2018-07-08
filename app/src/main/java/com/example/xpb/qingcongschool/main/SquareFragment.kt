@@ -42,6 +42,9 @@ class SquareFragment : android.support.v4.app.Fragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        //设置该方法为true后，可以让fragment在activity被重建时保持实例不变。
+        //https://www.jianshu.com/p/fb14480e47fb
+        retainInstance = true;
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

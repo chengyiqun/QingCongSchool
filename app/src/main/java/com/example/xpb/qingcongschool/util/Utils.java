@@ -45,7 +45,7 @@ public class Utils {
     }};
 
     public static int dip2px(float dip) {
-        return (int) (dip * MyApplication.Companion.getScale() + 0.5f);
+        return (int) (dip * MyApplication.getScale() + 0.5f);
     }
 
     public static void println(String s){//用于只在调试时输出
