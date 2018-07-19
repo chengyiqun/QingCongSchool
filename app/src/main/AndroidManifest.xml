@@ -34,7 +34,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".RegisterActivity" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".LoginActivity"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".NetworkBaseActivity" />
         <activity android:name=".course.GetCourseActivity" />
         <activity android:name=".course.CourseInfoActivity" />
