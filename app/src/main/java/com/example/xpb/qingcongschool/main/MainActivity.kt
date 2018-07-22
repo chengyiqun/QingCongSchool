@@ -1,5 +1,5 @@
 package com.example.xpb.qingcongschool.main
-import android.annotation.SuppressLint
+
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
@@ -15,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
-    private var mViewPager:NoScrollViewPager?=null
+    private var mViewPager: NoScrollViewPager? = null
     //双击返回
     //记录用户首次点击返回键的时间
     private var firstTime: Long = 0
@@ -40,28 +40,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         logginState()
-        mViewPager=findViewById(R.id.m_viewPage)
+        mViewPager = findViewById(R.id.m_viewPage)
         initsview()
     }
 
     private fun initsview() {
-        val list= ArrayList<Fragment>()
+        val list = ArrayList<Fragment>()
         list.add(SquareFragment())
         list.add(CurriculumFragment())
         list.add(UserFragment())
         list.add(MoreFragment())
-        mViewPager?.adapter = MyFragmentAdapter(supportFragmentManager,list)
+        mViewPager?.adapter = MyFragmentAdapter(supportFragmentManager, list)
         mViewPager?.offscreenPageLimit = 3
 
         bottom_navigation
                 .setMode(BottomNavigationBar.MODE_FIXED)
-                .addItem(BottomNavigationItem(R.drawable.bottom_menu_square,"广场"))
-                .addItem(BottomNavigationItem(R.drawable.bottom_menu_curriculum,"课表"))
-                .addItem(BottomNavigationItem(R.drawable.bottom_menu_user,"用户"))
-                .addItem(BottomNavigationItem(R.drawable.bottom_menu_user,"更多"))
+                .addItem(BottomNavigationItem(R.drawable.bottom_menu_square, "广场"))
+                .addItem(BottomNavigationItem(R.drawable.bottom_menu_curriculum, "课表"))
+                .addItem(BottomNavigationItem(R.drawable.bottom_menu_user, "用户"))
+                .addItem(BottomNavigationItem(R.drawable.bottom_menu_user, "更多"))
                 .initialise()
 
-        bottom_navigation.setTabSelectedListener(object :BottomNavigationBar.OnTabSelectedListener{
+        bottom_navigation.setTabSelectedListener(object : BottomNavigationBar.OnTabSelectedListener {
             override fun onTabReselected(position: Int) {
             }
 
@@ -70,10 +70,10 @@ class MainActivity : AppCompatActivity() {
 
             override fun onTabSelected(position: Int) {
                 when (position) {
-                    0 -> mViewPager?.setCurrentItem(0,false)
-                    1 -> mViewPager?.setCurrentItem(1,false)
-                    2 -> mViewPager?.setCurrentItem(2,false)
-                    3 -> mViewPager?.setCurrentItem(3,false)
+                    0 -> mViewPager?.setCurrentItem(0, false)
+                    1 -> mViewPager?.setCurrentItem(1, false)
+                    2 -> mViewPager?.setCurrentItem(2, false)
+                    3 -> mViewPager?.setCurrentItem(3, false)
                 }
             }
 
@@ -89,8 +89,6 @@ class MainActivity : AppCompatActivity() {
         accessToken = myLoginSharedPreferences.getString("accessToken", "")
         userName = myLoginSharedPreferences.getString("userName", "")
     }
-
-
 
 
     override fun onResume() {
