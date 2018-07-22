@@ -6,6 +6,7 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'com.antfortune.freeline'
 android {
     compileSdkVersion 27
     buildToolsVersion '27.0.3'
