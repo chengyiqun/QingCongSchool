@@ -15,7 +15,6 @@ public class NoScrollViewPager extends ViewPager {
 
     public NoScrollViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
-        // TODO Auto-generated constructor stub
     }
 
     public NoScrollViewPager(Context context) {

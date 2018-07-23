@@ -83,7 +83,6 @@ public class UploadCourseResourceActivity extends BaseActivity implements View.O
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        // TODO Auto-generated method stub
                         callUploadFile.cancel();
                     }
                 });

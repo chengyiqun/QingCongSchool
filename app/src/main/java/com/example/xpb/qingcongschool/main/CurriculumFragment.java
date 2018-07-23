@@ -113,7 +113,7 @@ public class CurriculumFragment extends Fragment implements View.OnClickListener
                 DataSupport.deleteAll(Course.class);
                 Intent intent = getActivity().getPackageManager().getLaunchIntentForPackage(getActivity().getPackageName());
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                MainActivity.Companion.setFragmentNUM(1);
+                MainActivity.fragmentNUM=(1);
                 startActivity(intent);
                 ToastUtils.showShort("课表已清除");
                 break;
@@ -134,7 +134,7 @@ public class CurriculumFragment extends Fragment implements View.OnClickListener
             course_button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(MainActivity.Companion.getIslogin()){
+                    if(MainActivity.islogin){
                         Intent intent = new Intent(getActivity(), GetCourseActivity.class);
                         getActivity().startActivity(intent);
                     }else {

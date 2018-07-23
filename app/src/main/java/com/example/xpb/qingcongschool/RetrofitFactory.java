@@ -30,8 +30,8 @@ public class RetrofitFactory {
     private static OkHttpClient  httpClient = new OkHttpClient.Builder().
             addInterceptor(chain -> {
                 Request.Builder  builder = chain.request().newBuilder();
-                builder.addHeader("accessToken", MainActivity.Companion.getAccessToken());
-                String encodedUserName= URLEncoder.encode(MainActivity.Companion.getUserName(),"UTF-8");
+                builder.addHeader("accessToken", MainActivity.accessToken);
+                String encodedUserName= URLEncoder.encode(MainActivity.userName,"UTF-8");
                 builder.addHeader("userName",encodedUserName);
                 String userAgent = NetworkUtil.getUserAgent();
                 System.out.println("登陆用户代理"+userAgent);
@@ -64,7 +64,7 @@ public class RetrofitFactory {
                 builder.removeHeader("User-Agent").addHeader("User-Agent", userAgent);
                 //新增的响应拦截by程义群
                 Response response=chain.proceed(builder.build());
-                MainActivity.Companion.setAccessToken(response.header("accessToken", "NoaccessToken"));
+                MainActivity.accessToken=(response.header("accessToken", "NoaccessToken"));
                 return response;
             }).connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30,TimeUnit.SECONDS)
@@ -87,8 +87,8 @@ public class RetrofitFactory {
         OkHttpClient.Builder clientBuilder = new OkHttpClient.Builder();
         clientBuilder.addInterceptor(chain -> {
             Request.Builder  builder = chain.request().newBuilder();
-            builder.addHeader("accessToken", MainActivity.Companion.getAccessToken());
-            String encodedUserName= URLEncoder.encode(MainActivity.Companion.getUserName(),"UTF-8");
+            builder.addHeader("accessToken", MainActivity.accessToken);
+            String encodedUserName= URLEncoder.encode(MainActivity.userName,"UTF-8");
             builder.addHeader("userName",encodedUserName);
             String userAgent = NetworkUtil.getUserAgent();
             System.out.println("登陆用户代理"+userAgent);

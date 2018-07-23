@@ -2,23 +2,17 @@ package com.example.xpb.qingcongschool;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 
 import com.example.xpb.qingcongschool.main.BaseActivity;
 import com.example.xpb.qingcongschool.util.NetworkUtil;
@@ -32,12 +26,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+
 import cn.smssdk.SMSSDK;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.RequestBody;
@@ -72,6 +66,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     @SuppressLint("HandlerLeak")
     final Handler handler = new Handler() {
 
+        @Override
         public void handleMessage(Message msg) {         // handle message
             switch (msg.what) {
                 case 1:
@@ -90,6 +85,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                         recLen=60;//重置计数
                         getIdentifyCodeButton.setTextSize(12);
                     }
+
             }
 
             super.handleMessage(msg);
@@ -133,12 +129,14 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         passwordEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if (hasFocus)
+                if (hasFocus) {
                     Toast.makeText(RegisterActivity.this,"6-16个字符；不能包含空格\n不能是9位以下纯数字",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
 
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.get_identify_button:  //获取验证码
@@ -178,7 +176,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void onDestroy() {
-        // TODO Auto-generated method stub
         super.onDestroy();
         SMSSDK.unregisterAllEventHandler();
     }

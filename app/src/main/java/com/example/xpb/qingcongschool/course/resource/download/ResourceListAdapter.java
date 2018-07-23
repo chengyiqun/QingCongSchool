@@ -133,7 +133,6 @@ public class ResourceListAdapter extends RecyclerView.Adapter<ResourceListAdapte
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            // TODO Auto-generated method stub
                             callDownloadFile.cancel();
                             if (file.exists()) {
                                 file.delete();

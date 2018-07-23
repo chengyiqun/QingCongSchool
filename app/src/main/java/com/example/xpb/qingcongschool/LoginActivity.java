@@ -7,13 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.DebugUtils;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -33,8 +28,6 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -46,13 +39,9 @@ import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import retrofit2.Response;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private Toolbar mToolbar;
@@ -199,20 +188,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                                     file.delete();
                                                 }
                                                 Utils.println("跳到主界面！");
-                                                MainActivity.Companion.setIslogin(true);
-                                                MainActivity.Companion.setPhoneNum(phoneNum);
+                                                MainActivity.islogin = true;
+                                                MainActivity.phoneNum = phoneNum;
                                                 try {
-                                                    MainActivity.Companion.setUserName(jsonObj.getString("userName"));
+                                                    MainActivity.userName = (jsonObj.getString("userName"));
                                                 } catch (JSONException e) {
                                                     e.printStackTrace();
                                                 }
                                                 SharedPreferences myLoginSharedPreferences = getSharedPreferences("myLoginSharedPreferences",
                                                         Activity.MODE_PRIVATE);
                                                 SharedPreferences.Editor editor = myLoginSharedPreferences.edit();
-                                                editor.putString("phoneNum", MainActivity.Companion.getPhoneNum());
-                                                editor.putBoolean("islogin", MainActivity.Companion.getIslogin());
-                                                editor.putString("accessToken", MainActivity.Companion.getAccessToken());
-                                                editor.putString("userName", MainActivity.Companion.getUserName());
+                                                editor.putString("phoneNum", MainActivity.phoneNum);
+                                                editor.putBoolean("islogin", MainActivity.islogin);
+                                                editor.putString("accessToken", MainActivity.accessToken);
+                                                editor.putString("userName", MainActivity.userName);
                                                 editor.commit();
 
                                                 Observable<ResponseBody> observableDownloadAvatar = RetrofitFactory.getInstance().downloadAvatar();
@@ -296,7 +285,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private boolean writeResponseBodyToDisk(ResponseBody body) {
         try {
-            // todo change the file location/name according to your needs
             File userAvatarFile = new File(FileUtil.getCachePath(getApplicationContext()), "user-avatar.jpg");
             if (userAvatarFile.exists()) {
                 userAvatarFile.delete();
@@ -366,7 +354,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     @Override
     public void finish() {//关闭这个Activity时重新加载整个应用，用来刷新登陆状态
         //TopicActivity.islogin=true;
-        MainActivity.Companion.setFragmentNUM(2);
+        MainActivity.fragmentNUM = 2;
         Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);

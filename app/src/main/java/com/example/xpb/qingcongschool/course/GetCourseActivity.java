@@ -39,7 +39,7 @@ import okhttp3.ResponseBody;
  * Created by xpb on 2017/3/4.
  */
 public class GetCourseActivity extends BaseActivity implements View.OnClickListener {
-    Context context=this;
+    Context context = this;
 
     public Observable<ResponseBody> observableGetIdentifyCode;   //登录之前获取验证码
     public Observable<String> observableGetCourse;   //获取课表
@@ -51,9 +51,7 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
     private EditText identifyCodeEditText;
     private ImageView codeImage;
 
-    private boolean getCoursesSuccessed=false;
-
-
+    private boolean getCoursesSuccessed = false;
 
 
     @Override
@@ -64,13 +62,14 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
         reIdentifyButton.setOnClickListener(this);
         loginButton.setOnClickListener(this);
     }
+
     public void init() {
         loginButton = (Button) findViewById(R.id.login_button);
         reIdentifyButton = (Button) findViewById(R.id.getCode_button);
         studentCodeEditText = (EditText) findViewById(R.id.studentname_editText);
         passwordEditText = (EditText) findViewById(R.id.password_editText);
         identifyCodeEditText = (EditText) findViewById(R.id.identifyCode_editText);
-        if(NetworkUtil.isNetworkAvailable(context)){
+        if (NetworkUtil.isNetworkAvailable(context)) {
             identifyCodeEditText.setText("");
             observableGetIdentifyCode = RetrofitFactory.getInstance().getIdentifyCode();
             observableGetIdentifyCode.subscribeOn(Schedulers.io())                     //登录进教务系统之前，获取验证码
@@ -107,8 +106,8 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                         public void onComplete() {
                         }
                     });
-        }else {
-            Toast.makeText(context,"网络不可用",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "网络不可用", Toast.LENGTH_SHORT).show();
         }
         codeImage = (ImageView) findViewById(R.id.codeImage);
     }
@@ -116,7 +115,7 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        if(NetworkUtil.isNetworkAvailable(context)){
+        if (NetworkUtil.isNetworkAvailable(context)) {
             switch (v.getId()) {
                 case R.id.getCode_button:
                     identifyCodeEditText.setText("");
@@ -134,11 +133,14 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(new io.reactivex.Observer<Bitmap>() {
                                 @Override
-                                public void onSubscribe(Disposable d) { }
+                                public void onSubscribe(Disposable d) {
+                                }
+
                                 @Override
                                 public void onNext(Bitmap bitmap) {
                                     codeImage.setImageBitmap(bitmap);
                                 }
+
                                 @Override
                                 public void onError(Throwable e) {
                                     codeImage.setContentDescription("刷新验证码");
@@ -146,7 +148,8 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                                 }
 
                                 @Override
-                                public void onComplete() {}
+                                public void onComplete() {
+                                }
                             });
 
                     break;
@@ -155,57 +158,58 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                     String txtUserName = studentCodeEditText.getText().toString();
                     String TextBox2 = passwordEditText.getText().toString();
                     String txtSecretCode = identifyCodeEditText.getText().toString();
-                    if(txtUserName.equals("")||TextBox2.equals("")){
+                    if (txtUserName.equals("") || TextBox2.equals("")) {
                         ToastUtils.showShort("学号或密码为空");
-                    }else {
-                        if (txtSecretCode.equals("")){
+                    } else {
+                        if (txtSecretCode.equals("")) {
                             ToastUtils.showShort("请输入验证码");
-                        }
-                        else {
+                        } else {
                             HashMap<String, Object> userInfo = new HashMap<String, Object>();
-                            userInfo.put("txtUserName",txtUserName);//学号
-                            userInfo.put("TextBox2",TextBox2);//密码
-                            userInfo.put("txtSecretCode",txtSecretCode);//验证码
-                            Gson gson=new Gson();
-                            String userJson= gson.toJson(userInfo);
+                            userInfo.put("txtUserName", txtUserName);//学号
+                            userInfo.put("TextBox2", TextBox2);//密码
+                            userInfo.put("txtSecretCode", txtSecretCode);//验证码
+                            Gson gson = new Gson();
+                            String userJson = gson.toJson(userInfo);
                             RequestBody body = RequestBody.create(okhttp3.MediaType.parse("application/json; charset=utf-8"), userJson);
-                            observableGetCourse=RetrofitFactory.getInstance().getCourse(body);
+                            observableGetCourse = RetrofitFactory.getInstance().getCourse(body);
                             observableGetCourse.subscribeOn(Schedulers.io())
                                     .observeOn(AndroidSchedulers.mainThread())
                                     .subscribe(new Observer<String>() {
                                         @Override
-                                        public void onSubscribe(Disposable d) {}
+                                        public void onSubscribe(Disposable d) {
+                                        }
 
                                         @Override
                                         public void onNext(String value) {
-                                            System.out.println("课表"+value);
+                                            System.out.println("课表" + value);
                                             JSONObject jsonObject = JSONObject.parseObject(value);
                                             int result = jsonObject.getInteger("result");
-                                            if (result == 3004)
-                                            {
+                                            if (result == 3004) {
                                                 ToastUtils.showShort("tokenError");
-                                            }else if (result == 3005){
+                                            } else if (result == 3005) {
                                                 ToastUtils.showShort("登陆错误");
-                                            }else if (result==3006){
+                                            } else if (result == 3006) {
                                                 ToastUtils.showShort("验证码错误");
-                                            }else {
+                                            } else {
                                                 ToastUtils.showShort(String.valueOf(result));
-                                                getCoursesSuccessed=true;
-                                                List<Course> list = JSONArray.parseArray(jsonObject.getJSONArray("courses").toString(),Course.class);
+                                                getCoursesSuccessed = true;
+                                                List<Course> list = JSONArray.parseArray(jsonObject.getJSONArray("courses").toString(), Course.class);
                                                 CourseService courseService = CourseService.getCourseService();
                                                 courseService.saveCourseInfo(list);
                                             }
 
                                         }
+
                                         @Override
                                         public void onError(Throwable e) {
-                                            LogUtils.e("获取课表","失败");
+                                            LogUtils.e("获取课表", "失败");
                                             ToastUtils.showShort("登陆信息有误");
                                         }
+
                                         @Override
                                         public void onComplete() {
-                                            if(getCoursesSuccessed){
-                                                LogUtils.i("获取课表","完毕");
+                                            if (getCoursesSuccessed) {
+                                                LogUtils.i("获取课表", "完毕");
                                                 SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("GetCourse", Context.MODE_PRIVATE);
                                                 final SharedPreferences.Editor editor = sharedPreferences.edit();
                                                 editor.putInt("getCourseState", 1);             //   0:不成功，1：成功
@@ -221,18 +225,15 @@ public class GetCourseActivity extends BaseActivity implements View.OnClickListe
                 default:
                     break;
             }
-        }else {
-            Toast.makeText(context,"网络不可用",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(context, "网络不可用", Toast.LENGTH_SHORT).show();
         }
     }
 
 
-
-
-
     @Override
     public void finish() {
-        MainActivity.Companion.setFragmentNUM(1);
+        MainActivity.fragmentNUM = 1;
         Intent intent = getPackageManager().getLaunchIntentForPackage(getPackageName());
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
