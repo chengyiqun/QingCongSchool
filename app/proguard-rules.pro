@@ -94,13 +94,13 @@
 # Fresco混淆规则
 # Keep our interfaces so they can be used by other ProGuard rules.
 # See http://sourceforge.net/p/proguard/bugs/466/
--keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
-
-# Do not strip any method/class that is annotated with @DoNotStrip
--keep @com.facebook.common.internal.DoNotStrip class *
--keepclassmembers class * {
-    @com.facebook.common.internal.DoNotStrip *;
-}
+#-keep,allowobfuscation @interface com.facebook.common.internal.DoNotStrip
+#
+## Do not strip any method/class that is annotated with @DoNotStrip
+#-keep @com.facebook.common.internal.DoNotStrip class *
+#-keepclassmembers class * {
+#    @com.facebook.common.internal.DoNotStrip *;
+#}
 
 # Keep native methods
 -keepclassmembers class * {
@@ -114,3 +114,11 @@
 -dontwarn com.android.volley.toolbox.**
 -dontwarn com.facebook.infer.**
 ###############################################################################################
+
+#Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}

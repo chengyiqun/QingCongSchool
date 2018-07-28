@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/root_layout"
@@ -12,13 +11,13 @@
         android:layout_width="62dp"
         android:layout_height="50dp"
         >
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/iv_user_avatar"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            fresco:placeholderImage="@drawable/ic_launcher_24dp"
-            fresco:placeholderImageScaleType="fitCenter"
+            
+            
             />
 
     </FrameLayout>
@@ -68,7 +67,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_toRightOf="@id/tv_thumbUp_count_comment"
                     android:contentDescription="TODO"
-                    fresco:srcCompat="@drawable/imagebt_thumb_up"
+                    
                     tools:ignore="ContentDescription" />
             </RelativeLayout>
 
@@ -106,68 +105,68 @@
             android:columnCount="3"
             android:rowCount="3">
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/imageView01"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                fresco:placeholderImage="@drawable/andalogo"
-                fresco:placeholderImageScaleType="fitCenter" />
+                
+                 />
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/imageView02"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                fresco:placeholderImage="@drawable/andalogo"
-                fresco:placeholderImageScaleType="fitCenter" />
+                
+                 />
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/imageView03"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                fresco:placeholderImage="@drawable/andalogo"
-                fresco:placeholderImageScaleType="fitCenter" />
+                
+                 />
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/imageView04"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                fresco:placeholderImage="@drawable/andalogo"
-                fresco:placeholderImageScaleType="fitCenter" />
+                
+                 />
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/imageView05"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                fresco:placeholderImage="@drawable/andalogo"
-                fresco:placeholderImageScaleType="fitCenter" />
+                
+                 />
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/imageView06"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                fresco:placeholderImage="@drawable/andalogo"
-                fresco:placeholderImageScaleType="fitCenter" />
+                
+                 />
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/imageView07"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                fresco:placeholderImage="@drawable/andalogo"
-                fresco:placeholderImageScaleType="fitCenter" />
+                
+                 />
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/imageView08"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                fresco:placeholderImage="@drawable/andalogo"
-                fresco:placeholderImageScaleType="fitCenter" />
+                
+                 />
 
-            <com.facebook.drawee.view.SimpleDraweeView
+            <ImageView
                 android:id="@+id/imageView09"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                fresco:placeholderImage="@drawable/andalogo"
-                fresco:placeholderImageScaleType="fitCenter" />
+                
+                 />
         </GridLayout>
 
         <LinearLayout
@@ -194,7 +193,7 @@
                 android:id="@+id/iv_reply"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                fresco:srcCompat="@drawable/imagebt_comment"
+                
                 android:contentDescription="回复" />
 
             <TextView

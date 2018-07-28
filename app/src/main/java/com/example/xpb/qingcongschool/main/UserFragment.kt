@@ -21,32 +21,23 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.blankj.utilcode.util.ToastUtils
-
 import com.example.xpb.qingcongschool.LoginActivity
 import com.example.xpb.qingcongschool.R
 import com.example.xpb.qingcongschool.RetrofitFactory
 import com.example.xpb.qingcongschool.app.MyApplication
-import com.example.xpb.qingcongschool.util.CropUtils
-import com.example.xpb.qingcongschool.util.DialogPermission
-import com.example.xpb.qingcongschool.util.FileUtil
-import com.example.xpb.qingcongschool.util.PermissionUtil
-import com.example.xpb.qingcongschool.util.SharedPreferenceMark
-import com.facebook.drawee.backends.pipeline.Fresco
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
-import com.facebook.drawee.generic.RoundingParams
+import com.example.xpb.qingcongschool.util.*
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-
-import org.json.JSONException
-import org.json.JSONObject
-import java.io.File
+import kotlinx.android.synthetic.main.fragment_me_after_entry.*
+import kotlinx.android.synthetic.main.fragment_me_before_entry.*
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import kotlinx.android.synthetic.main.fragment_me_after_entry.*
-import kotlinx.android.synthetic.main.fragment_me_before_entry.*
+import org.json.JSONException
+import org.json.JSONObject
+import java.io.File
 import java.net.URLEncoder
 
 /**
@@ -321,23 +312,13 @@ class UserFragment : Fragment(), View.OnClickListener {
 
     private fun compressAndUploadAvatar(fileSrc: String) {
         val cover = FileUtil.getSmallBitmap(activity, fileSrc)
-        //Fresco设置圆形头像
-        val builder = GenericDraweeHierarchyBuilder(resources)
-        val hierarchy = builder
-                .setDesiredAspectRatio(1.0f)
-                .setFailureImage(R.drawable.ic_launcher_24dp)
-                .setRoundingParams(RoundingParams.fromCornersRadius(100f))
-                .build()
-
+        //GlideApp设置圆形头像
         //加载本地图片
         val uri = Uri.fromFile(cover)
-        val controller = Fresco.newDraweeControllerBuilder()
-                .setOldController(simpleDraweeView_user_avatar.controller)
-                .setUri(uri)
-                .build()
-        simpleDraweeView_user_avatar.hierarchy = hierarchy
-        simpleDraweeView_user_avatar.controller = controller
-
+        GlideApp.with(context!!)
+                .load(uri)
+                .transform(GlideCircleTransform())
+                .into(simpleDraweeView_user_avatar);
     }
 
 

@@ -2,7 +2,6 @@ package com.example.xpb.qingcongschool.main
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -21,7 +20,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_square.*
-import kotlin.collections.HashMap
 
 /**
  * Created by xpb on 2016/7/23.
@@ -53,7 +51,9 @@ class SquareFragment : android.support.v4.app.Fragment(){
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.topic_menu,menu)
+        if(MainActivity.islogin){
+            inflater?.inflate(R.menu.topic_menu,menu)
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
@@ -82,7 +82,7 @@ class SquareFragment : android.support.v4.app.Fragment(){
 
         ////
         val list= mutableListOf<Topic>()
-        mAdapter=TopicAdapter(list)
+        mAdapter=TopicAdapter(list,context)
         recycler_view_topic.adapter=mAdapter
 
         //下拉刷新

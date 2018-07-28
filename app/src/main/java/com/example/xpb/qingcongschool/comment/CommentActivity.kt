@@ -138,7 +138,7 @@ class CommentActivity : BaseActivity() {
         comment_recycler_view!!.layoutManager = mLayoutManager
         // specify an adapter (see also next example)
 
-        mAdapter = MyAdapter(myDataset,teachID)
+        mAdapter = MyAdapter(myDataset,teachID,this@CommentActivity)
         comment_recycler_view!!.adapter = mAdapter
         comment_recycler_view!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
@@ -217,7 +217,7 @@ class CommentActivity : BaseActivity() {
                         override fun onComplete() {
                             println("onComplete")
                             dialog!!.cancel()
-                            mAdapter = MyAdapter(myDataset,teachID)
+                            mAdapter = MyAdapter(myDataset,teachID,this@CommentActivity)
                             comment_recycler_view!!.adapter = mAdapter
                             mAdapter!!.notifyDataSetChanged()
                         }

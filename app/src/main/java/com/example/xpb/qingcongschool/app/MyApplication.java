@@ -5,8 +5,6 @@ import android.util.DisplayMetrics;
 
 import com.blankj.utilcode.util.Utils;
 import com.example.xpb.qingcongschool.util.NetworkUtil;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.imagepipeline.core.ImagePipelineConfig;
 
 import org.litepal.LitePalApplication;
 
@@ -27,11 +25,6 @@ public class MyApplication extends LitePalApplication {//继承了那个数据�
     @Override
     public void onCreate() {
         super.onCreate();
-        //初始化Fresco
-        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
-                .setDownsampleEnabled(true)
-                .build();
-        Fresco.initialize(this, config);
         //初始化工具类
         Utils.init(this);
         NetworkUtil.init(this);

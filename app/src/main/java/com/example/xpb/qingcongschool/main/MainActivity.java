@@ -121,7 +121,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences myLoginSharedPreferences = getSharedPreferences("myLoginSharedPreferences",
                 Activity.MODE_PRIVATE);
         phoneNum = myLoginSharedPreferences.getString("phoneNum", "");
-        islogin = myLoginSharedPreferences.getBoolean("islogin", false);
+        //islogin = myLoginSharedPreferences.getBoolean("islogin", false);
+        islogin = true;
         accessToken = myLoginSharedPreferences.getString("accessToken", "");
         userName = myLoginSharedPreferences.getString("userName", "");
     }

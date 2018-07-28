@@ -2,7 +2,6 @@ package com.example.xpb.qingcongschool.course.resource.comment
 
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +10,9 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import com.blankj.utilcode.util.LogUtils
 import com.example.xpb.qingcongschool.BuildConfig
-
 import com.example.xpb.qingcongschool.R
-import com.example.xpb.qingcongschool.comment.ReplyDialogActivity
 import com.example.xpb.qingcongschool.util.Utils
-import com.facebook.drawee.view.SimpleDraweeView
+
 
 /**
  * Created by 程义群（空灵入耳） on 2018/01/03 0003.
@@ -34,7 +31,7 @@ class MyAdapterDetail// Provide a suitable constructor (depends on the kind of d
 
         public val root_layout:RelativeLayout
 
-        public val iv_user_avatar: SimpleDraweeView
+        public val iv_user_avatar: ImageView
         public val tv_username: TextView
 
         public val tv_thumbDown_count_comment:TextView

@@ -204,7 +204,6 @@ public class CurriculumFragment extends Fragment implements View.OnClickListener
      */
     @Override
     public void onHiddenChanged(boolean hidden) {
-        // TODO Auto-generated method stub
         super.onHiddenChanged(hidden);
         if (!hidden) {
 

@@ -23,81 +23,86 @@ import me.iwf.photopicker.utils.AndroidLifecycleUtils;
  */
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.PhotoViewHolder> {
 
-  private ArrayList<String> photoPaths;
-  private LayoutInflater inflater;
+    private ArrayList<String> photoPaths;
+    private LayoutInflater inflater;
 
-  private Context mContext;
+    private Context mContext;
 
-  final static int TYPE_ADD = 1;
-  final static int TYPE_PHOTO = 2;
+    public final static int TYPE_ADD = 1;
+    public final static int TYPE_PHOTO = 2;
 
-  final static int MAX_PICTURE_COUNT = 9;
+    final static int MAX_PICTURE_COUNT = 9;
 
-  public PhotoAdapter(Context mContext, ArrayList<String> photoPaths) {
-    this.photoPaths = photoPaths;
-    this.mContext = mContext;
-    inflater = LayoutInflater.from(mContext);
+    public PhotoAdapter(Context mContext, ArrayList<String> photoPaths) {
+        this.photoPaths = photoPaths;
+        this.mContext = mContext;
+        inflater = LayoutInflater.from(mContext);
 
-  }
-
-  @NonNull
-  @Override
-  public PhotoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-    View itemView = null;
-    switch (viewType) {
-      case TYPE_ADD:
-        itemView = inflater.inflate(R.layout.item_add, parent, false);
-        break;
-      case TYPE_PHOTO:
-        itemView = inflater.inflate(R.layout.__picker_item_photo, parent, false);
-        break;
     }
-    return new PhotoViewHolder(itemView);
-  }
 
-
-  @Override
-  public void onBindViewHolder(@NonNull final PhotoViewHolder holder, final int position) {
-
-    if (getItemViewType(position) == TYPE_PHOTO) {
-      Uri uri = Uri.fromFile(new File(photoPaths.get(position)));
-      System.out.println(uri);
-
-      boolean canLoadImage = AndroidLifecycleUtils.canLoadImage(holder.ivPhoto.getContext());
-
-      if (canLoadImage) {
-        Glide.with(mContext)
-                .load(uri)
-                .thumbnail(0.1f)
-                .into(holder.ivPhoto);
-      }
+    @NonNull
+    @Override
+    public PhotoViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View itemView = null;
+        switch (viewType) {
+            case TYPE_ADD:
+                itemView = inflater.inflate(R.layout.item_add, parent, false);
+                break;
+            case TYPE_PHOTO:
+                itemView = inflater.inflate(R.layout.__picker_item_photo, parent, false);
+                break;
+            default:
+                break;
+        }
+        return new PhotoViewHolder(itemView);
     }
-  }
 
 
-  @Override
-  public int getItemCount() {
-    int count = photoPaths.size() + 1;
-    if (count > MAX_PICTURE_COUNT) {
-      count = MAX_PICTURE_COUNT;
+    @Override
+    public void onBindViewHolder(@NonNull final PhotoViewHolder holder, final int position) {
+
+        if (getItemViewType(position) == TYPE_PHOTO) {
+            Uri uri = Uri.fromFile(new File(photoPaths.get(position)));
+            System.out.println(uri);
+
+            boolean canLoadImage = AndroidLifecycleUtils.canLoadImage(holder.ivPhoto.getContext());
+
+            if (canLoadImage) {
+                Glide.with(mContext)
+                        .load(uri)
+                        .thumbnail(0.1f)
+                        .into(holder.ivPhoto);
+            }
+        }
     }
-    return count;
-  }
 
-  @Override
-  public int getItemViewType(int position) {
-    return (position == photoPaths.size() && position != MAX_PICTURE_COUNT) ? TYPE_ADD : TYPE_PHOTO;
-  }
 
-  public static class PhotoViewHolder extends RecyclerView.ViewHolder {
-    private ImageView ivPhoto;
-    private View vSelected;
-    public PhotoViewHolder(View itemView) {
-      super(itemView);
-      ivPhoto   = (ImageView) itemView.findViewById(R.id.iv_photo);
-      vSelected = itemView.findViewById(R.id.v_selected);
-      if (vSelected != null) vSelected.setVisibility(View.GONE);
+    @Override
+    public int getItemCount() {
+        int count = photoPaths.size() + 1;
+        if (count > MAX_PICTURE_COUNT) {
+            count = MAX_PICTURE_COUNT;
+        }
+        return count;
     }
-  }
+
+    @Override
+    public int getItemViewType(int position) {
+        return (position == photoPaths.size() && position != MAX_PICTURE_COUNT) ? TYPE_ADD : TYPE_PHOTO;
+    }
+
+    public static class PhotoViewHolder extends RecyclerView.ViewHolder {
+        private ImageView ivPhoto;
+        private View vSelected;
+
+        public PhotoViewHolder(View itemView) {
+            super(itemView);
+            ivPhoto = (ImageView) itemView.findViewById(R.id.iv_photo);
+            vSelected = itemView.findViewById(R.id.v_selected);
+            if (vSelected != null) {
+                vSelected.setVisibility(View.GONE);
+            }
+        }
+    }
 
 }

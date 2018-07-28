@@ -1,6 +1,6 @@
 package com.example.xpb.qingcongschool.topic.comment;
+import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -15,9 +15,8 @@ import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.RetrofitFactory;
 import com.example.xpb.qingcongschool.main.Topic;
 import com.example.xpb.qingcongschool.topic.comment.reply.TopicCommentReplyActivity;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
-import com.facebook.drawee.generic.RoundingParams;
-import com.facebook.drawee.view.SimpleDraweeView;
+import com.example.xpb.qingcongschool.util.GlideApp;
+import com.example.xpb.qingcongschool.util.GlideCircleTransform;
 
 import java.io.Serializable;
 import java.util.List;
@@ -27,6 +26,8 @@ import java.util.List;
  */
 
 public class TopicCommentAdapter extends RecyclerView.Adapter<TopicCommentAdapter.MViewHolder> {
+    Context context;
+    public GlideCircleTransform glideCircleTransform;
 
     public static List<Topic.TopicCommentListBean> mDataset;
     public static String topicID;
@@ -39,7 +40,7 @@ public class TopicCommentAdapter extends RecyclerView.Adapter<TopicCommentAdapte
 
         private CardView cardView;
 
-        private SimpleDraweeView iv_userpicture;
+        private ImageView iv_userpicture;
         private TextView tv_username;
         private TextView tv_timedata;
         private TextView tv_comment;
@@ -54,10 +55,6 @@ public class TopicCommentAdapter extends RecyclerView.Adapter<TopicCommentAdapte
             super(v);
             cardView = v.findViewById(R.id.card_view);
             iv_userpicture =v.findViewById(R.id.user_picture);
-            iv_userpicture.setHierarchy(new GenericDraweeHierarchyBuilder(v.getResources()).setDesiredAspectRatio(1.0f)
-                    .setFailureImage(R.drawable.ic_launcher_24dp)
-                    .setRoundingParams(RoundingParams.fromCornersRadius(100f))
-                    .build());
             tv_username = v.findViewById(R.id.tv_user_name);//
             //Emojix.wrap(tv_username.getContext());
             tv_timedata=v.findViewById(R.id.tv_timedata);
@@ -114,12 +111,16 @@ public class TopicCommentAdapter extends RecyclerView.Adapter<TopicCommentAdapte
                     Log.d("menu","menu");
                     System.out.println(mDataset.get(i));
                     break;
+                    default:
+                        break;
             }
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public TopicCommentAdapter(List<Topic.TopicCommentListBean> myDataset, String mtopicID) {
+    public TopicCommentAdapter(List<Topic.TopicCommentListBean> myDataset, String mtopicID,Context context) {
+        this.context=context;
+        glideCircleTransform = new GlideCircleTransform();
         mDataset = myDataset;
         topicID = mtopicID;
     }
@@ -157,10 +158,10 @@ public class TopicCommentAdapter extends RecyclerView.Adapter<TopicCommentAdapte
         holder.tv_thumbup_count.setText(String.valueOf(mDataset.get(position).getLikeTimes()));
         holder.tv_comment_count.setText(String.valueOf((int) mDataset.get(position).getReplyTimes()));
         holder.tv_share_count.setText(String.valueOf((int) mDataset.get(position).getShareTimes()));
-
-        Uri uri = Uri.parse(RetrofitFactory.baseUrl+"/QingXiao/avatar/"+mDataset.get(position).getAvatarStoreName());
-        System.out.println(uri);
-        holder.iv_userpicture.setImageURI(uri);
+        GlideApp.with(context)
+                .load(RetrofitFactory.baseUrl + "/QingXiao/avatar/" + mDataset.get(position).getAvatarStoreName())
+                .transform(glideCircleTransform)
+                .into(holder.iv_userpicture);
 
         holder.itemView.setTag(position);
         holder.cardView.setTag(position);

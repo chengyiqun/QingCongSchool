@@ -6,36 +6,9 @@ package com.example.xpb.qingcongschool.course;
  * Created by xpb on 2017/3/9.
  */
 
-import android.util.Log;
-import android.widget.Toast;
-
-import com.blankj.utilcode.util.LogUtils;
-import com.example.xpb.qingcongschool.RetrofitFactory;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
 import org.litepal.crud.DataSupport;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 
 
 public class CourseService {
@@ -53,8 +26,9 @@ public class CourseService {
     public static CourseService getCourseService() {
         if (courseService == null) {
             synchronized (CourseService.class) {
-                if (courseService == null)
+                if (courseService == null) {
                     courseService = new CourseService();
+                }
             }
         }
         return courseService;

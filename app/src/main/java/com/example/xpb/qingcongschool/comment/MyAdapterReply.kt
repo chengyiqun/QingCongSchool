@@ -1,10 +1,9 @@
 package com.example.xpb.qingcongschool.comment
 
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.support.v4.app.ActivityCompat.startActivityForResult
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,13 +13,11 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.blankj.utilcode.util.LogUtils
-
 import com.example.xpb.qingcongschool.R
 import com.example.xpb.qingcongschool.RetrofitFactory
+import com.example.xpb.qingcongschool.util.GlideApp
+import com.example.xpb.qingcongschool.util.GlideCircleTransform
 import com.example.xpb.qingcongschool.util.TimeFactory
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
-import com.facebook.drawee.generic.RoundingParams
-import com.facebook.drawee.view.SimpleDraweeView
 
 
 /**
@@ -28,7 +25,13 @@ import com.facebook.drawee.view.SimpleDraweeView
  */
 
 class MyAdapterReply// Provide a suitable constructor (depends on the kind of dataset)
-(myDataset: List<HashMap<*, *>>, mteachID: String) : RecyclerView.Adapter<MyAdapterReply.MViewHolder>() {
+(myDataset: List<HashMap<*, *>>, mteachID: String, context : Context) : RecyclerView.Adapter<MyAdapterReply.MViewHolder>() {
+    var context: Context? =null
+    init {
+        this.context=context
+        mDataset = myDataset
+        teachID = mteachID
+    }
 
 
     // Provide a reference to the views for each data item
@@ -37,7 +40,7 @@ class MyAdapterReply// Provide a suitable constructor (depends on the kind of da
     class MViewHolder (v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
 
         val root_layout_viewholder: RelativeLayout
-        val iv_user_avatar2: SimpleDraweeView
+        val iv_user_avatar2: ImageView
         val tv_username: TextView
         val iv_thumbUp_comment: ImageView
         val tv_thumbUp_count_comment: TextView
@@ -50,10 +53,7 @@ class MyAdapterReply// Provide a suitable constructor (depends on the kind of da
         init {
             root_layout_viewholder = v.findViewById(R.id.root_layout_viewholder)
             iv_user_avatar2 = v.findViewById(R.id.iv_user_avatar2)
-            iv_user_avatar2.hierarchy = GenericDraweeHierarchyBuilder(v.resources).setDesiredAspectRatio(1.0f)
-                    .setFailureImage(R.drawable.ic_launcher_24dp)
-                    .setRoundingParams(RoundingParams.fromCornersRadius(100f))
-                    .build()
+
             tv_username = v.findViewById(R.id.tv_username)//
             //Emojix.wrap(tv_username.getContext());
             tv_publish_time = v.findViewById(R.id.tv_publish_time)
@@ -103,10 +103,7 @@ class MyAdapterReply// Provide a suitable constructor (depends on the kind of da
         }
     }
 
-    init {
-        mDataset = myDataset
-        teachID = mteachID
-    }
+
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
@@ -137,7 +134,10 @@ class MyAdapterReply// Provide a suitable constructor (depends on the kind of da
         holder.tv_thumbUp_count_comment.text = (mDataset[position]["like_times"] as Int).toString()
         val uri = Uri.parse(RetrofitFactory.baseUrl + "/QingXiao/avatar/" + mDataset[position]["avatar_store_name"])
         println(uri)
-        holder.iv_user_avatar2.setImageURI(uri)
+        GlideApp.with(context!!)
+                .load(uri)
+                .transform(GlideCircleTransform())
+                .into(holder.iv_user_avatar2)
 
 
     }
@@ -148,7 +148,6 @@ class MyAdapterReply// Provide a suitable constructor (depends on the kind of da
     }
 
     companion object {
-
         lateinit var mDataset: List<HashMap<*, *>>
         lateinit var teachID: String
     }

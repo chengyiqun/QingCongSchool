@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="8dp"
@@ -41,7 +40,7 @@
                     android:maxLines="3"
                     tools:text="测试\ue32d测试\ue32d测试测测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试" />
 
-                <com.facebook.drawee.view.SimpleDraweeView
+                <ImageView
                     android:id="@+id/user_picture"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
@@ -49,8 +48,6 @@
                     android:clickable="true"
                     android:scaleType="centerCrop"
                     android:focusable="true"
-                    fresco:placeholderImage="@drawable/ic_launcher_24dp"
-                    fresco:placeholderImageScaleType="fitCenter"
                     />
 
                 <io.github.rockerhieu.emojicon.EmojiconTextView

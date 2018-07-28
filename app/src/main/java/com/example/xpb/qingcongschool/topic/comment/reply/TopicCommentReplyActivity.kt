@@ -3,9 +3,9 @@ package com.example.xpb.qingcongschool.topic.comment.reply
 import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -17,11 +17,7 @@ import com.blankj.utilcode.util.ToastUtils
 import com.example.xpb.qingcongschool.R
 import com.example.xpb.qingcongschool.RetrofitFactory
 import com.example.xpb.qingcongschool.main.Topic
-import com.example.xpb.qingcongschool.util.NetworkUtil
-import com.example.xpb.qingcongschool.util.TimeFactory
-import com.example.xpb.qingcongschool.util.Utils
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
-import com.facebook.drawee.generic.RoundingParams
+import com.example.xpb.qingcongschool.util.*
 import com.google.gson.Gson
 import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -106,11 +102,10 @@ class TopicCommentReplyActivity : AppCompatActivity(), View.OnClickListener {
         LogUtils.d("commentBean",commentBean)
         val uri = Uri.parse(RetrofitFactory.baseUrl + "/QingXiao/avatar/" + commentBean!!.avatarStoreName)
         println(uri)
-        iv_user_avatar2.hierarchy = GenericDraweeHierarchyBuilder(resources).setDesiredAspectRatio(1.0f)
-                .setFailureImage(R.drawable.ic_launcher_24dp)
-                .setRoundingParams(RoundingParams.fromCornersRadius(100f))
-                .build()
-        iv_user_avatar2.setImageURI(uri)
+        GlideApp.with(this)
+                .load(uri)
+                .transform(GlideCircleTransform())
+                .into(iv_user_avatar2)
         tv_username.text = (commentBean!!.userName).toString()
         tv_comment.text = (commentBean!!.content).toString()
         tv_thumbUp_count_comment.text = (commentBean!!.likeTimes).toString()
@@ -190,7 +185,7 @@ class TopicCommentReplyActivity : AppCompatActivity(), View.OnClickListener {
         comment_recycler_view!!.layoutManager = mLayoutManager
         // specify an adapter (see also next example)
 
-        mAdapter = MyAdapterReply(myDataset!!, commentBean!!.topicID)
+        mAdapter = MyAdapterReply(myDataset!!, commentBean!!.topicID,this@TopicCommentReplyActivity)
         comment_recycler_view!!.adapter = mAdapter
         comment_recycler_view!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {

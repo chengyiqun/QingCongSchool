@@ -2,9 +2,9 @@ package com.example.xpb.qingcongschool.topic.comment
 
 import android.app.Dialog
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.design.widget.Snackbar
+import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import com.alibaba.fastjson.JSONArray
@@ -140,7 +140,7 @@ class TopicCommentActivity : AppCompatActivity() {
         // specify an adapter (see also next example)
 
         val mDataSet = mutableListOf<Topic.TopicCommentListBean>()
-        mAdapter = TopicCommentAdapter(mDataSet, topicID)
+        mAdapter = TopicCommentAdapter(mDataSet, topicID,this@TopicCommentActivity)
         comment_recycler_view!!.adapter = mAdapter
         comment_recycler_view!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {

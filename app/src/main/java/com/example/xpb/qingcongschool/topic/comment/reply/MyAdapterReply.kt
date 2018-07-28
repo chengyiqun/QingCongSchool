@@ -1,6 +1,7 @@
 package com.example.xpb.qingcongschool.topic.comment.reply
 
 
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
@@ -12,24 +13,26 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.blankj.utilcode.util.LogUtils
-
 import com.example.xpb.qingcongschool.R
 import com.example.xpb.qingcongschool.RetrofitFactory
-import com.example.xpb.qingcongschool.util.TimeFactory
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder
-import com.facebook.drawee.generic.RoundingParams
-import com.facebook.drawee.view.SimpleDraweeView
+import com.example.xpb.qingcongschool.util.GlideApp
+import com.example.xpb.qingcongschool.util.GlideCircleTransform
 
 
 /**
  * Created by lenovo on 2017/10/15 0015.
  */
 
-class MyAdapterReply(myDataset: MutableList<TopicCommentReply>, mTopicID: String) : RecyclerView.Adapter<MyAdapterReply.MViewHolder>() {
+class MyAdapterReply(myDataset: MutableList<TopicCommentReply>, mTopicID: String ,context: Context) : RecyclerView.Adapter<MyAdapterReply.MViewHolder>() {
     companion object {
-
         lateinit var mDataset: MutableList<TopicCommentReply>
         lateinit var topicID: String
+    }
+    var context :Context?=null
+    init {
+        this.context=context
+        mDataset = myDataset
+        topicID = mTopicID
     }
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount(): Int {
@@ -43,7 +46,7 @@ class MyAdapterReply(myDataset: MutableList<TopicCommentReply>, mTopicID: String
     class MViewHolder (v: View) : RecyclerView.ViewHolder(v), View.OnClickListener {
 
         val root_layout_viewholder: RelativeLayout
-        val iv_user_avatar2: SimpleDraweeView
+        val iv_user_avatar2: ImageView
         val tv_username: TextView
         val iv_thumbUp_comment: ImageView
         val tv_thumbUp_count_comment: TextView
@@ -56,10 +59,6 @@ class MyAdapterReply(myDataset: MutableList<TopicCommentReply>, mTopicID: String
         init {
             root_layout_viewholder = v.findViewById(R.id.root_layout_viewholder)
             iv_user_avatar2 = v.findViewById(R.id.iv_user_avatar2)
-            iv_user_avatar2.hierarchy = GenericDraweeHierarchyBuilder(v.resources).setDesiredAspectRatio(1.0f)
-                    .setFailureImage(R.drawable.ic_launcher_24dp)
-                    .setRoundingParams(RoundingParams.fromCornersRadius(100f))
-                    .build()
             tv_username = v.findViewById(R.id.tv_username)//
             //Emojix.wrap(tv_username.getContext());
             tv_publish_time = v.findViewById(R.id.tv_publish_time)
@@ -109,10 +108,7 @@ class MyAdapterReply(myDataset: MutableList<TopicCommentReply>, mTopicID: String
         }
     }
 
-    init {
-        mDataset = myDataset
-        topicID = mTopicID
-    }
+
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
@@ -147,8 +143,10 @@ class MyAdapterReply(myDataset: MutableList<TopicCommentReply>, mTopicID: String
         holder.tv_thumbUp_count_comment.text = (mDataset[position].getLikeTimes()).toString()
         val uri = Uri.parse(RetrofitFactory.baseUrl + "/QingXiao/avatar/" + mDataset[position].getAvatar_store_name())
         println(uri)
-        holder.iv_user_avatar2.setImageURI(uri)
-
+        GlideApp.with(context!!)
+                .load(uri)
+                .transform(GlideCircleTransform())
+                .into(holder.iv_user_avatar2)
 
     }
 

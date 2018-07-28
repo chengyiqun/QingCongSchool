@@ -1,4 +1,5 @@
 package com.example.xpb.qingcongschool.comment;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -13,12 +14,10 @@ import android.widget.TextView;
 
 import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.RetrofitFactory;
+import com.example.xpb.qingcongschool.util.GlideApp;
+import com.example.xpb.qingcongschool.util.GlideCircleTransform;
 import com.example.xpb.qingcongschool.util.TimeFactory;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
-import com.facebook.drawee.generic.RoundingParams;
-import com.facebook.drawee.view.SimpleDraweeView;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
@@ -27,10 +26,18 @@ import java.util.List;
  */
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MViewHolder> {
-
+    protected GlideCircleTransform glideCircleTransform;
+    private Context context;
     public static List<HashMap> mDataset;
     public static String teachID;
 
+    // Provide a suitable constructor (depends on the kind of dataset)
+    public MyAdapter(List<HashMap> myDataset,String mteachID,Context context) {
+        glideCircleTransform = new GlideCircleTransform();
+        this.context = context;
+        mDataset = myDataset;
+        teachID = mteachID;
+    }
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -39,7 +46,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MViewHolder> {
 
         private CardView cardView;
 
-        private SimpleDraweeView iv_userpicture;
+        private ImageView iv_userpicture;
         private TextView tv_username;
         private TextView tv_timedata;
         private TextView tv_comment;
@@ -54,10 +61,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MViewHolder> {
             super(v);
             cardView = v.findViewById(R.id.card_view);
             iv_userpicture =v.findViewById(R.id.user_picture);
-            iv_userpicture.setHierarchy(new GenericDraweeHierarchyBuilder(v.getResources()).setDesiredAspectRatio(1.0f)
-                    .setFailureImage(R.drawable.ic_launcher_24dp)
-                    .setRoundingParams(RoundingParams.fromCornersRadius(100f))
-                    .build());
             tv_username = v.findViewById(R.id.tv_user_name);//
             //Emojix.wrap(tv_username.getContext());
             tv_timedata=v.findViewById(R.id.tv_timedata);
@@ -115,15 +118,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MViewHolder> {
                     Log.d("menu","menu");
                     System.out.println(mDataset.get(i));
                     break;
+                default :
+                    break;
             }
         }
     }
 
-    // Provide a suitable constructor (depends on the kind of dataset)
-    public MyAdapter(List<HashMap> myDataset,String mteachID) {
-        mDataset = myDataset;
-        teachID = mteachID;
-    }
+
 
     // Create new views (invoked by the layout manager)
     @NonNull
@@ -152,7 +153,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MViewHolder> {
 
         Uri uri = Uri.parse(RetrofitFactory.baseUrl+"/QingXiao/avatar/"+mDataset.get(position).get("avatar_store_name"));
         System.out.println(uri);
-        holder.iv_userpicture.setImageURI(uri);
+        GlideApp.with(context)
+                .load(uri)
+                .transform(glideCircleTransform)
+                .into(holder.iv_userpicture);
 
         holder.itemView.setTag(position);
         holder.cardView.setTag(position);

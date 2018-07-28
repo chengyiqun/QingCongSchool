@@ -23,7 +23,7 @@
         android:layout_width="62dp"
         android:layout_height="50dp"
         >
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/iv_user_avatar2"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -32,8 +32,6 @@
             android:clickable="true"
             android:scaleType="centerCrop"
             android:focusable="true"
-            fresco:placeholderImage="@drawable/ic_launcher_24dp"
-            fresco:placeholderImageScaleType="fitCenter"
             tools:background="@color/user_id"
             />
 
