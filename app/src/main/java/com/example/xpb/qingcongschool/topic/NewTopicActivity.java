@@ -8,11 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
@@ -20,7 +22,6 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.RetrofitFactory;
 import com.example.xpb.qingcongschool.util.FileUtil;
-import com.google.gson.JsonObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -29,12 +30,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnTextChanged;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
@@ -43,15 +40,30 @@ import me.iwf.photopicker.PhotoPreview;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 
 
-public class NewTopicActivity extends AppCompatActivity {
+public class NewTopicActivity extends AppCompatActivity  {
+    private TextWatcher editorDetailWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+        @Override
+        public void afterTextChanged(Editable s) {
+            int detailLength = s.length();
+            idEditorDetailFontCount.setText(detailLength+"/140");
+            if (detailLength == 141) {
+                ToastUtils.showShort("字数达到上限了");
+                s.delete(140, 141);
+                idEditorDetailFontCount.setText("140/140");
+            }
+        }
+    };
     public static final int INSERT_TOPIC_SUCCESS = 3411;
     int result=0;
-    @BindView(R.id.id_editor_detail)
+
     EditText idEditorDetail;
-    @BindView(R.id.id_editor_detail_font_count)
+
     TextView idEditorDetailFontCount;
 
     private PhotoAdapter photoAdapter;
@@ -63,8 +75,11 @@ public class NewTopicActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_topic);
+        idEditorDetail =  findViewById(R.id.id_editor_detail);
+        idEditorDetail.addTextChangedListener(editorDetailWatcher);
+        idEditorDetailFontCount = (TextView) findViewById(R.id.id_editor_detail_font_count);
         // 必须在setContentView()之后绑定
-        ButterKnife.bind(this);
+
         setToolbar();
         initPhotoAdapter();
 
@@ -155,18 +170,6 @@ public class NewTopicActivity extends AppCompatActivity {
                         }
                     }
                 });
-    }
-
-
-    @OnTextChanged(value = R.id.id_editor_detail, callback = OnTextChanged.Callback.AFTER_TEXT_CHANGED)
-    public void editTextDetailChange(Editable editable) {
-        int detailLength = editable.length();
-        idEditorDetailFontCount.setText(detailLength+"/140");
-        if (detailLength == 141) {
-            ToastUtils.showShort("字数达到上限了");
-            editable.delete(140, 141);
-            idEditorDetailFontCount.setText("140/140");
-        }
     }
 
     private void setToolbar() {
