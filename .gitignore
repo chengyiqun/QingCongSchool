@@ -1,10 +1,9 @@
 *.iml
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
 /build
 /captures
-/.idea/caches/
-.idea/caches/
+.idea
+app/libs/PhotoPicker-0.9.5.aar
+app/src/main/res/drawable/bg_item_photo.xml

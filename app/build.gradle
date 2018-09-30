@@ -75,7 +75,7 @@ dependencies {
     //课程表数据库
     implementation 'org.litepal.android:core:1.3.0'
     //解析网页1.10.2
-    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
 
     //弹性布局
 
@@ -87,7 +87,7 @@ dependencies {
     implementation 'com.android.support:support-v4:27.1.1'
     testCompile 'junit:junit:4.12'
     //官方注解库//混淆Keep
-    implementation 'com.android.support:support-annotations:27.1.1'
+    implementation 'com.android.support:support-annotations:28.0.0'
 
     //之前1.1
     implementation 'me.relex:photodraweeview:1.1.3'
