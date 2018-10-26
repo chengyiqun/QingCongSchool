@@ -184,7 +184,7 @@ class CommentReplyActivity : AppCompatActivity(), View.OnClickListener{
         mAdapter = MyAdapterReply(myDataset!!,teachID!!,this@CommentReplyActivity)
         comment_recycler_view!!.adapter = mAdapter
         comment_recycler_view!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
                     println("下滑")

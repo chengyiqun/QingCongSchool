@@ -19,12 +19,9 @@ import com.example.xpb.qingcongschool.topic.ImageViewActivity;
 import com.example.xpb.qingcongschool.topic.comment.TopicCommentActivity;
 import com.example.xpb.qingcongschool.util.GlideApp;
 import com.example.xpb.qingcongschool.util.GlideCircleTransform;
-
 import java.util.LinkedList;
 import java.util.List;
-
 import io.github.rockerhieu.emojicon.EmojiconTextView;
-
 import static com.blankj.utilcode.util.ActivityUtils.startActivity;
 
 public class TopicAdapter extends RecyclerView.Adapter<TopicAdapter.MViewHolder> {

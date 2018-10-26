@@ -9,13 +9,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
-
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.util.DataCleanManager;
 import java.util.ArrayList;
 import java.util.List;
+
 
 /**
  * @program: QingCongSchool

@@ -2,13 +2,15 @@ package com.example.xpb.qingcongschool.course;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import com.example.xpb.qingcongschool.R;
+
 
 /**
  * Created by xpb on 2017/3/9.
  */
-public class CourseView extends android.support.v7.widget.AppCompatButton {
+public class CourseView extends AppCompatButton {
     private int courseId;
     private int startSection;
     private int endSection;

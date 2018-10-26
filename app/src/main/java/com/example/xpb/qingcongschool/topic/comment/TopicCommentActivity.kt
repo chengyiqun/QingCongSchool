@@ -143,7 +143,7 @@ class TopicCommentActivity : AppCompatActivity() {
         mAdapter = TopicCommentAdapter(mDataSet, topicID,this@TopicCommentActivity)
         comment_recycler_view!!.adapter = mAdapter
         comment_recycler_view!!.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 if (dy > 0) {
                     bt_new_comment.hide()

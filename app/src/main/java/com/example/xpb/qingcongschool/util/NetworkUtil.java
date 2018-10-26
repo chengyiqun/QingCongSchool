@@ -1,7 +1,4 @@
 package com.example.xpb.qingcongschool.util;
-
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -9,10 +6,7 @@ import android.net.NetworkInfo;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.webkit.WebSettings;
-
 import com.blankj.utilcode.BuildConfig;
-import com.blankj.utilcode.util.Utils;
-
 /**
  * Created by xpb on 2017/3/3.
  */

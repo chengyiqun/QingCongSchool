@@ -8,7 +8,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.util.SimpleArrayMap;
 import android.util.Log;
-
 /**
  * Created by yf on 2016/7/22 0022.
  */

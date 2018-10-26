@@ -42,7 +42,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 
-public class NewTopicActivity extends AppCompatActivity  {
+public class NewTopicActivity extends AppCompatActivity {
     private TextWatcher editorDetailWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

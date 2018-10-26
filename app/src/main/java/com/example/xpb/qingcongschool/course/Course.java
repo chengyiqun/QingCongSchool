@@ -1,5 +1,4 @@
 package com.example.xpb.qingcongschool.course;
-
 import android.support.annotation.Keep;
 
 import org.jetbrains.annotations.Nullable;

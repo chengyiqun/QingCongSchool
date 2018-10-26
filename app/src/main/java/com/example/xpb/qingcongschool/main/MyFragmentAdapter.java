@@ -1,16 +1,14 @@
 package com.example.xpb.qingcongschool.main;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
-
 /**
  * Created by 程义群（空灵入耳） on 2017/11/16 0016.
  */
 
-public class MyFragmentAdapter extends FragmentPagerAdapter{
+public class MyFragmentAdapter extends FragmentPagerAdapter {
 
     List<Fragment> list;
 

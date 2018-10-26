@@ -2,6 +2,7 @@ package com.example.xpb.qingcongschool.main
 
 import android.content.Intent
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -24,7 +25,7 @@ import kotlinx.android.synthetic.main.fragment_square.*
 /**
  * Created by xpb on 2016/7/23.
  */
-class SquareFragment : android.support.v4.app.Fragment(){
+class SquareFragment : Fragment(){
     private var myDataset : List<HashMap<*,*>>?=null
     private var mAdapter: TopicAdapter? = null
     private var mLayoutManager: LinearLayoutManager? = null
@@ -86,7 +87,7 @@ class SquareFragment : android.support.v4.app.Fragment(){
         recycler_view_topic.adapter=mAdapter
 
         //下拉刷新
-        swipeRefreshLayout_topic.setOnRefreshListener(object :SwipeRefreshLayout.OnRefreshListener{
+        swipeRefreshLayout_topic.setOnRefreshListener(object : SwipeRefreshLayout.OnRefreshListener{
             override fun onRefresh() {
                 mAdapter!!.clearList()
                 currentPageCount=1
@@ -128,7 +129,7 @@ class SquareFragment : android.support.v4.app.Fragment(){
 
         //上拉加载
         recycler_view_topic.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
                 if (newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItem + 1 == mAdapter!!.itemCount) {
                     progressBar.visibility=View.VISIBLE
@@ -170,7 +171,7 @@ class SquareFragment : android.support.v4.app.Fragment(){
                 }
             }
 
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
                 lastVisibleItem= mLayoutManager!!.findLastVisibleItemPosition();
             }

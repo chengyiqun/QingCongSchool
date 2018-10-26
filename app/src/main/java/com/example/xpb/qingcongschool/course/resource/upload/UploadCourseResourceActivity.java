@@ -1,6 +1,5 @@
 package com.example.xpb.qingcongschool.course.resource.upload;
 
-
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.blankj.utilcode.util.ToastUtils;
 import com.example.xpb.qingcongschool.R;
 import com.example.xpb.qingcongschool.RetrofitFactory;
@@ -24,14 +22,11 @@ import com.example.xpb.qingcongschool.main.BaseActivity;
 import com.google.gson.Gson;
 import com.leon.lfilepickerlibrary.LFilePicker;
 import com.leon.lfilepickerlibrary.utils.Constant;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.List;
-
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;

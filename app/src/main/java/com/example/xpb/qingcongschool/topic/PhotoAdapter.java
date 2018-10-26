@@ -11,10 +11,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.xpb.qingcongschool.R;
-
 import java.io.File;
 import java.util.ArrayList;
-
 import me.iwf.photopicker.utils.AndroidLifecycleUtils;
 
 
